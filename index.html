@@ -445,7 +445,8 @@
 
     /* Weekly grid: stop side-scrolling, stack each day full-width so nothing is cut off */
     .grid-columns { flex-direction: column; overflow-x: visible; gap: 14px; }
-    .day-column { min-width: 100%; scroll-margin-top: 12px; }
+    /* flex:0 0 auto — with the desktop "flex:1 1 0" the stacked columns collapsed to 0 height on phones */
+    .day-column { min-width: 100%; flex: 0 0 auto; scroll-margin-top: 12px; }
     .day-body { padding: 10px; gap: 10px; }
     .slot-card { padding: 12px; }
     .slot-card .subj, .slot-card .students {
@@ -478,6 +479,100 @@
     body { background: #fff !important; }
     .panel-card { box-shadow: none; border: none; padding: 0; }
   }
+
+  /* ===== v3 additions ===== */
+  .sync-pill {
+    font-size: 11.5px; font-weight: 700; padding: 6px 12px; border-radius: 30px; cursor: pointer;
+    border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-muted);
+    font-family: inherit; white-space: nowrap;
+  }
+  .sync-pill.ok { color: var(--accent-sage); border-color: #C2E0D4; background: var(--accent-sage-light); }
+  .sync-pill.dirty { color: var(--accent-amber); border-color: #FDE68A; background: var(--accent-amber-light); }
+  .sync-pill.err { color: var(--accent-rose); border-color: #FECDD3; background: var(--accent-rose-light); }
+
+  .banner {
+    display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 14px; font-size: 13.5px;
+    background: var(--accent-sage-light); border: 1px solid #C2E0D4; color: var(--text-primary);
+  }
+  .banner.warn { background: var(--accent-amber-light); border-color: #FDE68A; }
+  .banner.err { background: var(--accent-rose-light); border-color: #FECDD3; }
+  .banner .actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .toolbar {
+    margin-bottom: 16px; background: var(--bg-sub); padding: 10px 14px; border-radius: var(--radius-sm);
+    font-size: 13px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+  }
+  .toolbar input[type=number] {
+    width: 80px; padding: 6px 8px; border-radius: 4px; border: 1px solid var(--border-dark);
+    font-weight: 700; font-size: 16px; font-family: var(--font-mono);
+  }
+
+  .add-slot-btn {
+    width: 100%; border: 1.5px dashed var(--border-dark); background: transparent; color: var(--text-muted);
+    border-radius: var(--radius-sm); padding: 8px; font-family: inherit; font-weight: 700; font-size: 12.5px; cursor: pointer;
+  }
+  .add-slot-btn:active { background: var(--bg-card); }
+  .day-body.drag-over { outline: 2px dashed var(--accent-sage); outline-offset: -4px; }
+  .slot-card .warn { font-size: 10.5px; color: var(--accent-rose); display: block; font-weight: 700; margin-top: 2px; }
+  .slot-card .skipinfo { font-size: 10px; color: var(--text-muted); display: block; }
+  .slot-card.group-slot { border-left: 4px solid var(--accent-amber); }
+
+  .empty-month {
+    text-align: center; padding: 36px 16px; border: 1.5px dashed var(--border-dark); border-radius: var(--radius-md);
+    color: var(--text-muted); margin-top: 10px;
+  }
+  .empty-month .actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 14px; }
+
+  .modal-box { max-height: 92vh; overflow-y: auto; }
+  .modal-field input[type=checkbox], .form-box input[type=checkbox] {
+    width: auto; -webkit-appearance: auto; appearance: auto; padding: 0; margin: 0;
+  }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .seg { display: flex; background: var(--bg-sub); padding: 3px; border-radius: 30px; margin-bottom: 14px; }
+  .seg button {
+    flex: 1; border: none; background: transparent; padding: 8px 10px; border-radius: 30px; cursor: pointer;
+    font-family: inherit; font-weight: 700; font-size: 13px; color: var(--text-muted);
+  }
+  .seg button.active { background: var(--bg-card); color: var(--accent-sage); box-shadow: var(--shadow-sm); }
+
+  .check-list {
+    max-height: 210px; overflow-y: auto; border: 1px solid var(--border-dark); border-radius: var(--radius-sm);
+    padding: 6px; display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 4px; background: var(--bg-card);
+  }
+  .check-list label {
+    display: flex !important; gap: 6px; align-items: center; font-size: 14px !important; font-weight: 600;
+    padding: 6px 8px; border-radius: 6px; background: var(--bg-sub); cursor: pointer; margin: 0 !important;
+    color: var(--text-primary) !important;
+  }
+  .check-list .none { grid-column: 1 / -1; color: var(--text-muted); font-size: 12.5px; padding: 6px; }
+  .field-hint { font-size: 11.5px; color: var(--text-muted); margin-top: 4px; }
+
+  .tag {
+    display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 700;
+    background: var(--accent-sage-light); color: var(--accent-sage); margin: 4px 4px 0 0;
+  }
+  .tag.warn { background: var(--accent-amber-light); color: var(--accent-amber); }
+  .tag.muted { background: var(--bg-sub); color: var(--text-muted); }
+  .item-card .sub { font-size: 12.5px; color: var(--text-muted); }
+  .item-card.warn-card { border-color: #FDE68A; background: #FFFBEB; }
+
+  .chip-item .chip-time { font-family: var(--font-mono); opacity: 0.7; margin-right: 3px; }
+  .chip-item.partial { background: var(--accent-amber-light); color: #92400E; border: 1px solid #FDE68A; }
+
+  .session-person { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-radius: 6px; background: var(--bg-sub); margin-bottom: 6px; font-weight: 600; }
+
+  .gh-form { display: grid; grid-template-columns: 1fr; gap: 8px; margin: 10px 0; }
+  .gh-form input {
+    width: 100%; padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-dark);
+    font-family: var(--font-mono); font-size: 13px;
+  }
+  .gh-form label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+
+  @media (max-width: 720px) {
+    .row2 { grid-template-columns: 1fr 1fr; }
+    .sync-pill { flex: 1 1 100%; text-align: center; }
+  }
 </style>
 </head>
 <body>
@@ -487,1977 +582,1046 @@
   <header class="app-header">
     <div class="app-title">
       <h1>ตารางสอน & ระบบบัญชีติวเตอร์</h1>
-      <div class="subtitle">มินิมอล ใช้งานง่าย · จัดตารางง่าย · คิดเงินอัตโนมัติ</div>
+      <div class="subtitle">มินิมอล ใช้งานง่าย · ตารางแยกรายเดือน · คิดเงินรายคน (รวมคลาสกลุ่ม)</div>
     </div>
 
     <div class="header-controls">
       <div class="month-picker">
-        <button id="prevMonthBtn" type="button">‹</button>
-        <div class="label" id="monthDisplay">สิงหาคม 2569</div>
-        <button id="nextMonthBtn" type="button">›</button>
+        <button id="prevMonthBtn" type="button" aria-label="เดือนก่อน">‹</button>
+        <div class="label" id="monthDisplay">-</div>
+        <button id="nextMonthBtn" type="button" aria-label="เดือนถัดไป">›</button>
       </div>
 
       <div class="view-switch">
         <button id="modeTeacherBtn" class="active" type="button">มุมมองครู</button>
         <button id="modeStudentBtn" type="button">มุมมองนักเรียน</button>
       </div>
+
+      <button class="sync-pill teacher-only" id="syncPill" type="button">กำลังโหลด…</button>
     </div>
   </header>
 
   <!-- Navigation Tabs -->
   <nav class="app-tabs">
-    <button id="tab-weekly" class="active" data-tab="weekly" type="button">🗓️ ตารางรายสัปดาห์</button>
-    <button id="tab-monthly" data-tab="monthly" type="button">📅 ปฏิทินรายเดือน</button>
-    <button id="tab-students" data-tab="students" type="button">🧑‍🎓 นักเรียน & คลาสเรียน</button>
-    <button id="tab-billing" data-tab="billing" type="button">🧾 คิดเงิน & แจ้งผู้ปกครอง</button>
-    <button id="tab-export" data-tab="export" type="button">💾 เซฟ & ส่งออกไฟล์</button>
+    <button class="active" data-tab="weekly" type="button">🗓️ ตารางรายสัปดาห์</button>
+    <button data-tab="monthly" type="button">📅 ปฏิทินรายเดือน</button>
+    <button data-tab="students" type="button" class="teacher-only">🧑‍🎓 นักเรียน & กลุ่ม</button>
+    <button data-tab="billing" type="button" class="teacher-only">🧾 คิดเงิน & แจ้งผู้ปกครอง</button>
+    <button data-tab="export" type="button" class="teacher-only">💾 เซฟ & ซิงก์</button>
   </nav>
 
   <!-- Bottom Tab Bar: mobile only (CSS-toggled) -->
   <nav class="app-tabs-mobile">
     <button class="active" data-tab="weekly" type="button"><span class="ic">🗓️</span><span class="lb">สัปดาห์</span></button>
     <button data-tab="monthly" type="button"><span class="ic">📅</span><span class="lb">ปฏิทิน</span></button>
-    <button data-tab="students" type="button"><span class="ic">🧑‍🎓</span><span class="lb">นักเรียน</span></button>
-    <button data-tab="billing" type="button"><span class="ic">🧾</span><span class="lb">คิดเงิน</span></button>
-    <button data-tab="export" type="button"><span class="ic">💾</span><span class="lb">เซฟ</span></button>
+    <button data-tab="students" type="button" class="teacher-only"><span class="ic">🧑‍🎓</span><span class="lb">นักเรียน</span></button>
+    <button data-tab="billing" type="button" class="teacher-only"><span class="ic">🧾</span><span class="lb">คิดเงิน</span></button>
+    <button data-tab="export" type="button" class="teacher-only"><span class="ic">💾</span><span class="lb">ซิงก์</span></button>
   </nav>
 
+  <div id="bannerArea" class="teacher-only"></div>
+
   <!-- Main Display Panel -->
-  <div class="panel-card" id="mainPanel">
-    <!-- Rendered dynamically -->
-  </div>
+  <div class="panel-card" id="mainPanel"></div>
 </div>
 
-<!-- Modal for Slot Edit -->
-<div class="modal-backdrop" id="slotModal">
-  <div class="modal-box">
-    <h3>จอง / แก้ไขคาบเรียน</h3>
-    <div class="time-info" id="slotModalTimeLabel">-</div>
-    
-    <div class="modal-field">
-      <label>วิชา / เนื้อหาที่สอน</label>
-      <input type="text" id="slotModalSubject" placeholder="เช่น คณิต ม.3 — ตรีโกณมิติ">
-    </div>
-    
-    <div class="modal-field">
-      <label>รายชื่อนักเรียน (1 ชื่อ ต่อ 1 บรรทัด)</label>
-      <textarea id="slotModalNames" rows="3" placeholder="น้องพันพัน&#10;น้องเจมส์"></textarea>
-    </div>
-
-    <div class="modal-field">
-      <label>จำนวนคนรวม</label>
-      <input type="number" id="slotModalHeadcount" min="0">
-    </div>
-
-    <div class="modal-field teacher-only">
-      <label>ราคาต่อคนต่อคาบ (บาท)</label>
-      <input type="number" id="slotModalPrice" placeholder="ใช้ราคาตั้งต้นถ้าว่างไว้">
-    </div>
-
-    <div class="modal-btns">
-      <button class="btn" id="slotModalCancel" type="button">ยกเลิก</button>
-      <button class="btn danger" id="slotModalClear" type="button">ล้างช่องนี้</button>
-      <button class="btn primary" id="slotModalSave" type="button">บันทึก</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal for Custom Time Slot -->
-<div class="modal-backdrop" id="customSlotModal">
-  <div class="modal-box">
-    <h3 id="customSlotTitle">เพิ่มช่วงเวลาเรียนใหม่</h3>
-    <div class="modal-field">
-      <label>หมวดวัน</label>
-      <select id="customSlotSection">
-        <option value="weekday">วันธรรมดา (จันทร์–ศุกร์)</option>
-        <option value="weekend">เสาร์–อาทิตย์</option>
-      </select>
-    </div>
-    <div class="modal-field">
-      <label>เวลาเรียน (เช่น 15:00–16:30)</label>
-      <input type="text" id="customSlotTime" placeholder="15:00–16:30">
-    </div>
-    <div class="modal-btns">
-      <button class="btn" id="customSlotCancel" type="button">ยกเลิก</button>
-      <button class="btn" id="customSlotReset" type="button" style="display:none;">🔄 ใช้เวลาเริ่มต้น</button>
-      <button class="btn primary" id="customSlotSave" type="button">เพิ่มช่วงเวลา</button>
-    </div>
-  </div>
-</div>
+<!-- Modal: add / edit a weekly slot (content rendered by JS) -->
+<div class="modal-backdrop" id="slotModal"><div class="modal-box" id="slotModalBox"></div></div>
+<!-- Modal: one session on one date (content rendered by JS) -->
+<div class="modal-backdrop" id="sessionModal"><div class="modal-box" id="sessionModalBox"></div></div>
 
 <!-- Toast -->
 <div class="toast" id="toast">บันทึกข้อมูลเรียบร้อย</div>
 
+<script src="./js/core.js"></script>
 <script>
-// Data Store & Safari Bulletproof Controller
+'use strict';
+/* =========================================
+   Tutor schedule UI (v3)
+   - Data source of truth: data.json in the GitHub repo (Claude can edit it directly).
+   - Edits made here are kept in this browser until pushed to GitHub (tab "เซฟ & ซิงก์").
+   - Business logic lives in js/core.js (tested with `npm test`).
+   ========================================= */
+const C = window.TutorCore;
 const TH_MONTHS = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
 const DOW_NAMES = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+const DOW_LABEL = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสฯ','ศุกร์','เสาร์'];
 const DOW_SHORT = ['อา','จ','อ','พ','พฤ','ศ','ส'];
+const WEEKDAY_DOWS = [1, 2, 3, 4, 5];
+const WEEKEND_DOWS = [6, 0];
 
-const STORAGE_KEY = 'tutor_minimal_schedule_v2';
+const LS_KEY = 'tutor_schedule_v3';          // {state, baseRev, dirty}
+const LS_OLD = 'tutor_minimal_schedule_v2';  // data saved by the previous version of this app
+const LS_OLD_DONE = 'tutor_v2_import_done';
+const LS_GH = 'tutor_github_sync';           // {token, repo, branch, path}
+const LS_VIEW = 'tutor_view';
 
-let S = {
-  "settings": {
-    "defaultRate": 300
-  },
-  "students": [
-    {
-      "id": "st_1785818776739e97q",
-      "name": "จ๋าจ้า",
-      "parentTitle": "คุณแม่"
-    },
-    {
-      "id": "st_1785818776739apwk",
-      "name": "แซนดี้",
-      "parentTitle": "คุณแม่"
-    },
-    {
-      "id": "st_17858187767390f1k",
-      "name": "อุ๋งอิ๋ง",
-      "parentTitle": "คุณแม่"
-    },
-    {
-      "id": "st_1785818776739qhpu",
-      "name": "กัส",
-      "parentTitle": "คุณแม่"
-    },
-    {
-      "id": "st_17858187767393m8b",
-      "name": "อิงอิง",
-      "parentTitle": "คุณแม่"
-    },
-    {
-      "id": "st_1785818776739ono2",
-      "name": "พาวเวอร์",
-      "parentTitle": "คุณแม่"
-    },
-    {
-      "id": "st_1785818776739ckz3",
-      "name": "เนเน่",
-      "parentTitle": "คุณแม่"
-    },
-    {
-      "id": "st_1785818776739j4e0",
-      "name": "ไจ๋ไจ๋",
-      "parentTitle": "คุณแม่"
-    },
-    {
-      "id": "st_17858187767396cje",
-      "name": "ภู",
-      "parentTitle": "คุณแม่"
-    },
-    {
-      "id": "st_1785818776739h7jd",
-      "name": "พีท",
-      "parentTitle": "คุณแม่"
-    },
-    {
-      "id": "st_1785818776739nndw",
-      "name": "กัญตา",
-      "parentTitle": "คุณแม่"
-    },
-    {
-      "id": "st_1785818776739t0uz",
-      "name": "โปรแกรม",
-      "parentTitle": "คุณแม่"
-    },
-    {
-      "id": "st_1785818776739ml5l",
-      "name": "สไปทร์",
-      "parentTitle": "คุณแม่"
-    },
-    {
-      "id": "st_1785818776739jjfz",
-      "name": "ปันปัน",
-      "parentTitle": "คุณแม่"
-    },
-    {
-      "id": "st_1785818776739596z",
-      "name": "เจย์ด้า",
-      "parentTitle": "คุณแม่"
-    }
-  ],
-  "weeklySlots": {
-    "weekday": [
-      {
-        "t": "16:30–18:00"
-      },
-      {
-        "t": "18:15–19:45"
-      },
-      {
-        "t": "20:00–21:30"
-      },
-      {
-        "t": "21:30–22:30",
-        "flex": true,
-        "d": "คาบสำรอง"
-      }
-    ],
-    "weekend": [
-      {
-        "t": "09:00–10:30"
-      },
-      {
-        "t": "10:45–12:15"
-      },
-      {
-        "t": "13:00–14:30",
-        "d": "หลังพักเที่ยง"
-      },
-      {
-        "t": "14:45–16:15"
-      },
-      {
-        "t": "16:30–18:00"
-      },
-      {
-        "t": "18:15–19:45"
-      },
-      {
-        "t": "19:45–20:30",
-        "flex": true,
-        "d": "คาบสำรอง"
-      }
-    ]
-  },
-  "bookings": {
-    "weekday-mon-0": {
-      "status": "booked",
-      "subject": "ฟิสิกส์ ม.5",
-      "names": [
-        "จ๋าจ้า"
-      ],
-      "headcount": 1,
-      "customPrice": null
-    },
-    "weekday-mon-1": {
-      "status": "booked",
-      "subject": "คณิต ม.3 สาธิต",
-      "names": [
-        "แซนดี้"
-      ],
-      "headcount": 1,
-      "customPrice": null
-    },
-    "weekday-mon-2": {
-      "status": "booked",
-      "subject": "คณิต SMTE",
-      "names": [
-        "อุ๋งอิ๋ง"
-      ],
-      "headcount": 1,
-      "customPrice": null
-    },
-    "weekday-tue-1": {
-      "status": "booked",
-      "subject": "คณิต SMET",
-      "names": [
-        "กัส",
-        "อิงอิง",
-        "พาวเวอร์"
-      ],
-      "headcount": 3,
-      "customPrice": null
-    },
-    "weekday-tue-2": {
-      "status": "booked",
-      "subject": "คณิต ม.6",
-      "names": [
-        "เนเน่"
-      ],
-      "headcount": 1,
-      "customPrice": null
-    },
-    "weekday-wed-0": {
-      "status": "booked",
-      "subject": "ฟิสิกส์ ม.5",
-      "names": [
-        "จ๋าจ้า"
-      ],
-      "headcount": 1,
-      "customPrice": null
-    },
-    "weekday-wed-1": {
-      "status": "booked",
-      "subject": "คณิต ม.3",
-      "names": [
-        "ไจ๋ไจ๋"
-      ],
-      "headcount": 1,
-      "customPrice": null
-    },
-    "weekday-wed-2": {
-      "status": "booked",
-      "subject": "คณิต ม.6",
-      "names": [
-        "เนเน่"
-      ],
-      "headcount": 1,
-      "customPrice": null
-    },
-    "weekday-thu-0": {
-      "status": "booked",
-      "subject": "คณิต ม.4",
-      "names": [
-        "ภู"
-      ],
-      "headcount": 1,
-      "customPrice": null
-    },
-    "weekday-thu-1": {
-      "status": "booked",
-      "subject": "คณิต SMTE",
-      "names": [
-        "กัส",
-        "อิงอิง",
-        "พาวเวอร์"
-      ],
-      "headcount": 3,
-      "customPrice": null
-    },
-    "weekday-thu-2": {
-      "status": "booked",
-      "subject": "คณิต SMTE",
-      "names": [
-        "อุ๋งอิ๋ง"
-      ],
-      "headcount": 1,
-      "customPrice": null
-    },
-    "weekend-sat-0": {
-      "status": "booked",
-      "subject": "คณิต เข้า ม.1",
-      "names": [
-        "พีท"
-      ],
-      "headcount": 1,
-      "customPrice": null
-    },
-    "weekend-sat-1": {
-      "status": "booked",
-      "subject": "คณิต ม.1",
-      "names": [
-        "กัญตา",
-        "โปรแกรม"
-      ],
-      "headcount": 2,
-      "customPrice": null
-    },
-    "weekend-sat-2": {
-      "status": "booked",
-      "subject": "คณิต ม.3 สาธิต",
-      "names": [
-        "แซนดี้"
-      ],
-      "headcount": 1,
-      "customPrice": null
-    },
-    "weekend-sat-3": {
-      "status": "booked",
-      "subject": "คณิต SMTE",
-      "names": [
-        "กัส",
-        "อิงอิง",
-        "พาวเวอร์"
-      ],
-      "headcount": 3,
-      "customPrice": null
-    },
-    "weekend-sun-0": {
-      "status": "booked",
-      "subject": "คณิตม.4",
-      "names": [
-        "สไปทร์"
-      ],
-      "headcount": 1,
-      "customPrice": null
-    },
-    "weekend-sun-1": {
-      "status": "booked",
-      "subject": "คณิต ม.1",
-      "names": [
-        "กัญตา"
-      ],
-      "headcount": 1,
-      "customPrice": null
-    },
-    "weekend-sun-2": {
-      "status": "booked",
-      "subject": "คณิต SMTE",
-      "names": [
-        "กัส",
-        "อิงอิง",
-        "พาวเวอร์"
-      ],
-      "headcount": 3,
-      "customPrice": null
-    },
-    "weekend-sun-3": {
-      "status": "booked",
-      "subject": "ฟิสิกส์ ม.4",
-      "names": [
-        "ปันปัน",
-        "เจย์ด้า"
-      ],
-      "headcount": 2,
-      "customPrice": null
-    }
-  },
-  "schedules": [
-    {
-      "id": "sc_1785818776739pe3a",
-      "studentId": "st_1785818776739e97q",
-      "yearMonth": "2026-08",
-      "day": 1,
-      "time": "16:30–18:00",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739ovwo",
-      "studentId": "st_1785818776739apwk",
-      "yearMonth": "2026-08",
-      "day": 1,
-      "time": "18:15–19:45",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739gu04",
-      "studentId": "st_17858187767390f1k",
-      "yearMonth": "2026-08",
-      "day": 1,
-      "time": "20:00–21:30",
-      "price": 300
-    },
-    {
-      "id": "sc_17858187767394pxc",
-      "studentId": "st_1785818776739qhpu",
-      "yearMonth": "2026-08",
-      "day": 2,
-      "time": "18:15–19:45",
-      "price": 300
-    },
-    {
-      "id": "sc_17858187767391a66",
-      "studentId": "st_17858187767393m8b",
-      "yearMonth": "2026-08",
-      "day": 2,
-      "time": "18:15–19:45",
-      "price": 300
-    },
-    {
-      "id": "sc_17858187767398b7a",
-      "studentId": "st_1785818776739ono2",
-      "yearMonth": "2026-08",
-      "day": 2,
-      "time": "18:15–19:45",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739jvl3",
-      "studentId": "st_1785818776739ckz3",
-      "yearMonth": "2026-08",
-      "day": 2,
-      "time": "20:00–21:30",
-      "price": 300
-    },
-    {
-      "id": "sc_17858187767395s5i",
-      "studentId": "st_1785818776739e97q",
-      "yearMonth": "2026-08",
-      "day": 3,
-      "time": "16:30–18:00",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739fp2d",
-      "studentId": "st_1785818776739j4e0",
-      "yearMonth": "2026-08",
-      "day": 3,
-      "time": "18:15–19:45",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739rs5y",
-      "studentId": "st_1785818776739ckz3",
-      "yearMonth": "2026-08",
-      "day": 3,
-      "time": "20:00–21:30",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739fr77",
-      "studentId": "st_17858187767396cje",
-      "yearMonth": "2026-08",
-      "day": 4,
-      "time": "16:30–18:00",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739q7a1",
-      "studentId": "st_1785818776739qhpu",
-      "yearMonth": "2026-08",
-      "day": 4,
-      "time": "18:15–19:45",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739mp3d",
-      "studentId": "st_17858187767393m8b",
-      "yearMonth": "2026-08",
-      "day": 4,
-      "time": "18:15–19:45",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739t8kf",
-      "studentId": "st_1785818776739ono2",
-      "yearMonth": "2026-08",
-      "day": 4,
-      "time": "18:15–19:45",
-      "price": 300
-    },
-    {
-      "id": "sc_17858187767392797",
-      "studentId": "st_17858187767390f1k",
-      "yearMonth": "2026-08",
-      "day": 4,
-      "time": "20:00–21:30",
-      "price": 300
-    },
-    {
-      "id": "sc_178581877673989sj",
-      "studentId": "st_1785818776739h7jd",
-      "yearMonth": "2026-08",
-      "day": 6,
-      "time": "09:00–10:30",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739v5us",
-      "studentId": "st_1785818776739nndw",
-      "yearMonth": "2026-08",
-      "day": 6,
-      "time": "10:45–12:15",
-      "price": 300
-    },
-    {
-      "id": "sc_17858187767399c2v",
-      "studentId": "st_1785818776739t0uz",
-      "yearMonth": "2026-08",
-      "day": 6,
-      "time": "10:45–12:15",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739vnre",
-      "studentId": "st_1785818776739apwk",
-      "yearMonth": "2026-08",
-      "day": 6,
-      "time": "13:00–14:30",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739700l",
-      "studentId": "st_1785818776739qhpu",
-      "yearMonth": "2026-08",
-      "day": 6,
-      "time": "14:45–16:15",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739u0tk",
-      "studentId": "st_17858187767393m8b",
-      "yearMonth": "2026-08",
-      "day": 6,
-      "time": "14:45–16:15",
-      "price": 300
-    },
-    {
-      "id": "sc_17858187767397tty",
-      "studentId": "st_1785818776739ono2",
-      "yearMonth": "2026-08",
-      "day": 6,
-      "time": "14:45–16:15",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739jy6w",
-      "studentId": "st_1785818776739ml5l",
-      "yearMonth": "2026-08",
-      "day": 0,
-      "time": "09:00–10:30",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739dufc",
-      "studentId": "st_1785818776739nndw",
-      "yearMonth": "2026-08",
-      "day": 0,
-      "time": "10:45–12:15",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739lli0",
-      "studentId": "st_1785818776739qhpu",
-      "yearMonth": "2026-08",
-      "day": 0,
-      "time": "13:00–14:30",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739tbh5",
-      "studentId": "st_17858187767393m8b",
-      "yearMonth": "2026-08",
-      "day": 0,
-      "time": "13:00–14:30",
-      "price": 300
-    },
-    {
-      "id": "sc_17858187767390tos",
-      "studentId": "st_1785818776739ono2",
-      "yearMonth": "2026-08",
-      "day": 0,
-      "time": "13:00–14:30",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739xynn",
-      "studentId": "st_1785818776739jjfz",
-      "yearMonth": "2026-08",
-      "day": 0,
-      "time": "14:45–16:15",
-      "price": 300
-    },
-    {
-      "id": "sc_1785818776739ko86",
-      "studentId": "st_1785818776739596z",
-      "yearMonth": "2026-08",
-      "day": 0,
-      "time": "14:45–16:15",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969001oeb0",
-      "studentId": "st_1785818776739e97q",
-      "yearMonth": "2026-09",
-      "day": 1,
-      "time": "16:30–18:00",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002d1q6",
-      "studentId": "st_1785818776739apwk",
-      "yearMonth": "2026-09",
-      "day": 1,
-      "time": "18:15–19:45",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002vui3",
-      "studentId": "st_17858187767390f1k",
-      "yearMonth": "2026-09",
-      "day": 1,
-      "time": "20:00–21:30",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002k2n4",
-      "studentId": "st_1785818776739qhpu",
-      "yearMonth": "2026-09",
-      "day": 2,
-      "time": "18:15–19:45",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002r8x2",
-      "studentId": "st_17858187767393m8b",
-      "yearMonth": "2026-09",
-      "day": 2,
-      "time": "18:15–19:45",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002q2xu",
-      "studentId": "st_1785818776739ono2",
-      "yearMonth": "2026-09",
-      "day": 2,
-      "time": "18:15–19:45",
-      "price": 300
-    },
-    {
-      "id": "sc_17880229690020ife",
-      "studentId": "st_1785818776739ckz3",
-      "yearMonth": "2026-09",
-      "day": 2,
-      "time": "20:00–21:30",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002cmmj",
-      "studentId": "st_1785818776739e97q",
-      "yearMonth": "2026-09",
-      "day": 3,
-      "time": "16:30–18:00",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002dbjs",
-      "studentId": "st_1785818776739j4e0",
-      "yearMonth": "2026-09",
-      "day": 3,
-      "time": "18:15–19:45",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002px5g",
-      "studentId": "st_1785818776739ckz3",
-      "yearMonth": "2026-09",
-      "day": 3,
-      "time": "20:00–21:30",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002hd50",
-      "studentId": "st_17858187767396cje",
-      "yearMonth": "2026-09",
-      "day": 4,
-      "time": "16:30–18:00",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002k4dz",
-      "studentId": "st_1785818776739qhpu",
-      "yearMonth": "2026-09",
-      "day": 4,
-      "time": "18:15–19:45",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002c2i9",
-      "studentId": "st_17858187767393m8b",
-      "yearMonth": "2026-09",
-      "day": 4,
-      "time": "18:15–19:45",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002kcae",
-      "studentId": "st_1785818776739ono2",
-      "yearMonth": "2026-09",
-      "day": 4,
-      "time": "18:15–19:45",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002hlwl",
-      "studentId": "st_17858187767390f1k",
-      "yearMonth": "2026-09",
-      "day": 4,
-      "time": "20:00–21:30",
-      "price": 300
-    },
-    {
-      "id": "sc_17880229690020ccp",
-      "studentId": "st_1785818776739h7jd",
-      "yearMonth": "2026-09",
-      "day": 6,
-      "time": "09:00–10:30",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002j36y",
-      "studentId": "st_1785818776739nndw",
-      "yearMonth": "2026-09",
-      "day": 6,
-      "time": "10:45–12:15",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002fz5p",
-      "studentId": "st_1785818776739t0uz",
-      "yearMonth": "2026-09",
-      "day": 6,
-      "time": "10:45–12:15",
-      "price": 300
-    },
-    {
-      "id": "sc_17880229690028ox6",
-      "studentId": "st_1785818776739apwk",
-      "yearMonth": "2026-09",
-      "day": 6,
-      "time": "13:00–14:30",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002b9ft",
-      "studentId": "st_1785818776739qhpu",
-      "yearMonth": "2026-09",
-      "day": 6,
-      "time": "14:45–16:15",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002afyn",
-      "studentId": "st_17858187767393m8b",
-      "yearMonth": "2026-09",
-      "day": 6,
-      "time": "14:45–16:15",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002j0jm",
-      "studentId": "st_1785818776739ono2",
-      "yearMonth": "2026-09",
-      "day": 6,
-      "time": "14:45–16:15",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002a3xg",
-      "studentId": "st_1785818776739ml5l",
-      "yearMonth": "2026-09",
-      "day": 0,
-      "time": "09:00–10:30",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002nv7r",
-      "studentId": "st_1785818776739nndw",
-      "yearMonth": "2026-09",
-      "day": 0,
-      "time": "10:45–12:15",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002a4d8",
-      "studentId": "st_1785818776739qhpu",
-      "yearMonth": "2026-09",
-      "day": 0,
-      "time": "13:00–14:30",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002oe2m",
-      "studentId": "st_17858187767393m8b",
-      "yearMonth": "2026-09",
-      "day": 0,
-      "time": "13:00–14:30",
-      "price": 300
-    },
-    {
-      "id": "sc_17880229690027ndt",
-      "studentId": "st_1785818776739ono2",
-      "yearMonth": "2026-09",
-      "day": 0,
-      "time": "13:00–14:30",
-      "price": 300
-    },
-    {
-      "id": "sc_1788022969002zhfq",
-      "studentId": "st_1785818776739jjfz",
-      "yearMonth": "2026-09",
-      "day": 0,
-      "time": "14:45–16:15",
-      "price": 300
-    },
-    {
-      "id": "sc_17880229690020y1s",
-      "studentId": "st_1785818776739596z",
-      "yearMonth": "2026-09",
-      "day": 0,
-      "time": "14:45–16:15",
-      "price": 300
-    }
-  ],
-  "blocked": [],
-  "absences": [],
-  "timeOverrides": {},
-  "closedDays": [
-    "fri"
-  ]
-};
+let S = C.emptyState();
+const sync = { baseRev: 0, dirty: false, conflict: null, oldLocal: null, error: null, loaded: false };
 
+const pad = (n) => String(n).padStart(2, '0');
+const today = new Date();
 let view = {
-  tab: 'weekly',
-  mode: 'teacher',
-  y: new Date().getFullYear(),
-  m: new Date().getMonth(),
-  activeSlot: null,
-  editingStudentId: null,
-  slotForm: null,
-  expandedDates: []
+  tab: 'weekly', mode: 'teacher',
+  ym: `${today.getFullYear()}-${pad(today.getMonth() + 1)}`,
+  expandedDates: [], editStudentId: null, editGroupId: null, slot: null, session: null,
 };
+try { Object.assign(view, JSON.parse(localStorage.getItem(LS_VIEW) || '{}')); } catch (e) {}
 
-// Defensive Utilities for Safari
-function pad(n) { return String(n).padStart(2, '0'); }
-function dateStr(y, m, d) { return `${y}-${pad(m+1)}-${pad(d)}`; }
-function daysInMonth(y, m) { return new Date(y, m + 1, 0).getDate(); }
+/* ---------- utils ---------- */
 function money(n) { return (Number(n) || 0).toLocaleString('th-TH'); }
-function ymOf(y, m) { return `${y}-${pad(m+1)}`; }
-function currentYM() { return ymOf(view.y, view.m); }
-function prevYM() { let y = view.y, m = view.m - 1; if(m < 0){ m = 11; y--; } return ymOf(y, m); }
-function escapeHtml(str) { return String(str || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
-
+function escapeHtml(str) { return String(str == null ? '' : str).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+function ymLabel(ym) { const [y, m] = ym.split('-').map(Number); return `${TH_MONTHS[m - 1]} ${y + 543}`; }
+function dateLabel(ds) { const [y, m, d] = ds.split('-').map(Number); return `วัน${DOW_NAMES[C.dowOf(ds)]}ที่ ${d} ${TH_MONTHS[m - 1]} ${y + 543}`; }
+function splitList(s) { return String(s || '').split(/[,\n]/).map(x => x.trim()).filter(Boolean); }
+function numOrNull(v) { return (v === '' || v == null || isNaN(Number(v))) ? null : Number(v); }
+function studentName(id) { const s = C.studentById(S, id); return s ? s.name : '?'; }
+function $(id) { return document.getElementById(id); }
 function showToast(msg) {
-  const t = document.getElementById('toast');
-  if(!t) return;
+  const t = $('toast'); if (!t) return;
   t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 1800);
+  clearTimeout(showToast._t); showToast._t = setTimeout(() => t.classList.remove('show'), 1900);
+}
+function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } }
+function lsDel(k) { try { localStorage.removeItem(k); } catch (e) {} }
+function saveView() { lsSet(LS_VIEW, JSON.stringify({ tab: view.tab, mode: view.mode, ym: view.ym })); }
+
+/* ---------- persistence & GitHub sync ---------- */
+function writeLocal() { lsSet(LS_KEY, JSON.stringify({ state: S, baseRev: sync.baseRev, dirty: sync.dirty })); }
+function readLocal() { try { return JSON.parse(lsGet(LS_KEY) || 'null'); } catch (e) { return null; } }
+
+function saveState(msg) {
+  S.meta.updatedAt = new Date().toISOString();
+  sync.dirty = true;
+  writeLocal(); render();
+  if (msg) showToast(msg);
 }
 
-function safeGetStorage(key) {
-  try { return localStorage.getItem(key); } catch(e) { return null; }
+function ghCfg() {
+  let c = {};
+  try { c = JSON.parse(lsGet(LS_GH) || '{}'); } catch (e) {}
+  // default to the repo this page is served from: <owner>.github.io/<repo>/
+  const host = location.hostname, seg = location.pathname.split('/').filter(Boolean)[0];
+  const guess = host.endsWith('.github.io') && seg ? `${host.split('.')[0]}/${seg}` : '';
+  return { token: c.token || '', repo: c.repo || guess, branch: c.branch || 'main', path: c.path || 'data.json' };
 }
-function safeSetStorage(key, value) {
-  try { localStorage.setItem(key, value); return true; } catch(e) { return false; }
+function b64EncodeUtf8(str) {
+  const bytes = new TextEncoder().encode(str); let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
 }
-
-function loadState() {
-  const raw = safeGetStorage(STORAGE_KEY);
-  if(raw) {
-    try { S = { ...S, ...JSON.parse(raw) }; } catch(e) {}
-  }
+function b64DecodeUtf8(b64) {
+  const bin = atob(b64.replace(/\s/g, ''));
+  return new TextDecoder().decode(Uint8Array.from(bin, ch => ch.charCodeAt(0)));
 }
-function saveState() {
-  safeSetStorage(STORAGE_KEY, JSON.stringify(S));
-}
-
-function updateHeader() {
-  const el = document.getElementById('monthDisplay');
-  if(el) el.textContent = `${TH_MONTHS[view.m]} ${view.y + 543}`;
-}
-
-// Initialization Entry Point (Safe DOM Ready)
-function initApp() {
-  loadState();
-  updateHeader();
-
-  const prevBtn = document.getElementById('prevMonthBtn');
-  if(prevBtn) {
-    prevBtn.addEventListener('click', () => {
-      view.m--; if(view.m < 0) { view.m = 11; view.y--; }
-      updateHeader(); render();
-    });
-  }
-
-  const nextBtn = document.getElementById('nextMonthBtn');
-  if(nextBtn) {
-    nextBtn.addEventListener('click', () => {
-      view.m++; if(view.m > 11) { view.m = 0; view.y++; }
-      updateHeader(); render();
-    });
-  }
-
-  const modeT = document.getElementById('modeTeacherBtn');
-  if(modeT) modeT.addEventListener('click', () => setMode('teacher'));
-
-  const modeS = document.getElementById('modeStudentBtn');
-  if(modeS) modeS.addEventListener('click', () => setMode('student'));
-
-  document.querySelectorAll('[data-tab]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      view.tab = btn.dataset.tab;
-      document.querySelectorAll('[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === view.tab));
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      render();
-    });
+async function ghApi(cfg, method, body) {
+  const url = `https://api.github.com/repos/${cfg.repo}/contents/${cfg.path}` + (method === 'GET' ? `?ref=${encodeURIComponent(cfg.branch)}&t=${Date.now()}` : '');
+  const res = await fetch(url, {
+    method, cache: 'no-store',
+    headers: { 'Accept': 'application/vnd.github+json', 'Authorization': `Bearer ${cfg.token}`, ...(body ? { 'Content-Type': 'application/json' } : {}) },
+    body: body ? JSON.stringify(body) : undefined,
   });
-
-  const slotCancel = document.getElementById('slotModalCancel');
-  if(slotCancel) slotCancel.addEventListener('click', closeSlotModal);
-
-  const slotClear = document.getElementById('slotModalClear');
-  if(slotClear) slotClear.addEventListener('click', clearSlotBooking);
-
-  const slotSave = document.getElementById('slotModalSave');
-  if(slotSave) slotSave.addEventListener('click', saveSlotBooking);
-
-  const slotNames = document.getElementById('slotModalNames');
-  if(slotNames) {
-    slotNames.addEventListener('input', (e) => {
-      const lines = e.target.value.split('\n').map(s => s.trim()).filter(Boolean);
-      const hc = document.getElementById('slotModalHeadcount');
-      if(hc) hc.value = lines.length || '';
-    });
+  if (method === 'GET' && res.status === 404) return null;
+  if (!res.ok) throw new Error(`GitHub ${res.status}: ${(await res.text()).slice(0, 160)}`);
+  return res.json();
+}
+/** Latest data.json: via the GitHub API when a token is set (no CDN delay), otherwise from the site itself. */
+async function fetchRemote() {
+  const cfg = ghCfg();
+  if (cfg.token && cfg.repo) {
+    const f = await ghApi(cfg, 'GET');
+    if (!f) return null;
+    return { state: C.normalizeState(JSON.parse(b64DecodeUtf8(f.content))), sha: f.sha };
   }
+  const res = await fetch(`./data.json?t=${Date.now()}`, { cache: 'no-store' });
+  if (!res.ok) throw new Error(`data.json ${res.status}`);
+  return { state: C.normalizeState(await res.json()) };
+}
 
-  const customCancel = document.getElementById('customSlotCancel');
-  if(customCancel) customCancel.addEventListener('click', closeCustomSlotModal);
+async function boot() {
+  const local = readLocal();
+  let remote = null;
+  try { remote = await fetchRemote(); } catch (e) { sync.error = 'โหลดข้อมูลจาก GitHub ไม่ได้ (ออฟไลน์?) — ใช้ข้อมูลในเครื่องแทน'; }
 
-  const customSave = document.getElementById('customSlotSave');
-  if(customSave) customSave.addEventListener('click', saveCustomSlot);
-
-  const customReset = document.getElementById('customSlotReset');
-  if(customReset) customReset.addEventListener('click', resetCustomSlotTime);
-
+  if (local && local.state && local.dirty) {
+    S = C.normalizeState(local.state); sync.baseRev = local.baseRev || 0; sync.dirty = true;
+    if (remote && remote.state.meta.rev !== sync.baseRev) sync.conflict = remote.state;
+  } else if (remote) {
+    S = remote.state; sync.baseRev = S.meta.rev; sync.dirty = false; writeLocal();
+  } else if (local && local.state) {
+    S = C.normalizeState(local.state); sync.baseRev = local.baseRev || 0;
+  }
+  const old = lsGet(LS_OLD);
+  if (old && !lsGet(LS_OLD_DONE)) sync.oldLocal = old;
+  sync.loaded = true;
   render();
 }
 
-if(document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initApp);
-} else {
-  initApp();
+async function pullFromGitHub() {
+  if (sync.dirty && !confirm('เครื่องนี้มีการแก้ไขที่ยังไม่ได้ส่งขึ้น GitHub — ดึงข้อมูลจาก GitHub มาทับใช่ไหม?')) return;
+  try {
+    const r = sync.conflict ? { state: sync.conflict } : await fetchRemote();
+    if (!r) { alert('ยังไม่มี data.json บน GitHub'); return; }
+    S = r.state; sync.baseRev = S.meta.rev; sync.dirty = false; sync.conflict = null; sync.error = null;
+    writeLocal(); render(); showToast('ดึงข้อมูลล่าสุดจาก GitHub แล้ว');
+  } catch (e) { alert('ดึงข้อมูลไม่สำเร็จ: ' + e.message); }
 }
 
-// Register service worker so the app is installable and works offline.
-if('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch((err) => {
-      console.warn('Service worker registration failed:', err);
+async function pushToGitHub() {
+  const cfg = ghCfg();
+  if (!cfg.token || !cfg.repo) {
+    view.tab = 'export'; render(); showToast('ใส่ GitHub token ในการ์ด "ซิงก์กับ GitHub" ก่อน');
+    return;
+  }
+  try {
+    showToast('กำลังส่งขึ้น GitHub…');
+    const cur = await ghApi(cfg, 'GET');
+    let curRev = 0;
+    if (cur) { try { curRev = C.normalizeState(JSON.parse(b64DecodeUtf8(cur.content))).meta.rev; } catch (e) {} }
+    if (cur && curRev !== sync.baseRev &&
+        !confirm(`ข้อมูลบน GitHub ถูกแก้ไขหลังจากที่เครื่องนี้โหลดมา (rev ${curRev} ≠ ${sync.baseRev}) เช่น Claude อัปเดตให้\nจะเขียนทับด้วยข้อมูลในเครื่องนี้ใช่ไหม?`)) return;
+    S.meta.rev = Math.max(curRev, sync.baseRev) + 1;
+    S.meta.updatedAt = new Date().toISOString();
+    await ghApi(cfg, 'PUT', {
+      message: `Update schedule data (rev ${S.meta.rev})`,
+      content: b64EncodeUtf8(JSON.stringify(S, null, 2) + '\n'),
+      branch: cfg.branch, ...(cur ? { sha: cur.sha } : {}),
     });
-  });
+    sync.baseRev = S.meta.rev; sync.dirty = false; sync.conflict = null;
+    writeLocal(); render(); showToast('ส่งขึ้น GitHub แล้ว ✓');
+  } catch (e) { alert('ส่งขึ้น GitHub ไม่สำเร็จ: ' + e.message); }
 }
 
+function downloadDataJson() {
+  const blob = new Blob([JSON.stringify(S, null, 2) + '\n'], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'data.json'; a.click();
+  showToast('ดาวน์โหลด data.json แล้ว');
+}
+
+function importOldLocal() {
+  try {
+    const old = JSON.parse(sync.oldLocal);
+    if (!confirm(`นำข้อมูลจากเวอร์ชันเก่าในเครื่องนี้มาแทนข้อมูลปัจจุบัน?\n(ตารางรายสัปดาห์เดิมจะถูกใส่เป็นเดือน ${ymLabel(view.ym)})`)) return;
+    const meta = S.meta;
+    S = C.normalizeState(old, { templateMonths: [view.ym] }); S.meta = meta;
+    lsSet(LS_OLD_DONE, '1'); sync.oldLocal = null;
+    saveState('นำเข้าข้อมูลเก่าแล้ว');
+  } catch (e) { alert('ข้อมูลเก่าอ่านไม่ได้: ' + e.message); }
+}
+
+function updateSyncPill() {
+  const el = $('syncPill'); if (!el) return;
+  el.className = 'sync-pill teacher-only';
+  if (!sync.loaded) { el.textContent = 'กำลังโหลด…'; return; }
+  if (sync.conflict) { el.classList.add('err'); el.textContent = '⚠️ GitHub มีข้อมูลใหม่กว่า'; }
+  else if (sync.dirty) { el.classList.add('dirty'); el.textContent = '● ยังไม่ส่งขึ้น GitHub'; }
+  else if (sync.error) { el.classList.add('err'); el.textContent = '⚠️ ออฟไลน์'; }
+  else { el.classList.add('ok'); el.textContent = `☁️ ตรงกับ GitHub (rev ${sync.baseRev})`; }
+}
+
+function renderBanners() {
+  const el = $('bannerArea'); if (!el) return;
+  const out = [];
+  if (sync.conflict) out.push(`<div class="banner err"><div>⚠️ ข้อมูลบน GitHub ถูกอัปเดต (rev ${sync.conflict.meta.rev}) แต่เครื่องนี้มีการแก้ไขที่ยังไม่ได้ส่งขึ้น</div>
+    <div class="actions"><button class="btn small primary" data-act="pull" type="button">ใช้ข้อมูลล่าสุดจาก GitHub</button><button class="btn small" data-act="push" type="button">ส่งของเครื่องนี้ขึ้นไปทับ</button></div></div>`);
+  if (sync.oldLocal) out.push(`<div class="banner warn"><div>📦 พบข้อมูลจากเวอร์ชันเก่าที่บันทึกไว้ในเครื่องนี้</div>
+    <div class="actions"><button class="btn small" data-act="import-old" type="button">นำเข้า</button><button class="btn small" data-act="dismiss-old" type="button">ไม่ต้อง</button></div></div>`);
+  if (sync.error) out.push(`<div class="banner err"><div>${escapeHtml(sync.error)}</div></div>`);
+  el.innerHTML = out.join('');
+  el.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => {
+    const a = b.dataset.act;
+    if (a === 'pull') pullFromGitHub();
+    else if (a === 'push') pushToGitHub();
+    else if (a === 'import-old') importOldLocal();
+    else if (a === 'dismiss-old') { lsSet(LS_OLD_DONE, '1'); sync.oldLocal = null; render(); }
+  }));
+}
+
+/* ---------- app shell ---------- */
+function updateHeader() { const el = $('monthDisplay'); if (el) el.textContent = ymLabel(view.ym); }
+
+function setTab(tab) {
+  view.tab = tab;
+  document.querySelectorAll('[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  render();
+}
 function setMode(m) {
   view.mode = m;
   document.body.classList.toggle('student-mode', m === 'student');
-  const tBtn = document.getElementById('modeTeacherBtn');
-  const sBtn = document.getElementById('modeStudentBtn');
-  if(tBtn) tBtn.classList.toggle('active', m === 'teacher');
-  if(sBtn) sBtn.classList.toggle('active', m === 'student');
-  render();
+  $('modeTeacherBtn').classList.toggle('active', m === 'teacher');
+  $('modeStudentBtn').classList.toggle('active', m === 'student');
+  if (m === 'student' && !['weekly', 'monthly'].includes(view.tab)) view.tab = 'weekly';
+  setTab(view.tab);
 }
 
-// Render Controller
 function render() {
-  const panel = document.getElementById('mainPanel');
-  if(!panel) return;
-  if(view.tab === 'weekly') renderWeeklyTab(panel);
-  else if(view.tab === 'monthly') renderMonthlyTab(panel);
-  else if(view.tab === 'students') renderStudentsTab(panel);
-  else if(view.tab === 'billing') renderBillingTab(panel);
-  else if(view.tab === 'export') renderExportTab(panel);
+  updateHeader(); updateSyncPill(); renderBanners(); saveView();
+  document.querySelectorAll('[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === view.tab));
+  const panel = $('mainPanel'); if (!panel) return;
+  if (!sync.loaded) { panel.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">กำลังโหลดข้อมูล…</div>'; return; }
+  if (view.tab === 'weekly') renderWeeklyTab(panel);
+  else if (view.tab === 'monthly') renderMonthlyTab(panel);
+  else if (view.tab === 'students') renderStudentsTab(panel);
+  else if (view.tab === 'billing') renderBillingTab(panel);
+  else if (view.tab === 'export') renderExportTab(panel);
+}
 
-  attachDragAndDrop();
+function initApp() {
+  $('prevMonthBtn').addEventListener('click', () => { view.ym = C.shiftYM(view.ym, -1); view.expandedDates = []; render(); });
+  $('nextMonthBtn').addEventListener('click', () => { view.ym = C.shiftYM(view.ym, 1); view.expandedDates = []; render(); });
+  $('modeTeacherBtn').addEventListener('click', () => setMode('teacher'));
+  $('modeStudentBtn').addEventListener('click', () => setMode('student'));
+  $('syncPill').addEventListener('click', () => setTab('export'));
+  document.querySelectorAll('[data-tab]').forEach(btn => btn.addEventListener('click', () => setTab(btn.dataset.tab)));
+  ['slotModal', 'sessionModal'].forEach(id => $(id).addEventListener('click', (e) => { if (e.target.id === id) closeModal(id); }));
+  setMode(view.mode || 'teacher');
+  boot();
+}
+function closeModal(id) { $(id).classList.remove('active'); if (id === 'slotModal') view.slot = null; else view.session = null; }
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initApp); else initApp();
+
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(err => console.warn('SW failed:', err)));
 }
 
 /* =========================================
-   TAB 1: WEEKLY PLANNER
+   TAB 1: WEEKLY PLANNER (per month)
    ========================================= */
-const weekdayDays = [{ key:'mon', label:'จันทร์' }, { key:'tue', label:'อังคาร' }, { key:'wed', label:'พุธ' }, { key:'thu', label:'พฤหัสฯ' }, { key:'fri', label:'ศุกร์' }];
-const weekendDays = [{ key:'sat', label:'เสาร์' }, { key:'sun', label:'อาทิตย์' }];
-
-function slotKey(section, dayKey, idx) { return `${section}-${dayKey}-${idx}`; }
-function getBooking(section, dayKey, idx) { return S.bookings[slotKey(section, dayKey, idx)] || null; }
-function getSlotTime(section, dayKey, idx) {
-  const key = slotKey(section, dayKey, idx);
-  const override = (S.timeOverrides || {})[key];
-  return override || S.weeklySlots[section][idx].t;
-}
-function isDayClosed(dayKey) { return (S.closedDays || []).includes(dayKey); }
-function toggleDayClosed(dayKey) {
-  if(!S.closedDays) S.closedDays = [];
-  const i = S.closedDays.indexOf(dayKey);
-  if(i >= 0) S.closedDays.splice(i, 1); else S.closedDays.push(dayKey);
-  saveState(); render(); showToast(i >= 0 ? 'เปิดวันนี้แล้ว' : 'ตั้งเป็นวันหยุดแล้ว');
-}
-
 function renderWeeklyTab(panel) {
-  let totalBooked = 0, weekdayTargetMet = 0, estRevenue = 0;
+  const ym = view.ym;
+  const month = C.getMonth(S, ym);
+  const prev = C.shiftYM(ym, -1);
+  const hasPrev = C.hasMonth(S, prev);
+  const st = C.weekStats(S, ym);
 
-  weekdayDays.forEach(day => {
-    if(isDayClosed(day.key)) return;
-    let dayCount = 0;
-    S.weeklySlots.weekday.forEach((slot, idx) => {
-      const b = getBooking('weekday', day.key, idx);
-      if(b && b.status === 'booked') {
-        totalBooked++; dayCount++;
-        const hc = b.headcount || (b.names || []).length || 1;
-        const rate = (b.customPrice !== undefined && b.customPrice !== null && b.customPrice !== '') ? Number(b.customPrice) : S.settings.defaultRate;
-        if(!slot.flex) estRevenue += hc * rate;
-      }
-    });
-    if(dayCount >= 3) weekdayTargetMet++;
-  });
-
-  weekendDays.forEach(day => {
-    if(isDayClosed(day.key)) return;
-    S.weeklySlots.weekend.forEach((slot, idx) => {
-      const b = getBooking('weekend', day.key, idx);
-      if(b && b.status === 'booked') {
-        totalBooked++;
-        const hc = b.headcount || (b.names || []).length || 1;
-        const rate = (b.customPrice !== undefined && b.customPrice !== null && b.customPrice !== '') ? Number(b.customPrice) : S.settings.defaultRate;
-        if(!slot.flex) estRevenue += hc * rate;
-      }
-    });
-  });
+  if (month.slots.length === 0) {
+    panel.innerHTML = `
+      <h2>ตารางรายสัปดาห์ — ${ymLabel(ym)}</h2>
+      <div class="empty-month">
+        <div style="font-size:30px;">🗓️</div>
+        <div style="font-weight:700; color:var(--text-secondary); margin-top:6px;">เดือนนี้ยังไม่มีตาราง</div>
+        <div style="font-size:12.5px; margin-top:4px;">แต่ละเดือนมีตารางของตัวเอง แก้เดือนหนึ่งไม่กระทบเดือนอื่น</div>
+        <div class="actions teacher-only">
+          ${hasPrev ? `<button class="btn primary" id="copyPrevBtn" type="button">📋 คัดลอกจาก ${ymLabel(prev)}</button>` : ''}
+          <button class="btn" id="addFirstSlotBtn" type="button">+ เพิ่มคาบแรก</button>
+        </div>
+      </div>`;
+    $('copyPrevBtn')?.addEventListener('click', () => { C.copyMonth(S, prev, ym); saveState(`คัดลอกตารางจาก ${ymLabel(prev)} แล้ว`); });
+    $('addFirstSlotBtn')?.addEventListener('click', () => openSlotModal(null, 1));
+    return;
+  }
 
   panel.innerHTML = `
     <div class="stats-grid teacher-only">
-      <div class="stat-card">
-        <div class="val">${totalBooked} คาบ</div>
-        <div class="lbl">คาบเรียนที่จองในสัปดาห์</div>
-      </div>
-      <div class="stat-card">
-        <div class="val">${weekdayTargetMet}/5 วัน</div>
-        <div class="lbl">วันธรรมดาตามเป้า (≥3 คาบ)</div>
-      </div>
-      <div class="stat-card">
-        <div class="val">${money(estRevenue)} บาท</div>
-        <div class="lbl">รายได้ประมาณการ / สัปดาห์</div>
-      </div>
+      <div class="stat-card"><div class="val">${st.booked} คาบ</div><div class="lbl">คาบเรียนที่จองในสัปดาห์ (${ymLabel(ym)})</div></div>
+      <div class="stat-card"><div class="val">${st.weekdayTargetMet}/5 วัน</div><div class="lbl">วันธรรมดาตามเป้า (≥3 คาบ)</div></div>
+      <div class="stat-card"><div class="val">${money(st.revenue)} บาท</div><div class="lbl">รายได้ประมาณการ / สัปดาห์</div></div>
     </div>
 
-    <div class="teacher-only" style="margin-bottom:16px; background:var(--bg-sub); padding:10px 14px; border-radius:var(--radius-sm); font-size:13px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-      <div>
-        ⚙️ ราคาตั้งต้น: 
-        <input type="number" id="defaultRateInput" value="${S.settings.defaultRate}" style="width:80px; padding:6px 8px; border-radius:4px; border:1px solid var(--border-dark); font-weight:700; font-size:16px; font-family:var(--font-mono);"> บาท/คน/คาบ
+    <div class="toolbar teacher-only">
+      <div>⚙️ ราคาตั้งต้น: <input type="number" id="defaultRateInput" value="${S.settings.defaultRate}"> บาท/คน/คาบ</div>
+      <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+        ${hasPrev ? `<button class="btn small" id="copyPrevBtn" type="button">📋 คัดลอกจาก ${ymLabel(prev)}</button>` : ''}
+        <span style="color:var(--text-muted); font-size:12px;">💡 ลากการ์ดไปวางวันอื่นเพื่อย้ายวัน</span>
       </div>
-      <div style="color:var(--text-muted); font-size:12px;">💡 ลากและวาง (Drag & Drop) เพื่อสลับคาบเรียนได้</div>
     </div>
 
     <nav class="day-jump-nav">
-      ${weekdayDays.concat(weekendDays).map(d => `<a href="#day-${d.key}" class="day-jump-chip ${isDayClosed(d.key) ? 'closed' : ''}">${d.label}</a>`).join('')}
+      ${WEEKDAY_DOWS.concat(WEEKEND_DOWS).map(d => `<a href="#day-${d}" class="day-jump-chip ${C.isDayClosed(S, ym, d) ? 'closed' : ''}">${DOW_LABEL[d]}</a>`).join('')}
     </nav>
 
-    <div class="section-title">
-      <h3>วันธรรมดา (จันทร์–ศุกร์)</h3>
-      <button class="btn small primary teacher-only" id="addWeekdaySlotBtn" type="button">+ เพิ่มช่วงเวลา</button>
-    </div>
-    <div class="grid-columns">
-      ${renderDayCols('weekday', weekdayDays, S.weeklySlots.weekday)}
-    </div>
+    <div class="section-title"><h3>วันธรรมดา (จันทร์–ศุกร์)</h3></div>
+    <div class="grid-columns">${WEEKDAY_DOWS.map(renderDayCol).join('')}</div>
 
-    <div class="section-title">
-      <h3>เสาร์–อาทิตย์</h3>
-      <button class="btn small primary teacher-only" id="addWeekendSlotBtn" type="button">+ เพิ่มช่วงเวลา</button>
-    </div>
-    <div class="grid-columns">
-      ${renderDayCols('weekend', weekendDays, S.weeklySlots.weekend)}
-    </div>
+    <div class="section-title"><h3>เสาร์–อาทิตย์</h3></div>
+    <div class="grid-columns">${WEEKEND_DOWS.map(renderDayCol).join('')}</div>
   `;
 
-  const rateInput = document.getElementById('defaultRateInput');
-  if(rateInput) {
-    rateInput.addEventListener('change', (e) => {
-      S.settings.defaultRate = Number(e.target.value) || 300;
-      saveState(); render(); showToast('อัปเดตราคาตั้งต้นแล้ว');
-    });
-  }
-
-  const addWdBtn = document.getElementById('addWeekdaySlotBtn');
-  if(addWdBtn) addWdBtn.addEventListener('click', () => openCustomSlotModal('weekday'));
-
-  const addWeBtn = document.getElementById('addWeekendSlotBtn');
-  if(addWeBtn) addWeBtn.addEventListener('click', () => openCustomSlotModal('weekend'));
-
-  panel.querySelectorAll('.slot-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const section = card.dataset.section;
-      const dayKey = card.dataset.day;
-      const idx = Number(card.dataset.idx);
-      const dayLabel = card.dataset.daylabel;
-      const timeLabel = card.dataset.timelabel;
-      openSlotModal(section, dayKey, idx, dayLabel, timeLabel);
-    });
+  $('defaultRateInput')?.addEventListener('change', (e) => {
+    S.settings.defaultRate = Number(e.target.value) || 300; saveState('อัปเดตราคาตั้งต้นแล้ว');
   });
-
-  panel.querySelectorAll('.edit-time-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      openEditSlotTimeModal(btn.dataset.section, btn.dataset.day, Number(btn.dataset.idx));
-    });
+  $('copyPrevBtn')?.addEventListener('click', () => {
+    if (!confirm(`แทนตารางของ ${ymLabel(ym)} ด้วยตารางจาก ${ymLabel(prev)}?`)) return;
+    C.copyMonth(S, prev, ym); saveState(`คัดลอกตารางจาก ${ymLabel(prev)} แล้ว`);
   });
-
-  panel.querySelectorAll('.toggle-day-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleDayClosed(btn.dataset.day);
-    });
-  });
+  panel.querySelectorAll('.slot-card').forEach(card => card.addEventListener('click', () => openSlotModal(card.dataset.id)));
+  panel.querySelectorAll('.add-slot-btn').forEach(b => b.addEventListener('click', () => openSlotModal(null, Number(b.dataset.dow))));
+  panel.querySelectorAll('.toggle-day-btn').forEach(b => b.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const key = C.DOW_KEYS[Number(b.dataset.dow)];
+    const m = C.getMonth(S, ym);
+    const i = m.closedDays.indexOf(key);
+    if (i >= 0) m.closedDays.splice(i, 1); else m.closedDays.push(key);
+    saveState(i >= 0 ? 'เปิดวันนี้แล้ว' : 'ตั้งเป็นวันหยุดแล้ว (เฉพาะเดือนนี้)');
+  }));
+  attachDragAndDrop(panel);
 }
 
-function renderDayCols(section, days, slots) {
-  return days.map(day => {
-    if(isDayClosed(day.key)) {
-      return `
-        <div class="day-column" id="day-${day.key}">
-          <div class="day-header">
-            <div class="d-name">${day.label}</div>
-            <button class="toggle-day-btn teacher-only" data-day="${day.key}" type="button" title="เปิดวันนี้">🔓 เปิดวัน</button>
-          </div>
-          <div class="day-body" style="display:flex; align-items:center; justify-content:center; min-height:120px; text-align:center; color:var(--text-muted); font-size:13px; padding:20px 8px;">
-            😴 วันหยุด (พัก)
-          </div>
-        </div>
-      `;
-    }
-
-    let bookedCount = 0;
-    slots.forEach((slot, idx) => {
-      const b = getBooking(section, day.key, idx);
-      if(b && b.status === 'booked') bookedCount++;
-    });
-
-    const cards = slots.map((slot, idx) => {
-      const b = getBooking(section, day.key, idx);
-      const isBooked = b && b.status === 'booked';
-      const key = slotKey(section, day.key, idx);
-      const displayTime = getSlotTime(section, day.key, idx);
-      const rate = (b && b.customPrice !== undefined && b.customPrice !== null && b.customPrice !== '') ? Number(b.customPrice) : S.settings.defaultRate;
-      const hc = isBooked ? (b.headcount || (b.names||[]).length || 1) : 0;
-
-      return `
-        <div class="slot-card ${isBooked ? 'booked' : 'available'}"
-             draggable="${isBooked ? 'true' : 'false'}"
-             data-key="${key}" data-section="${section}" data-day="${day.key}" data-idx="${idx}"
-             data-daylabel="${escapeHtml(day.label)}" data-timelabel="${escapeHtml(displayTime)}">
-          <span class="time">${displayTime}<button class="edit-time-btn teacher-only" data-section="${section}" data-day="${day.key}" data-idx="${idx}" type="button" title="แก้ไขเวลา (เฉพาะวันนี้)">✏️</button></span>
-          ${slot.d ? `<span class="badge">${slot.d}</span>` : ''}
-          ${isBooked ? `
-            <span class="status">จองแล้ว</span>
-            <span class="hc">${hc} คน</span>
-            ${b.subject ? `<span class="subj">${escapeHtml(b.subject)}</span>` : ''}
-            ${(b.names && b.names.length) ? `<span class="students">👤 ${escapeHtml(b.names.join(', '))}</span>` : ''}
-            <span class="price">${slot.flex ? 'ยืดหยุ่น' : money(hc * rate) + ' บาท'}</span>
-          ` : `
-            <span class="status">ว่าง</span>
-            <span class="price">${slot.flex ? 'สำรอง' : rate + ' บาท/คน'}</span>
-          `}
-        </div>
-      `;
-    }).join('');
-
+function renderDayCol(dow) {
+  const ym = view.ym;
+  if (C.isDayClosed(S, ym, dow)) {
     return `
-      <div class="day-column" id="day-${day.key}">
-        <div class="day-header">
-          <div class="d-name">${day.label}</div>
-          <div class="d-count">${bookedCount}/${slots.length} คาบ</div>
-          <button class="toggle-day-btn teacher-only" data-day="${day.key}" type="button" title="ตั้งเป็นวันหยุด">🌙</button>
-        </div>
-        <div class="day-body">
-          ${cards}
-        </div>
+      <div class="day-column" id="day-${dow}">
+        <div class="day-header"><div class="d-name">${DOW_LABEL[dow]}</div>
+          <button class="toggle-day-btn teacher-only" data-dow="${dow}" type="button" title="เปิดวันนี้">🔓 เปิดวัน</button></div>
+        <div class="day-body" data-dow="${dow}" style="align-items:center; justify-content:center; min-height:120px; color:var(--text-muted); font-size:13px;">😴 วันหยุด (พัก)</div>
+      </div>`;
+  }
+  const slots = C.slotsByDay(S, ym, dow);
+  const bookedCount = slots.filter(s => C.isBooked(S, s)).length;
+  return `
+    <div class="day-column" id="day-${dow}">
+      <div class="day-header">
+        <div class="d-name">${DOW_LABEL[dow]}</div>
+        <div class="d-count">${bookedCount}/${slots.length} คาบ</div>
+        <button class="toggle-day-btn teacher-only" data-dow="${dow}" type="button" title="ตั้งเป็นวันหยุด (เฉพาะเดือนนี้)">🌙</button>
       </div>
-    `;
-  }).join('');
+      <div class="day-body" data-dow="${dow}">
+        ${slots.map(renderSlotCard).join('')}
+        <button class="add-slot-btn teacher-only" data-dow="${dow}" type="button">+ เพิ่มคาบ</button>
+      </div>
+    </div>`;
 }
 
-// Modal Handlers
-function openSlotModal(section, dayKey, idx, dayLabel, timeLabel) {
-  view.activeSlot = { section, dayKey, idx };
-  const b = getBooking(section, dayKey, idx) || {};
-  const labelEl = document.getElementById('slotModalTimeLabel');
-  if(labelEl) labelEl.textContent = `${dayLabel} · ${timeLabel}`;
-  
-  const subjEl = document.getElementById('slotModalSubject');
-  if(subjEl) subjEl.value = b.subject || '';
-
-  const namesEl = document.getElementById('slotModalNames');
-  if(namesEl) namesEl.value = (b.names || []).join('\n');
-
-  const hcEl = document.getElementById('slotModalHeadcount');
-  if(hcEl) hcEl.value = b.headcount || (b.names||[]).length || '';
-
-  const priceEl = document.getElementById('slotModalPrice');
-  if(priceEl) priceEl.value = b.customPrice !== undefined && b.customPrice !== null ? b.customPrice : '';
-
-  const modal = document.getElementById('slotModal');
-  if(modal) modal.classList.add('active');
+function renderSlotCard(slot) {
+  const people = C.participantsOf(S, slot);
+  const booked = C.isBooked(S, slot);
+  const g = slot.groupId ? C.groupById(S, slot.groupId) : null;
+  const subj = C.slotSubject(S, slot);
+  const perSession = people.reduce((t, id) => t + C.rateFor(S, slot, id), 0);
+  const sessions = C.sessionsOfSlot(S, view.ym, slot);
+  const runs = sessions.filter(x => !x.cancelled).length;
+  const names = people.map(studentName).join(', ');
+  return `
+    <div class="slot-card ${booked ? 'booked' : 'available'} ${g ? 'group-slot' : ''}" draggable="true" data-id="${slot.id}">
+      <span class="time">${C.timeLabel(slot)}</span>
+      ${slot.flex ? '<span class="badge">คาบสำรอง</span>' : ''}${slot.note ? `<span class="badge">${escapeHtml(slot.note)}</span>` : ''}
+      ${booked ? `
+        <span class="status">จองแล้ว</span>
+        <span class="hc">${people.length} คน</span>
+        ${subj ? `<span class="subj">${escapeHtml(subj)}</span>` : ''}
+        ${g ? `<span class="students">👥 ${escapeHtml(g.name)}${names ? ': ' + escapeHtml(names) : ''}</span>` : `<span class="students">👤 ${escapeHtml(names)}</span>`}
+        ${g && !people.length ? '<span class="warn teacher-only">⚠️ ยังไม่ใส่สมาชิกกลุ่ม</span>' : ''}
+        <span class="price">${slot.flex ? 'ยืดหยุ่น' : money(perSession) + ' บาท/ครั้ง'}</span>
+        ${runs < sessions.length ? `<span class="skipinfo teacher-only">เรียน ${runs}/${sessions.length} ครั้งในเดือนนี้</span>` : ''}
+      ` : `
+        <span class="status">ว่าง</span>
+        <span class="price">${slot.flex ? 'สำรอง' : money(S.settings.defaultRate) + ' บาท/คน'}</span>
+      `}
+    </div>`;
 }
 
-function closeSlotModal() {
-  const modal = document.getElementById('slotModal');
-  if(modal) modal.classList.remove('active');
-  view.activeSlot = null;
-}
-
-function saveSlotBooking() {
-  if(!view.activeSlot) return;
-  const { section, dayKey, idx } = view.activeSlot;
-  const subject = (document.getElementById('slotModalSubject')?.value || '').trim();
-  const names = (document.getElementById('slotModalNames')?.value || '').split('\n').map(s => s.trim()).filter(Boolean);
-  const headcount = Number(document.getElementById('slotModalHeadcount')?.value) || names.length;
-  const customPrice = document.getElementById('slotModalPrice')?.value;
-
-  const key = slotKey(section, dayKey, idx);
-  if(headcount <= 0 && names.length === 0 && !subject) {
-    delete S.bookings[key];
-  } else {
-    S.bookings[key] = {
-      status: 'booked',
-      subject, names,
-      headcount: headcount || names.length || 1,
-      customPrice: (customPrice !== undefined && customPrice !== '') ? Number(customPrice) : null
-    };
-  }
-  saveState(); render(); closeSlotModal(); showToast('บันทึกคาบเรียนแล้ว');
-}
-
-function clearSlotBooking() {
-  if(!view.activeSlot) return;
-  const { section, dayKey, idx } = view.activeSlot;
-  delete S.bookings[slotKey(section, dayKey, idx)];
-  saveState(); render(); closeSlotModal(); showToast('ล้างช่องแล้ว');
-}
-
-function openCustomSlotModal(section) {
-  const modal = document.getElementById('customSlotModal');
-  if(modal) { modal.dataset.mode = 'add'; delete modal.dataset.editIdx; delete modal.dataset.editDay; modal.classList.add('active'); }
-
-  const titleEl = document.getElementById('customSlotTitle');
-  if(titleEl) titleEl.textContent = 'เพิ่มช่วงเวลาเรียนใหม่';
-
-  const secEl = document.getElementById('customSlotSection');
-  if(secEl) { secEl.value = section; secEl.disabled = false; }
-
-  const timeEl = document.getElementById('customSlotTime');
-  if(timeEl) timeEl.value = '';
-
-  const resetBtn = document.getElementById('customSlotReset');
-  if(resetBtn) resetBtn.style.display = 'none';
-
-  const saveBtn = document.getElementById('customSlotSave');
-  if(saveBtn) saveBtn.textContent = 'เพิ่มช่วงเวลา';
-}
-
-function openEditSlotTimeModal(section, dayKey, idx) {
-  const currentTime = getSlotTime(section, dayKey, idx);
-  const dayObj = (section === 'weekday' ? weekdayDays : weekendDays).find(d => d.key === dayKey);
-  const dayLabel = dayObj ? dayObj.label : '';
-
-  const modal = document.getElementById('customSlotModal');
-  if(modal) { modal.dataset.mode = 'edit'; modal.dataset.editSection = section; modal.dataset.editDay = dayKey; modal.dataset.editIdx = idx; modal.classList.add('active'); }
-
-  const titleEl = document.getElementById('customSlotTitle');
-  if(titleEl) titleEl.textContent = `แก้ไขเวลาเรียน (เฉพาะวัน${dayLabel})`;
-
-  const secEl = document.getElementById('customSlotSection');
-  if(secEl) { secEl.value = section; secEl.disabled = true; }
-
-  const timeEl = document.getElementById('customSlotTime');
-  if(timeEl) timeEl.value = currentTime;
-
-  const resetBtn = document.getElementById('customSlotReset');
-  if(resetBtn) resetBtn.style.display = (S.timeOverrides || {})[slotKey(section, dayKey, idx)] ? 'inline-block' : 'none';
-
-  const saveBtn = document.getElementById('customSlotSave');
-  if(saveBtn) saveBtn.textContent = 'บันทึกเวลา';
-}
-
-function closeCustomSlotModal() {
-  const modal = document.getElementById('customSlotModal');
-  if(modal) modal.classList.remove('active');
-  const secEl = document.getElementById('customSlotSection');
-  if(secEl) secEl.disabled = false;
-}
-
-function saveCustomSlot() {
-  const modal = document.getElementById('customSlotModal');
-  const mode = modal?.dataset.mode || 'add';
-  const t = (document.getElementById('customSlotTime')?.value || '').trim();
-  if(!t) { alert('กรุณากรอกเวลาเรียน'); return; }
-
-  if(mode === 'edit') {
-    const section = modal.dataset.editSection;
-    const dayKey = modal.dataset.editDay;
-    const idx = Number(modal.dataset.editIdx);
-    if(!S.timeOverrides) S.timeOverrides = {};
-    S.timeOverrides[slotKey(section, dayKey, idx)] = t;
-    saveState(); render(); closeCustomSlotModal(); showToast('แก้ไขเวลาเฉพาะวันนี้แล้ว');
-  } else {
-    const section = document.getElementById('customSlotSection')?.value || 'weekday';
-    S.weeklySlots[section].push({ t });
-    saveState(); render(); closeCustomSlotModal(); showToast('เพิ่มช่วงเวลาแล้ว');
-  }
-}
-
-function resetCustomSlotTime() {
-  const modal = document.getElementById('customSlotModal');
-  if(!modal || modal.dataset.mode !== 'edit') return;
-  const section = modal.dataset.editSection;
-  const dayKey = modal.dataset.editDay;
-  const idx = Number(modal.dataset.editIdx);
-  if(S.timeOverrides) delete S.timeOverrides[slotKey(section, dayKey, idx)];
-  saveState(); render(); closeCustomSlotModal(); showToast('รีเซ็ตเป็นเวลาเริ่มต้นแล้ว');
-}
-
-// Drag & Drop
-let draggedKey = null;
-function attachDragAndDrop() {
-  document.querySelectorAll('.slot-card[draggable="true"]').forEach(card => {
-    card.addEventListener('dragstart', () => { draggedKey = card.dataset.key; });
+let draggedId = null;
+function attachDragAndDrop(panel) {
+  panel.querySelectorAll('.slot-card[draggable="true"]').forEach(card => {
+    card.addEventListener('dragstart', (e) => { draggedId = card.dataset.id; e.dataTransfer.effectAllowed = 'move'; });
+    card.addEventListener('dragend', () => { draggedId = null; });
   });
-
-  document.querySelectorAll('.slot-card').forEach(target => {
-    target.addEventListener('dragover', (e) => { e.preventDefault(); target.style.opacity = '0.7'; });
-    target.addEventListener('dragleave', () => { target.style.opacity = '1'; });
-    target.addEventListener('drop', (e) => {
-      e.preventDefault();
-      target.style.opacity = '1';
-      const targetKey = target.dataset.key;
-      if(draggedKey && targetKey && draggedKey !== targetKey) {
-        const temp = S.bookings[draggedKey];
-        S.bookings[draggedKey] = S.bookings[targetKey];
-        S.bookings[targetKey] = temp;
-        if(!S.bookings[draggedKey]) delete S.bookings[draggedKey];
-        if(!S.bookings[targetKey]) delete S.bookings[targetKey];
-        saveState(); render(); showToast('สลับคาบเรียนแล้ว');
+  panel.querySelectorAll('.day-body[data-dow]').forEach(body => {
+    body.addEventListener('dragover', (e) => { if (draggedId) { e.preventDefault(); body.classList.add('drag-over'); } });
+    body.addEventListener('dragleave', () => body.classList.remove('drag-over'));
+    body.addEventListener('drop', (e) => {
+      e.preventDefault(); body.classList.remove('drag-over');
+      const slot = draggedId && C.findSlot(S, view.ym, draggedId);
+      const dow = Number(body.dataset.dow);
+      if (slot && slot.dow !== dow) {
+        slot.dow = dow;
+        slot.skip = []; // dates belonged to the old weekday
+        saveState(`ย้ายไปวัน${DOW_NAMES[dow]}แล้ว`);
       }
+      draggedId = null;
     });
   });
+}
+
+/* ---------- slot modal ---------- */
+function openSlotModal(id, dow) {
+  if (view.mode === 'student') return;
+  const s = id ? C.findSlot(S, view.ym, id) : null;
+  const draft = s ? JSON.parse(JSON.stringify(s)) : { dow: dow ?? 1, start: '', end: '', subject: '', groupId: null, studentIds: [], price: null, note: '', flex: false, skip: [] };
+  view.slot = { id: s ? s.id : null, kind: draft.groupId ? 'group' : 'single', draft, newNames: '', newGroup: '', creatingGroup: false };
+  if (!s) { // suggest the next free time after the day's last class
+    const last = C.slotsByDay(S, view.ym, draft.dow).slice(-1)[0];
+    draft.start = last ? last.end : '16:30';
+    draft.end = addMinutes(draft.start, 90);
+  }
+  renderSlotModal();
+  $('slotModal').classList.add('active');
+}
+function addMinutes(hhmm, mins) {
+  const [h, m] = hhmm.split(':').map(Number); const t = Math.min(h * 60 + m + mins, 23 * 60 + 59);
+  return `${pad(Math.floor(t / 60))}:${pad(t % 60)}`;
+}
+
+function renderSlotModal() {
+  const v = view.slot, d = v.draft;
+  const g = d.groupId ? C.groupById(S, d.groupId) : null;
+  const groupMembers = g ? g.memberIds.map(studentName) : [];
+  const box = $('slotModalBox');
+  box.innerHTML = `
+    <h3>${v.id ? 'แก้ไขคาบเรียน' : 'เพิ่มคาบเรียน'}</h3>
+    <div class="time-info">ใช้ทุกสัปดาห์ในเดือน ${ymLabel(view.ym)} เท่านั้น</div>
+
+    <div class="row2">
+      <div class="modal-field"><label>วัน</label>
+        <select id="slDow">${[1, 2, 3, 4, 5, 6, 0].map(i => `<option value="${i}" ${d.dow === i ? 'selected' : ''}>${DOW_NAMES[i]}</option>`).join('')}</select></div>
+      <div class="modal-field"><label>&nbsp;</label>
+        <label style="display:flex; gap:6px; align-items:center; font-size:13px; padding-top:10px;"><input type="checkbox" id="slFlex" ${d.flex ? 'checked' : ''}> คาบสำรอง</label></div>
+    </div>
+    <div class="row2">
+      <div class="modal-field"><label>เริ่ม</label><input type="time" id="slStart" value="${escapeHtml(d.start)}"></div>
+      <div class="modal-field"><label>จบ</label><input type="time" id="slEnd" value="${escapeHtml(d.end)}"></div>
+    </div>
+
+    <div class="seg">
+      <button type="button" data-kind="single" class="${v.kind === 'single' ? 'active' : ''}">👤 รายคน</button>
+      <button type="button" data-kind="group" class="${v.kind === 'group' ? 'active' : ''}">👥 คลาสกลุ่ม</button>
+    </div>
+
+    ${v.kind === 'group' ? `
+      <div class="modal-field"><label>กลุ่ม</label>
+        <select id="slGroup">
+          <option value="">— เลือกกลุ่ม —</option>
+          ${S.groups.map(x => `<option value="${x.id}" ${d.groupId === x.id ? 'selected' : ''}>${escapeHtml(x.name)} (${x.memberIds.length} คน)</option>`).join('')}
+          <option value="__new" ${v.creatingGroup ? 'selected' : ''}>+ สร้างกลุ่มใหม่…</option>
+        </select>
+        ${v.creatingGroup ? `<input type="text" id="slNewGroup" value="${escapeHtml(v.newGroup)}" placeholder="ชื่อกลุ่มใหม่ เช่น SMTE" style="margin-top:6px;">` : ''}
+        <div class="field-hint">${g ? (groupMembers.length ? 'สมาชิก: ' + escapeHtml(groupMembers.join(', ')) : '⚠️ กลุ่มนี้ยังไม่มีสมาชิก') + ' — แก้สมาชิกได้ที่แท็บ "นักเรียน & กลุ่ม"' : 'คิดเงินแยกรายคนตามสมาชิกกลุ่มอัตโนมัติ'}</div>
+      </div>` : `
+      <div class="modal-field"><label>นักเรียน</label>
+        <div class="check-list">
+          ${S.students.length ? S.students.map(s => `<label><input type="checkbox" class="slStudent" value="${s.id}" ${d.studentIds.includes(s.id) ? 'checked' : ''}> ${escapeHtml(s.name)}</label>`).join('') : '<div class="none">ยังไม่มีนักเรียน</div>'}
+        </div>
+        <input type="text" id="slNewNames" value="${escapeHtml(v.newNames)}" placeholder="เพิ่มชื่อใหม่ (คั่นด้วย ,)" style="margin-top:6px;">
+      </div>`}
+
+    <div class="modal-field"><label>วิชา / เนื้อหา</label>
+      <input type="text" id="slSubject" value="${escapeHtml(d.subject)}" placeholder="${escapeHtml(C.slotSubject(S, Object.assign({}, d, { subject: '' })) || 'เช่น คณิต ม.3')}"></div>
+    <div class="row2">
+      <div class="modal-field"><label>ราคาต่อคน/คาบ (บาท)</label>
+        <input type="number" id="slPrice" value="${d.price ?? ''}" placeholder="อัตโนมัติ"></div>
+      <div class="modal-field"><label>หมายเหตุ</label><input type="text" id="slNote" value="${escapeHtml(d.note)}" placeholder="เช่น หลังพักเที่ยง"></div>
+    </div>
+    <div class="field-hint">ราคาว่างไว้ = ใช้ราคาของกลุ่ม → ราคาของนักเรียนแต่ละคน → ราคาตั้งต้น ${money(S.settings.defaultRate)} บาท</div>
+    ${d.skip.length ? `<div class="field-hint" style="margin-top:8px;">🚫 งดเรียนวันที่: ${d.skip.map(x => Number(x.slice(8))).join(', ')} (แก้ได้ที่แท็บปฏิทิน)</div>` : ''}
+
+    <div class="modal-btns">
+      ${v.id ? '<button class="btn danger" id="slDelete" type="button">ลบคาบ</button>' : ''}
+      <button class="btn" id="slCancel" type="button">ยกเลิก</button>
+      <button class="btn primary" id="slSave" type="button">บันทึก</button>
+    </div>`;
+
+  box.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => { collectSlotForm(); v.kind = b.dataset.kind; renderSlotModal(); }));
+  $('slGroup')?.addEventListener('change', (e) => {
+    collectSlotForm();
+    v.creatingGroup = e.target.value === '__new';
+    d.groupId = v.creatingGroup ? null : (e.target.value || null);
+    renderSlotModal();
+    if (v.creatingGroup) $('slNewGroup').focus();
+  });
+  $('slCancel').addEventListener('click', () => closeModal('slotModal'));
+  $('slSave').addEventListener('click', saveSlotModal);
+  $('slDelete')?.addEventListener('click', () => {
+    if (!confirm('ลบคาบนี้ออกจากตารางเดือนนี้?')) return;
+    C.removeSlot(S, view.ym, v.id); closeModal('slotModal'); saveState('ลบคาบแล้ว');
+  });
+}
+
+function collectSlotForm() {
+  const v = view.slot, d = v.draft;
+  d.dow = Number($('slDow').value);
+  d.start = $('slStart').value; d.end = $('slEnd').value;
+  d.flex = $('slFlex').checked;
+  d.subject = $('slSubject').value.trim();
+  d.price = numOrNull($('slPrice').value);
+  d.note = $('slNote').value.trim();
+  if ($('slNewNames')) v.newNames = $('slNewNames').value;
+  if (document.querySelector('.slStudent') || $('slNewNames')) d.studentIds = [...document.querySelectorAll('.slStudent:checked')].map(x => x.value);
+  if ($('slNewGroup')) v.newGroup = $('slNewGroup').value;
+}
+
+function saveSlotModal() {
+  collectSlotForm();
+  const v = view.slot, d = v.draft;
+  if (!d.start || !d.end || d.end <= d.start) { alert('กรุณาใส่เวลาเริ่มและเวลาจบให้ถูกต้อง'); return; }
+  if (v.kind === 'group') {
+    const newName = v.creatingGroup ? (v.newGroup || '').trim() : '';
+    if (v.creatingGroup && !newName) { alert('กรุณาตั้งชื่อกลุ่มใหม่'); return; }
+    if (newName) {
+      const g = { id: C.uid('gr'), name: newName, aliases: [newName], subject: d.subject, rate: null, memberIds: [] };
+      S.groups.push(g); d.groupId = g.id;
+    }
+    if (!d.groupId) { alert('กรุณาเลือกหรือสร้างกลุ่ม'); return; }
+    d.studentIds = [];
+  } else {
+    for (const name of splitList(v.newNames)) {
+      let st = S.students.find(s => s.name === name);
+      if (!st) { st = { id: C.uid('st'), name, aliases: [], parentTitle: 'คุณแม่', subject: d.subject, rate: null }; S.students.push(st); }
+      if (!d.studentIds.includes(st.id)) d.studentIds.push(st.id);
+    }
+    d.groupId = null;
+  }
+  if (v.id) {
+    const s = C.findSlot(S, view.ym, v.id);
+    if (s.dow !== d.dow) d.skip = [];
+    Object.assign(s, d, { id: s.id });
+  } else {
+    C.addSlot(S, view.ym, d);
+  }
+  closeModal('slotModal');
+  saveState('บันทึกคาบเรียนแล้ว');
 }
 
 /* =========================================
    TAB 2: MONTHLY CALENDAR
    ========================================= */
-function isBlocked(ds) { return S.blocked.some(b => b.date === ds); }
-function isAbsent(studentId, ds) { return S.absences.some(a => a.studentId === studentId && a.date === ds); }
-function slotsForMonth(ym) { return S.schedules.filter(sc => sc.yearMonth === ym); }
-
 function renderMonthlyTab(panel) {
-  const ym = currentYM();
-  const nd = daysInMonth(view.y, view.m);
-  const firstDow = new Date(view.y, view.m, 1).getDay();
-  const monthSlots = slotsForMonth(ym);
-  if(!view.expandedDates) view.expandedDates = [];
-
+  const ym = view.ym;
+  const [y, m] = ym.split('-').map(Number);
+  const nd = C.daysInMonth(ym);
+  const firstDow = C.dowOf(`${ym}-01`);
+  const sessIndex = {};
+  for (const slot of C.getMonth(S, ym).slots) {
+    if (!C.isBooked(S, slot)) continue;
+    sessIndex[slot.id] = Object.fromEntries(C.sessionsOfSlot(S, ym, slot).map(x => [x.date, x]));
+  }
+  const CHIP_LIMIT = 4;
   let cells = '';
-  for(let i = 0; i < firstDow; i++) cells += `<div class="month-cell empty"></div>`;
-
-  for(let d = 1; d <= nd; d++) {
-    const dow = new Date(view.y, view.m, d).getDay();
-    const ds = dateStr(view.y, view.m, d);
-    const blocked = isBlocked(ds);
-    const daySlots = monthSlots.filter(sc => sc.day === dow);
-    const isExpanded = view.expandedDates.includes(ds);
-    const CHIP_LIMIT = 3;
-    const visibleSlots = isExpanded ? daySlots : daySlots.slice(0, CHIP_LIMIT);
-    const hiddenCount = daySlots.length - visibleSlots.length;
-
-    let chips = visibleSlots.map(sc => {
-      const student = S.students.find(s => s.id === sc.studentId);
-      if(!student) return '';
-      const absent = isAbsent(sc.studentId, ds);
+  for (let i = 0; i < firstDow; i++) cells += '<div class="month-cell empty"></div>';
+  for (let d = 1; d <= nd; d++) {
+    const ds = `${ym}-${pad(d)}`;
+    const dow = C.dowOf(ds);
+    const blocked = C.isBlocked(S, ds);
+    const daySlots = C.slotsByDay(S, ym, dow).filter(s => sessIndex[s.id]);
+    const expanded = view.expandedDates.includes(ds);
+    const visible = expanded ? daySlots : daySlots.slice(0, CHIP_LIMIT);
+    let chips = visible.map(slot => {
+      const ses = sessIndex[slot.id][ds];
       let cls = 'chip-item';
-      if(blocked) cls += ' cancelled'; else if(absent) cls += ' absent';
-
-      return `<span class="${cls}" data-studentid="${sc.studentId}" data-ds="${ds}">${escapeHtml(student.name)}</span>`;
+      if (ses.cancelled) cls += ' cancelled';
+      else if (ses.absent.length && !ses.present.length) cls += ' absent';
+      else if (ses.absent.length) cls += ' partial';
+      return `<span class="${cls}" data-slot="${slot.id}" data-ds="${ds}"><span class="chip-time">${slot.start}</span>${escapeHtml(C.slotTitle(S, slot) || 'ว่าง')}</span>`;
     }).join('');
-
-    if(hiddenCount > 0) {
-      chips += `<span class="chip-item chip-more" data-ds="${ds}">+${hiddenCount} เพิ่มเติม</span>`;
-    } else if(isExpanded && daySlots.length > CHIP_LIMIT) {
-      chips += `<span class="chip-item chip-more" data-ds="${ds}">ย่อ</span>`;
-    }
-
-    cells += `
-      <div class="month-cell ${blocked ? 'blocked' : ''}" data-ds="${ds}">
-        <div class="num">${d}</div>
-        ${blocked ? '<div class="blocked-label">ติดธุระ</div>' : ''}
-        ${chips}
-      </div>
-    `;
+    if (daySlots.length > CHIP_LIMIT) chips += `<span class="chip-item chip-more" data-ds="${ds}">${expanded ? 'ย่อ' : `+${daySlots.length - CHIP_LIMIT} เพิ่มเติม`}</span>`;
+    cells += `<div class="month-cell ${blocked ? 'blocked' : ''}" data-ds="${ds}"><div class="num">${d}</div>${blocked ? '<div class="blocked-label">ติดธุระ</div>' : ''}${chips}</div>`;
   }
 
   panel.innerHTML = `
-    <h2>ปฏิทินเดือน ${TH_MONTHS[view.m]} ${view.y + 543}</h2>
-    <div class="hint-text">
-      👉 คลิกที่ <b>กล่องวันที่</b> เพื่อบล็อก/ยกเลิกทั้งวัน (ติดธุระ)<br>
-      👉 คลิกที่ <b>ชิปชื่อนักเรียน</b> เพื่อสลับสถานะลาเรียนของนักเรียนคนนั้น
+    <h2>ปฏิทินเดือน ${TH_MONTHS[m - 1]} ${y + 543}</h2>
+    <div class="hint-text teacher-only">
+      👉 คลิก <b>ชิปคาบเรียน</b> เพื่องดคาบเฉพาะวันนั้น หรือติ๊กว่าใครลา (คิดเงินตามจริงอัตโนมัติ)<br>
+      👉 คลิกที่ <b>ว่างในกล่องวันที่</b> เพื่อบล็อก/ยกเลิกทั้งวัน (ติดธุระ)
     </div>
-
     <div class="month-grid">
-      ${DOW_SHORT.map(d => `<div class="month-dow">${d}</div>`).join('')}
+      ${DOW_SHORT.map(x => `<div class="month-dow">${x}</div>`).join('')}
       ${cells}
+    </div>`;
+
+  panel.querySelectorAll('.month-cell[data-ds]').forEach(cell => cell.addEventListener('click', (e) => {
+    if (view.mode === 'student') return;
+    const chip = e.target.closest('.chip-item');
+    if (chip && chip.classList.contains('chip-more')) {
+      const ds = chip.dataset.ds, i = view.expandedDates.indexOf(ds);
+      if (i >= 0) view.expandedDates.splice(i, 1); else view.expandedDates.push(ds);
+      render();
+    } else if (chip) {
+      openSessionModal(chip.dataset.slot, chip.dataset.ds);
+    } else {
+      const ds = cell.dataset.ds, i = S.blocked.findIndex(b => b.date === ds);
+      if (i >= 0) S.blocked.splice(i, 1); else S.blocked.push({ date: ds });
+      saveState(i >= 0 ? 'ยกเลิกวันติดธุระแล้ว' : 'บล็อกวันนี้แล้ว (ติดธุระ)');
+    }
+  }));
+}
+
+function openSessionModal(slotId, ds) {
+  const slot = C.findSlot(S, view.ym, slotId); if (!slot) return;
+  view.session = { slotId, ds };
+  const people = C.participantsOf(S, slot);
+  const dayOff = C.isBlocked(S, ds) || C.isDayClosed(S, view.ym, slot.dow);
+  $('sessionModalBox').innerHTML = `
+    <h3>${escapeHtml(C.slotTitle(S, slot) || 'คาบว่าง')}</h3>
+    <div class="time-info">${dateLabel(ds)} · ${C.timeLabel(slot)}${C.slotSubject(S, slot) ? ' · ' + escapeHtml(C.slotSubject(S, slot)) : ''}</div>
+    ${dayOff ? '<div class="banner warn" style="margin-bottom:12px;">วันนี้ถูกบล็อกทั้งวัน (ติดธุระ/วันหยุด)</div>' : ''}
+    <div class="modal-field">
+      <label style="display:flex; gap:8px; align-items:center; font-size:14px;"><input type="checkbox" id="sesSkip" ${slot.skip.includes(ds) ? 'checked' : ''} ${dayOff ? 'disabled' : ''}> 🚫 งดคาบนี้เฉพาะวันนี้</label>
     </div>
-  `;
-
-  panel.querySelectorAll('.month-cell').forEach(cell => {
-    cell.addEventListener('click', (e) => {
-      if(e.target.classList.contains('chip-more')) {
-        e.stopPropagation();
-        const ds = e.target.dataset.ds;
-        const i = view.expandedDates.indexOf(ds);
-        if(i >= 0) view.expandedDates.splice(i, 1); else view.expandedDates.push(ds);
-        render();
-      } else if(e.target.classList.contains('chip-item')) {
-        e.stopPropagation();
-        const sid = e.target.dataset.studentid;
-        const ds = e.target.dataset.ds;
-        toggleAbsence(sid, ds);
-      } else {
-        const ds = cell.dataset.ds;
-        if(ds) toggleBlock(ds);
-      }
+    <div class="modal-field">
+      <label>ใครมาเรียน (เอาติ๊กออก = ลา ไม่คิดเงินวันนั้น)</label>
+      ${people.length ? people.map(id => `<label class="session-person"><span>${escapeHtml(studentName(id))}</span><input type="checkbox" class="sesPresent" value="${id}" ${C.isAbsent(S, id, ds) ? '' : 'checked'}></label>`).join('') : '<div class="field-hint">⚠️ ยังไม่มีสมาชิก</div>'}
+      <div class="field-hint">การลาบันทึกเป็นรายวัน (มีผลกับทุกคาบของคนนั้นในวันนั้น)</div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn" id="sesCancel" type="button">ยกเลิก</button>
+      <button class="btn primary" id="sesSave" type="button">บันทึก</button>
+    </div>`;
+  $('sesCancel').addEventListener('click', () => closeModal('sessionModal'));
+  $('sesSave').addEventListener('click', () => {
+    const skip = $('sesSkip').checked;
+    slot.skip = slot.skip.filter(x => x !== ds); if (skip) slot.skip.push(ds); slot.skip.sort();
+    document.querySelectorAll('.sesPresent').forEach(cb => {
+      S.absences = S.absences.filter(a => !(a.studentId === cb.value && a.date === ds));
+      if (!cb.checked) S.absences.push({ studentId: cb.value, date: ds });
     });
+    closeModal('sessionModal'); saveState('บันทึกแล้ว');
   });
-}
-
-function toggleBlock(ds) {
-  const idx = S.blocked.findIndex(b => b.date === ds);
-  if(idx >= 0) S.blocked.splice(idx, 1);
-  else S.blocked.push({ date: ds });
-  saveState(); render();
-}
-
-function toggleAbsence(studentId, ds) {
-  const idx = S.absences.findIndex(a => a.studentId === studentId && a.date === ds);
-  if(idx >= 0) S.absences.splice(idx, 1);
-  else S.absences.push({ id: Date.now() + Math.random(), studentId, date: ds });
-  saveState(); render();
+  $('sessionModal').classList.add('active');
 }
 
 /* =========================================
-   TAB 3: STUDENTS & CLASSES
+   TAB 3: STUDENTS & GROUPS (price database)
    ========================================= */
-function slotsForStudentMonth(studentId, ym) {
-  return S.schedules.filter(sc => sc.studentId === studentId && sc.yearMonth === ym);
-}
-
 function renderStudentsTab(panel) {
-  const ym = currentYM();
-  const editing = view.editingStudentId ? S.students.find(s => s.id === view.editingStudentId) : null;
+  const bill = C.billMonth(S, view.ym);
+  const billOf = Object.fromEntries(bill.students.map(b => [b.studentId, b]));
+  const es = view.editStudentId ? C.studentById(S, view.editStudentId) : null;
+  const eg = view.editGroupId ? C.groupById(S, view.editGroupId) : null;
+  const groupsOf = (sid) => S.groups.filter(g => g.memberIds.includes(sid));
+  const monthSlots = C.getMonth(S, view.ym).slots;
 
-  const formHtml = `
-    <h2>${editing ? 'แก้ไขข้อมูลนักเรียน' : 'เพิ่มนักเรียนใหม่'}</h2>
-    <div class="form-box">
-      <div><label>ชื่อนักเรียน</label><input type="text" id="stNameInput" value="${editing ? escapeHtml(editing.name) : ''}" placeholder="เช่น น้องพันพัน"></div>
-      <div><label>คำเรียกผู้ปกครอง</label><input type="text" id="stParentInput" value="${editing ? escapeHtml(editing.parentTitle) : 'คุณแม่'}" placeholder="คุณแม่ / คุณพ่อ"></div>
-      <div class="full-width" style="display:flex; gap:8px;">
-        <button class="btn primary" id="saveStudentBtn" type="button">${editing ? 'บันทึกแก้ไข' : '+ เพิ่มนักเรียน'}</button>
-        ${editing ? `<button class="btn" id="cancelStudentBtn" type="button">ยกเลิก</button>` : ''}
+  const studentForm = `
+    <div class="form-box" id="studentForm">
+      <div><label>ชื่อนักเรียน</label><input type="text" id="stName" value="${escapeHtml(es?.name || '')}" placeholder="เช่น น้องพันพัน"></div>
+      <div><label>ชื่อใน Google Calendar / ชื่อเล่นอื่น</label><input type="text" id="stAliases" value="${escapeHtml((es?.aliases || []).join(', '))}" placeholder="เช่น Nene, Nene M.6"></div>
+      <div><label>คำเรียกผู้ปกครอง</label><input type="text" id="stParent" value="${escapeHtml(es?.parentTitle || 'คุณแม่')}"></div>
+      <div><label>วิชาหลัก</label><input type="text" id="stSubject" value="${escapeHtml(es?.subject || '')}" placeholder="เช่น คณิต ม.3"></div>
+      <div><label>ราคาต่อคาบ (บาท)</label><input type="number" id="stRate" value="${es?.rate ?? ''}" placeholder="ว่าง = ราคาตั้งต้น ${S.settings.defaultRate}"></div>
+      <div class="full-width"><label>อยู่กลุ่ม</label>
+        <div class="check-list">${S.groups.length ? S.groups.map(g => `<label><input type="checkbox" class="stGroup" value="${g.id}" ${es && g.memberIds.includes(es.id) ? 'checked' : ''}> ${escapeHtml(g.name)}</label>`).join('') : '<div class="none">ยังไม่มีกลุ่ม</div>'}</div>
       </div>
-    </div>
-  `;
+      <div class="full-width" style="display:flex; gap:8px;">
+        <button class="btn primary" id="saveStudentBtn" type="button">${es ? 'บันทึกแก้ไข' : '+ เพิ่มนักเรียน'}</button>
+        ${es ? '<button class="btn" id="cancelStudentBtn" type="button">ยกเลิก</button>' : ''}
+      </div>
+    </div>`;
 
-  const cardsHtml = S.students.length === 0 ? '<div style="text-align:center; padding:20px; color:var(--text-muted);">ยังไม่มีข้อมูลนักเรียน</div>' :
-    S.students.map(s => {
-      const slots = slotsForStudentMonth(s.id, ym);
-      const showSlotForm = view.slotForm && view.slotForm.studentId === s.id;
-      const editingSlot = showSlotForm && view.slotForm.editingId ? S.schedules.find(x => x.id === view.slotForm.editingId) : null;
-      const hasPrevSlots = slotsForStudentMonth(s.id, prevYM()).length > 0;
+  const groupForm = `
+    <div class="form-box" id="groupForm">
+      <div><label>ชื่อกลุ่ม</label><input type="text" id="grName" value="${escapeHtml(eg?.name || '')}" placeholder="เช่น SMTE"></div>
+      <div><label>ชื่อใน Google Calendar</label><input type="text" id="grAliases" value="${escapeHtml((eg?.aliases || []).join(', '))}" placeholder="เช่น SMTE"></div>
+      <div><label>วิชา</label><input type="text" id="grSubject" value="${escapeHtml(eg?.subject || '')}" placeholder="เช่น คณิต SMTE"></div>
+      <div><label>ราคาต่อคนต่อคาบ (บาท)</label><input type="number" id="grRate" value="${eg?.rate ?? ''}" placeholder="ว่าง = ใช้ราคาของแต่ละคน"></div>
+      <div class="full-width"><label>สมาชิก (คิดเงินแยกรายคน)</label>
+        <div class="check-list">${S.students.length ? S.students.map(s => `<label><input type="checkbox" class="grMember" value="${s.id}" ${eg && eg.memberIds.includes(s.id) ? 'checked' : ''}> ${escapeHtml(s.name)}</label>`).join('') : '<div class="none">ยังไม่มีนักเรียน</div>'}</div>
+      </div>
+      <div class="full-width" style="display:flex; gap:8px;">
+        <button class="btn primary" id="saveGroupBtn" type="button">${eg ? 'บันทึกกลุ่ม' : '+ สร้างกลุ่ม'}</button>
+        ${eg ? '<button class="btn" id="cancelGroupBtn" type="button">ยกเลิก</button>' : ''}
+      </div>
+    </div>`;
 
-      const slotRows = slots.length === 0 ? `<div style="font-size:12.5px; color:var(--text-muted); padding:6px 0;">ยังไม่มีตารางเรียนเดือนนี้</div>` :
-        slots.map(sc => `
-          <div class="slot-row-item">
-            <div><b>วัน${DOW_NAMES[sc.day]}</b> ${escapeHtml(sc.time)} น. (${money(sc.price)} บาท/ครั้ง)</div>
-            <div style="display:flex; gap:4px;">
-              <button class="btn small edit-sc-btn" data-studentid="${s.id}" data-scid="${sc.id}" type="button">แก้ไข</button>
-              <button class="btn small danger del-sc-btn" data-scid="${sc.id}" type="button">ลบ</button>
-            </div>
-          </div>
-        `).join('');
-
-      const slotFormHtml = showSlotForm ? `
-        <div class="form-box" style="margin-top:10px;">
+  const groupCards = S.groups.map(g => {
+    const used = monthSlots.filter(s => s.groupId === g.id).length;
+    return `
+      <div class="item-card ${g.memberIds.length ? '' : 'warn-card'}">
+        <div class="head">
           <div>
-            <label>วันเรียน</label>
-            <select id="scDayInput">
-              ${DOW_NAMES.map((d, idx) => `<option value="${idx}" ${editingSlot && editingSlot.day === idx ? 'selected' : ''}>${d}</option>`).join('')}
-            </select>
+            <div class="title">👥 ${escapeHtml(g.name)}</div>
+            <div class="sub">${escapeHtml(g.subject || '-')} · ${g.rate != null ? money(g.rate) + ' บาท/คน/คาบ' : 'ราคาตามแต่ละคน'} · ${used} คาบ/สัปดาห์ในเดือนนี้${g.aliases.length ? ' · ปฏิทิน: ' + escapeHtml(g.aliases.join(', ')) : ''}</div>
           </div>
-          <div><label>เวลาเรียน</label><input type="text" id="scTimeInput" value="${editingSlot ? escapeHtml(editingSlot.time) : ''}" placeholder="18:30–20:00"></div>
-          <div><label>ราคาต่อครั้ง (บาท)</label><input type="number" id="scPriceInput" value="${editingSlot ? editingSlot.price : 350}"></div>
-          <div class="full-width" style="display:flex; gap:8px;">
-            <button class="btn primary small" id="saveScBtn" data-studentid="${s.id}" type="button">${editingSlot ? 'บันทึก' : '+ บันทึกวันเรียน'}</button>
-            <button class="btn small" id="cancelScBtn" type="button">ยกเลิก</button>
+          <div style="display:flex; gap:6px;">
+            <button class="btn small edit-gr-btn" data-id="${g.id}" type="button">แก้ไข / สมาชิก</button>
+            <button class="btn small danger del-gr-btn" data-id="${g.id}" type="button">ลบ</button>
           </div>
         </div>
-      ` : '';
+        <div>${g.memberIds.length ? g.memberIds.map(id => `<span class="tag">${escapeHtml(studentName(id))}</span>`).join('') : '<span class="tag warn">⚠️ ยังไม่มีสมาชิก — ยังไม่คิดเงินคาบของกลุ่มนี้</span>'}</div>
+      </div>`;
+  }).join('');
 
-      return `
-        <div class="item-card">
-          <div class="head">
-            <div>
-              <div class="title">👤 ${escapeHtml(s.name)}</div>
-              <div class="sub">คำเรียกผู้ปกครอง: ${escapeHtml(s.parentTitle)}</div>
-            </div>
-            <div style="display:flex; gap:6px;">
-              <button class="btn small edit-st-btn" data-id="${s.id}" type="button">แก้ไขโปรไฟล์</button>
-              <button class="btn small danger del-st-btn" data-id="${s.id}" type="button">ลบนักเรียน</button>
-            </div>
+  const studentCards = S.students.map(s => {
+    const b = billOf[s.id];
+    return `
+      <div class="item-card">
+        <div class="head">
+          <div>
+            <div class="title">👤 ${escapeHtml(s.name)} <span style="font-weight:600; color:var(--text-muted); font-size:13px;">${s.rate != null ? money(s.rate) : money(S.settings.defaultRate) + '*'} บาท/คาบ</span></div>
+            <div class="sub">${escapeHtml(s.parentTitle)}${s.subject ? ' · ' + escapeHtml(s.subject) : ''}${s.aliases.length ? ' · ปฏิทิน: ' + escapeHtml(s.aliases.join(', ')) : ''}</div>
           </div>
-
-          <div style="margin-top:10px;">
-            <div style="font-size:13px; font-weight:700; color:var(--accent-sage); margin-bottom:6px;">📅 ตารางเรียนประจำเดือน ${TH_MONTHS[view.m]} ${view.y + 543}</div>
-            ${slotRows}
+          <div style="display:flex; gap:6px;">
+            <button class="btn small edit-st-btn" data-id="${s.id}" type="button">แก้ไข</button>
+            <button class="btn small danger del-st-btn" data-id="${s.id}" type="button">ลบ</button>
           </div>
-
-          <div style="display:flex; gap:6px; margin-top:10px; flex-wrap:wrap;">
-            ${!showSlotForm ? `<button class="btn small primary add-sc-btn" data-studentid="${s.id}" type="button">+ เพิ่มวันเรียน</button>` : ''}
-            ${(!showSlotForm && hasPrevSlots) ? `<button class="btn small copy-prev-btn" data-studentid="${s.id}" type="button">📋 คัดลอกตารางจากเดือนก่อน</button>` : ''}
-          </div>
-
-          ${slotFormHtml}
         </div>
-      `;
-    }).join('');
+        <div>
+          ${groupsOf(s.id).map(g => `<span class="tag">👥 ${escapeHtml(g.name)}</span>`).join('')}
+          <span class="tag ${b ? '' : 'muted'}">${ymLabel(view.ym)}: ${b ? `${b.count} ครั้ง · ${money(b.total)} บาท` : 'ไม่มีคาบ'}</span>
+        </div>
+      </div>`;
+  }).join('');
 
   panel.innerHTML = `
-    ${formHtml}
-    <h2>รายชื่อนักเรียน (${S.students.length} คน)</h2>
-    <div class="hint-text">ตั้งค่าตารางเรียนประจำสัปดาห์เฉพาะเดือนนี้เพื่อให้ระบบคิดเงินให้อัตโนมัติ</div>
-    ${cardsHtml}
+    <h2>กลุ่ม / คลาสกลุ่ม (${S.groups.length})</h2>
+    <div class="hint-text">ลงตารางเป็นกลุ่มครั้งเดียว ระบบคิดเงินแยกให้สมาชิกแต่ละคนตามราคาของคนนั้น</div>
+    ${groupForm}
+    ${groupCards || '<div class="hint-text">ยังไม่มีกลุ่ม</div>'}
+
+    <h2 style="margin-top:28px;">นักเรียน (${S.students.length} คน)</h2>
+    <div class="hint-text">ฐานข้อมูลราคา: ใส่ราคาต่อคาบของแต่ละคนได้ (* = ใช้ราคาตั้งต้น) · "ชื่อใน Google Calendar" ใช้จับคู่ตอนนำเข้าตารางจากปฏิทิน</div>
+    ${studentForm}
+    ${studentCards || '<div class="hint-text">ยังไม่มีนักเรียน</div>'}
   `;
 
-  const saveStBtn = document.getElementById('saveStudentBtn');
-  if(saveStBtn) {
-    saveStBtn.addEventListener('click', () => {
-      const name = (document.getElementById('stNameInput')?.value || '').trim();
-      const parentTitle = (document.getElementById('stParentInput')?.value || '').trim() || 'คุณแม่';
-      if(!name) { alert('กรุณากรอกชื่อนักเรียน'); return; }
-
-      if(view.editingStudentId) {
-        const s = S.students.find(x => x.id === view.editingStudentId);
-        if(s) { s.name = name; s.parentTitle = parentTitle; }
-        view.editingStudentId = null;
-      } else {
-        S.students.push({ id: 'st_' + Date.now() + Math.random().toString(36).slice(2), name, parentTitle });
-      }
-      saveState(); render(); showToast('บันทึกนักเรียนแล้ว');
+  // student form
+  $('saveStudentBtn').addEventListener('click', () => {
+    const name = $('stName').value.trim();
+    if (!name) { alert('กรุณากรอกชื่อนักเรียน'); return; }
+    const data = { name, aliases: splitList($('stAliases').value), parentTitle: $('stParent').value.trim() || 'คุณแม่', subject: $('stSubject').value.trim(), rate: numOrNull($('stRate').value) };
+    let st = es;
+    if (st) Object.assign(st, data); else { st = Object.assign({ id: C.uid('st') }, data); S.students.push(st); }
+    const chosen = [...document.querySelectorAll('.stGroup:checked')].map(x => x.value);
+    S.groups.forEach(g => {
+      const has = g.memberIds.includes(st.id);
+      if (chosen.includes(g.id) && !has) g.memberIds.push(st.id);
+      if (!chosen.includes(g.id) && has) g.memberIds = g.memberIds.filter(x => x !== st.id);
     });
-  }
-
-  const cancelStBtn = document.getElementById('cancelStudentBtn');
-  if(cancelStBtn) cancelStBtn.addEventListener('click', () => { view.editingStudentId = null; render(); });
-
-  panel.querySelectorAll('.edit-st-btn').forEach(b => b.addEventListener('click', () => { view.editingStudentId = b.dataset.id; render(); }));
+    view.editStudentId = null; saveState('บันทึกนักเรียนแล้ว');
+  });
+  $('cancelStudentBtn')?.addEventListener('click', () => { view.editStudentId = null; render(); });
+  panel.querySelectorAll('.edit-st-btn').forEach(b => b.addEventListener('click', () => {
+    view.editStudentId = b.dataset.id; render(); $('studentForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }));
   panel.querySelectorAll('.del-st-btn').forEach(b => b.addEventListener('click', () => {
-    if(!confirm('ลบนักเรียนคนนี้?')) return;
     const id = b.dataset.id;
+    if (!confirm(`ลบ ${studentName(id)}? (จะถูกเอาออกจากกลุ่มและตารางทุกเดือน)`)) return;
     S.students = S.students.filter(s => s.id !== id);
-    S.schedules = S.schedules.filter(sc => sc.studentId !== id);
-    saveState(); render(); showToast('ลบแล้ว');
+    S.groups.forEach(g => { g.memberIds = g.memberIds.filter(x => x !== id); });
+    Object.values(S.months).forEach(m => m.slots.forEach(sl => { sl.studentIds = sl.studentIds.filter(x => x !== id); }));
+    S.absences = S.absences.filter(a => a.studentId !== id);
+    saveState('ลบนักเรียนแล้ว');
   }));
 
-  panel.querySelectorAll('.add-sc-btn').forEach(b => b.addEventListener('click', () => {
-    view.slotForm = { studentId: b.dataset.studentid, editingId: null }; render();
+  // group form
+  $('saveGroupBtn').addEventListener('click', () => {
+    const name = $('grName').value.trim();
+    if (!name) { alert('กรุณากรอกชื่อกลุ่ม'); return; }
+    const aliases = splitList($('grAliases').value);
+    const data = { name, aliases: aliases.length ? aliases : [name], subject: $('grSubject').value.trim(), rate: numOrNull($('grRate').value), memberIds: [...document.querySelectorAll('.grMember:checked')].map(x => x.value) };
+    if (eg) Object.assign(eg, data); else S.groups.push(Object.assign({ id: C.uid('gr') }, data));
+    view.editGroupId = null; saveState('บันทึกกลุ่มแล้ว');
+  });
+  $('cancelGroupBtn')?.addEventListener('click', () => { view.editGroupId = null; render(); });
+  panel.querySelectorAll('.edit-gr-btn').forEach(b => b.addEventListener('click', () => {
+    view.editGroupId = b.dataset.id; render(); $('groupForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
   }));
-
-  panel.querySelectorAll('.edit-sc-btn').forEach(b => b.addEventListener('click', () => {
-    view.slotForm = { studentId: b.dataset.studentid, editingId: b.dataset.scid }; render();
+  panel.querySelectorAll('.del-gr-btn').forEach(b => b.addEventListener('click', () => {
+    const g = C.groupById(S, b.dataset.id);
+    if (!confirm(`ลบกลุ่ม ${g.name}? (คาบของกลุ่มนี้จะกลายเป็นคาบรายคนของสมาชิกเดิม)`)) return;
+    Object.values(S.months).forEach(m => m.slots.forEach(sl => {
+      if (sl.groupId === g.id) { sl.groupId = null; sl.studentIds = [...new Set([...g.memberIds, ...sl.studentIds])]; if (!sl.subject) sl.subject = g.subject; }
+    }));
+    S.groups = S.groups.filter(x => x.id !== g.id);
+    saveState('ลบกลุ่มแล้ว');
   }));
-
-  panel.querySelectorAll('.del-sc-btn').forEach(b => b.addEventListener('click', () => {
-    if(!confirm('ลบวันเรียนนี้?')) return;
-    S.schedules = S.schedules.filter(sc => sc.id !== b.dataset.scid);
-    saveState(); render(); showToast('ลบวันเรียนแล้ว');
-  }));
-
-  panel.querySelectorAll('.copy-prev-btn').forEach(b => b.addEventListener('click', () => {
-    const studentId = b.dataset.studentid;
-    const prevSlots = slotsForStudentMonth(studentId, prevYM());
-    if(prevSlots.length === 0) { alert('เดือนก่อนไม่มีตารางเรียน'); return; }
-
-    const ym = currentYM();
-    prevSlots.forEach(sc => {
-      S.schedules.push({
-        id: 'sc_' + Date.now() + Math.random().toString(36).slice(2),
-        studentId, yearMonth: ym, day: sc.day, time: sc.time, duration: sc.duration, price: sc.price
-      });
-    });
-    saveState(); render(); showToast('คัดลอกตารางแล้ว');
-  }));
-
-  const saveScBtn = document.getElementById('saveScBtn');
-  if(saveScBtn) {
-    saveScBtn.addEventListener('click', () => {
-      const studentId = saveScBtn.dataset.studentid;
-      const day = Number(document.getElementById('scDayInput')?.value || 0);
-      const time = (document.getElementById('scTimeInput')?.value || '').trim();
-      const price = Number(document.getElementById('scPriceInput')?.value) || 0;
-      if(!time) { alert('กรุณากรอกเวลาเรียน'); return; }
-
-      const ym = currentYM();
-      if(view.slotForm.editingId) {
-        const sc = S.schedules.find(x => x.id === view.slotForm.editingId);
-        if(sc) Object.assign(sc, { day, time, price });
-      } else {
-        S.schedules.push({
-          id: 'sc_' + Date.now() + Math.random().toString(36).slice(2),
-          studentId, yearMonth: ym, day, time, price
-        });
-      }
-      view.slotForm = null;
-      saveState(); render(); showToast('บันทึกวันเรียนแล้ว');
-    });
-  }
-
-  const cancelScBtn = document.getElementById('cancelScBtn');
-  if(cancelScBtn) cancelScBtn.addEventListener('click', () => { view.slotForm = null; render(); });
 }
 
 /* =========================================
-   TAB 4: BILLING & CALCULATIONS
+   TAB 4: BILLING (per person, groups split)
    ========================================= */
-function sessionsForSlot(slot, y, m) {
-  const out = [];
-  const nd = daysInMonth(y, m);
-  for(let d = 1; d <= nd; d++) {
-    const dow = new Date(y, m, d).getDay();
-    if(dow === slot.day) {
-      const ds = dateStr(y, m, d);
-      out.push({ day: d, ds, held: !isBlocked(ds) && !isAbsent(slot.studentId, ds) });
-    }
-  }
-  return out;
-}
-
-function buildMessage(student, slots) {
-  let lines = [];
-  let total = 0;
-
-  slots.forEach(slot => {
-    const sessions = sessionsForSlot(slot, view.y, view.m);
-    const held = sessions.filter(x => x.held);
-    const subtotal = held.length * slot.price;
-    total += subtotal;
-    const dateList = held.map(x => x.day).join(', ') || '-';
-    lines.push(`🗓️ วัน${DOW_NAMES[slot.day]}: วันที่ ${dateList} (${held.length} ครั้ง)
-• เวลาเรียน: ${slot.time} น.
-• ยอดรวม: ${held.length} ครั้ง × ${money(slot.price)} บาท = ${money(subtotal)} บาท`);
-  });
-
+function buildMessage(student, b) {
+  const lines = b.lines.map(l => `🗓️ วัน${DOW_NAMES[l.dow]}: วันที่ ${l.days.join(', ')} (${l.days.length} ครั้ง)
+${l.subject || l.groupName ? `• วิชา: ${l.subject || '-'}${l.groupName ? ` (คลาสกลุ่ม ${l.groupName})` : ''}\n` : ''}• เวลาเรียน: ${l.time} น.
+• ยอดรวม: ${l.days.length} ครั้ง × ${money(l.rate)} บาท = ${money(l.subtotal)} บาท`);
   return `สวัสดีครับ${student.parentTitle}
 ขออนุญาตแจ้งสรุปค่าเรียนพิเศษของน้อง (${student.name}) นะครับ
 
-📌 ตารางเรียน (${student.name}) – (${TH_MONTHS[view.m]} ${view.y + 543})
+📌 ตารางเรียน (${student.name}) – (${ymLabel(view.ym)})
 
 ${lines.join('\n\n')}
 
-✅ ยอดรวมสุทธิ: ${money(total)} บาท
+✅ ยอดรวมสุทธิ: ${money(b.total)} บาท
 
 ขอบคุณครับ 🙏`;
 }
 
 function renderBillingTab(panel) {
-  const ym = currentYM();
-  const activeStudents = S.students.filter(s => slotsForStudentMonth(s.id, ym).length > 0);
+  const bill = C.billMonth(S, view.ym);
+  const warn = bill.emptyGroups.length ? `
+    <div class="banner warn"><div>⚠️ กลุ่มที่ยังไม่มีสมาชิก จึงยังไม่ถูกคิดเงิน: <b>${bill.emptyGroups.map(g => escapeHtml(g.name)).join(', ')}</b></div>
+      <div class="actions"><button class="btn small" id="goGroupsBtn" type="button">ไปใส่สมาชิก</button></div></div>` : '';
 
-  if(activeStudents.length === 0) {
-    panel.innerHTML = `<h2>สรุปค่าเรียน & แจ้งผู้ปกครอง</h2><div style="padding:20px; text-align:center; color:var(--text-muted);">ยังไม่มีตารางเรียนในเดือนนี้ (ไปที่แท็บ "นักเรียน & คลาสเรียน" เพื่อเพิ่มตารางเรียน)</div>`;
+  if (!bill.students.length) {
+    panel.innerHTML = `<h2>สรุปค่าเรียน & แจ้งผู้ปกครอง — ${ymLabel(view.ym)}</h2>${warn}
+      <div style="padding:20px; text-align:center; color:var(--text-muted);">ยังไม่มีคาบเรียนที่คิดเงินได้ในเดือนนี้ (ไปที่แท็บ "ตารางรายสัปดาห์" เพื่อลงตาราง)</div>`;
+    $('goGroupsBtn')?.addEventListener('click', () => setTab('students'));
     return;
   }
 
-  let grandTotal = 0;
-  const cards = activeStudents.map(s => {
-    const slots = slotsForStudentMonth(s.id, ym);
-    let studentTotal = 0, heldCount = 0;
-
-    slots.forEach(slot => {
-      const held = sessionsForSlot(slot, view.y, view.m).filter(x => x.held);
-      studentTotal += held.length * slot.price;
-      heldCount += held.length;
-    });
-    grandTotal += studentTotal;
-
-    const msg = buildMessage(s, slots);
+  const cards = bill.students.map(b => {
+    const s = C.studentById(S, b.studentId);
     const msgId = 'msg_' + s.id;
-
     return `
       <div class="item-card">
         <div class="head">
-          <div class="title">👤 ${escapeHtml(s.name)} (${heldCount} ครั้งรวม)</div>
-          <div style="font-size:16px; font-weight:700; color:var(--accent-sage);">${money(studentTotal)} บาท</div>
+          <div class="title">👤 ${escapeHtml(s.name)} (${b.count} ครั้งรวม)</div>
+          <div style="font-size:16px; font-weight:700; color:var(--accent-sage);">${money(b.total)} บาท</div>
         </div>
-        <textarea id="${msgId}" class="msg-textarea">${msg}</textarea>
-        <div style="margin-top:10px;">
-          <button class="btn primary small copy-msg-btn" data-target="${msgId}" type="button">📋 คัดลอกข้อความแจ้งผู้ปกครอง</button>
-        </div>
-      </div>
-    `;
+        <div>${[...new Set(b.lines.filter(l => l.groupName).map(l => l.groupName))].map(n => `<span class="tag">👥 ${escapeHtml(n)}</span>`).join('')}</div>
+        <textarea id="${msgId}" class="msg-textarea">${escapeHtml(buildMessage(s, b))}</textarea>
+        <div style="margin-top:10px;"><button class="btn primary small copy-msg-btn" data-target="${msgId}" type="button">📋 คัดลอกข้อความแจ้งผู้ปกครอง</button></div>
+      </div>`;
   }).join('');
 
   panel.innerHTML = `
-    <h2>สรุปค่าเรียน & แจ้งผู้ปกครอง — ${TH_MONTHS[view.m]} ${view.y + 543}</h2>
-    <div class="hint-text">คำนวณวันเรียนจริงโดยหักวันติดธุระและวันลาเรียบร้อยแล้ว</div>
+    <h2>สรุปค่าเรียน & แจ้งผู้ปกครอง — ${ymLabel(view.ym)}</h2>
+    <div class="hint-text">คิดตามวันเรียนจริงของเดือนนี้ (หักวันงด วันติดธุระ และวันลาแล้ว) · คลาสกลุ่มคิดแยกรายคน</div>
+    ${warn}
     ${cards}
-    
-    <div class="grand-box">
-      <div>💰 ยอดรวมรายได้สุทธิเดือนนี้</div>
-      <div class="num">${money(grandTotal)} บาท</div>
-    </div>
-  `;
+    <div class="grand-box"><div>💰 ยอดรวมรายได้สุทธิเดือนนี้</div><div class="num">${money(bill.grandTotal)} บาท</div></div>`;
 
-  panel.querySelectorAll('.copy-msg-btn').forEach(b => {
-    b.addEventListener('click', () => {
-      const el = document.getElementById(b.dataset.target);
-      if(el) {
-        el.select();
-        try {
-          navigator.clipboard.writeText(el.value).then(() => showToast('คัดลอกข้อความแล้ว')).catch(() => {
-            document.execCommand('copy'); showToast('คัดลอกข้อความแล้ว');
-          });
-        } catch(e) {
-          document.execCommand('copy'); showToast('คัดลอกข้อความแล้ว');
-        }
-      }
-    });
-  });
+  $('goGroupsBtn')?.addEventListener('click', () => setTab('students'));
+  panel.querySelectorAll('.copy-msg-btn').forEach(b => b.addEventListener('click', () => {
+    const el = $(b.dataset.target); if (!el) return;
+    el.select();
+    const done = () => showToast('คัดลอกข้อความแล้ว');
+    if (navigator.clipboard) navigator.clipboard.writeText(el.value).then(done).catch(() => { document.execCommand('copy'); done(); });
+    else { document.execCommand('copy'); done(); }
+  }));
 }
 
 /* =========================================
-   TAB 5: EXPORT & SAVE SYSTEM
+   TAB 5: SAVE, SYNC & EXPORT
    ========================================= */
 function renderExportTab(panel) {
+  const cfg = ghCfg();
   panel.innerHTML = `
-    <h2>ระบบเซฟข้อมูล & ส่งออกไฟล์</h2>
-    <div class="hint-text">ดาวน์โหลดและสำรองข้อมูลการใช้งานของคุณ</div>
+    <h2>เซฟ & ซิงก์ข้อมูล</h2>
+    <div class="hint-text">ข้อมูลหลักอยู่ในไฟล์ <code>data.json</code> บน GitHub — Claude แก้ไฟล์นี้ให้ได้โดยตรง แล้วหน้านี้จะดึงข้อมูลใหม่เองเมื่อเปิด</div>
+
+    <div class="item-card">
+      <div class="head">
+        <div class="title">☁️ ซิงก์กับ GitHub</div>
+        <div class="tag ${sync.dirty ? 'warn' : ''}">${sync.dirty ? '● มีการแก้ไขที่ยังไม่ได้ส่งขึ้น' : '✓ ตรงกับ GitHub'} · rev ${sync.baseRev}</div>
+      </div>
+      <div style="display:flex; gap:6px; flex-wrap:wrap;">
+        <button class="btn primary" id="pushBtn" type="button">⬆️ ส่งขึ้น GitHub</button>
+        <button class="btn" id="pullBtn" type="button">⬇️ ดึงข้อมูลล่าสุด</button>
+        <button class="btn" id="dlDataBtn" type="button">📥 ดาวน์โหลด data.json</button>
+      </div>
+      <details style="margin-top:12px;" ${cfg.token ? '' : 'open'}>
+        <summary style="cursor:pointer; font-size:13px; font-weight:700;">ตั้งค่าการส่งขึ้น GitHub (ทำครั้งเดียวต่อเครื่อง)</summary>
+        <div class="gh-form">
+          <label>GitHub token (fine-grained · เลือก repo นี้ · สิทธิ์ Contents: Read and write)</label>
+          <input type="password" id="ghToken" value="${escapeHtml(cfg.token)}" placeholder="github_pat_…" autocomplete="off">
+          <label>Repository</label><input type="text" id="ghRepo" value="${escapeHtml(cfg.repo)}" placeholder="owner/repo">
+          <div class="row2">
+            <div><label>Branch</label><input type="text" id="ghBranch" value="${escapeHtml(cfg.branch)}"></div>
+            <div><label>ไฟล์</label><input type="text" id="ghPath" value="${escapeHtml(cfg.path)}"></div>
+          </div>
+          <div style="display:flex; gap:6px;"><button class="btn small primary" id="ghSave" type="button">บันทึกการตั้งค่า</button>
+          <a class="btn small" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">สร้าง token</a></div>
+          <div class="field-hint">token เก็บไว้ในเบราว์เซอร์เครื่องนี้เท่านั้น ไม่ถูกส่งไปที่อื่นนอกจาก api.github.com · ถ้าไม่ใส่ token ใช้ปุ่ม "ดาวน์โหลด data.json" แล้วอัปโหลดทับใน GitHub ได้</div>
+        </div>
+      </details>
+    </div>
 
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px;">
-      
       <div class="item-card">
         <div class="title">🖼️ บันทึกเป็นรูปภาพ (PNG)</div>
-        <p style="font-size:12.5px; color:var(--text-muted);">สร้างรูปภาพตารางสอนสัปดาห์ปัจจุบันสำหรับส่งแชท</p>
+        <p style="font-size:12.5px; color:var(--text-muted);">รูปตารางสัปดาห์ของเดือนที่เลือก สำหรับส่งแชท</p>
         <button class="btn primary" id="exportImgBtn" type="button">📸 ดาวน์โหลดรูปภาพ</button>
       </div>
-
       <div class="item-card">
         <div class="title">📊 ส่งออกตารางเรียน (CSV)</div>
-        <p style="font-size:12.5px; color:var(--text-muted);">ไฟล์ CSV สำหรับเปิดใน Microsoft Excel หรือ Google Sheets</p>
+        <p style="font-size:12.5px; color:var(--text-muted);">ตารางของ ${ymLabel(view.ym)} สำหรับ Excel / Google Sheets</p>
         <div style="display:flex; gap:6px; flex-wrap:wrap;">
-          <button class="btn small" id="exportCsvTeacherBtn" type="button">CSV ฉบับครู</button>
-          <button class="btn small" id="exportCsvStudentBtn" type="button">CSV ฉบับนักเรียน</button>
+          <button class="btn small" id="csvTeacherBtn" type="button">CSV ฉบับครู</button>
+          <button class="btn small" id="csvStudentBtn" type="button">CSV ฉบับนักเรียน</button>
         </div>
       </div>
-
-      <div class="item-card">
-        <div class="title">🌐 บันทึกไฟล์ HTML</div>
-        <p style="font-size:12.5px; color:var(--text-muted);">ดาวน์โหลดไฟล์ HTML กลับลงเครื่อง</p>
-        <button class="btn" id="exportHtmlBtn" type="button">📥 ดาวน์โหลด HTML</button>
-      </div>
-
       <div class="item-card">
         <div class="title">📦 สำรองข้อมูล (JSON)</div>
-        <p style="font-size:12.5px; color:var(--text-muted);">สำรองหรือนำเข้าข้อมูลทั้งหมด</p>
+        <p style="font-size:12.5px; color:var(--text-muted);">สำรอง หรือนำเข้า (รองรับไฟล์สำรองจากเวอร์ชันเก่า)</p>
         <div style="display:flex; gap:6px; flex-wrap:wrap;">
-          <button class="btn small" id="backupJsonBtn" type="button">💾 สำรองข้อมูล</button>
-          <button class="btn small" id="restoreJsonBtn" type="button">📤 นำเข้าข้อมูล</button>
-          <input type="file" id="jsonFileInput" accept=".json" style="display:none;">
+          <button class="btn small" id="backupBtn" type="button">💾 สำรองข้อมูล</button>
+          <button class="btn small" id="restoreBtn" type="button">📤 นำเข้าข้อมูล</button>
+          <input type="file" id="jsonFileInput" accept=".json,application/json" style="display:none;">
         </div>
       </div>
-
-      <div class="item-card" style="grid-column: 1 / -1;">
-        <div class="title">🖨️ พิมพ์เอกสาร / Save as PDF</div>
-        <p style="font-size:12.5px; color:var(--text-muted);">พิมพ์ตารางสอนผ่านเครื่องพิมพ์หรือบันทึกเป็น PDF</p>
-        <button class="btn primary" id="printBtn" type="button">🖨️ พิมพ์ตารางสอน</button>
+      <div class="item-card">
+        <div class="title">🖨️ พิมพ์ / Save as PDF</div>
+        <p style="font-size:12.5px; color:var(--text-muted);">พิมพ์หน้าที่เปิดอยู่</p>
+        <button class="btn" id="printBtn" type="button">🖨️ พิมพ์</button>
       </div>
-
     </div>
 
     <div style="margin-top:30px; text-align:center;">
-      <button class="btn danger" id="resetAllBtn" type="button">⚠️ ล้างข้อมูลทั้งหมด</button>
-    </div>
-  `;
+      <button class="btn danger" id="resetLocalBtn" type="button">⚠️ ล้างข้อมูลในเครื่องนี้ แล้วโหลดจาก GitHub ใหม่</button>
+    </div>`;
 
-  const imgBtn = document.getElementById('exportImgBtn');
-  if(imgBtn) {
-    imgBtn.addEventListener('click', () => {
-      showToast('กำลังประมวลผลรูปภาพ...');
-      if(view.tab !== 'weekly') { view.tab = 'weekly'; render(); }
-      setTimeout(() => {
-        if(window.html2canvas) {
-          html2canvas(document.querySelector('.container'), { scale: 2 }).then(canvas => {
-            const a = document.createElement('a');
-            a.download = `ตารางสอน_${TH_MONTHS[view.m]}_${view.y+543}.png`;
-            a.href = canvas.toDataURL('image/png');
-            a.click(); showToast('ดาวน์โหลดรูปภาพแล้ว');
-          });
-        } else {
-          alert('ระบบไม่พบไลบรารีสร้างรูปภาพ กรุณาใช้ปุ่มพิมพ์/Save PDF');
-        }
-      }, 300);
+  $('pushBtn').addEventListener('click', pushToGitHub);
+  $('pullBtn').addEventListener('click', pullFromGitHub);
+  $('dlDataBtn').addEventListener('click', downloadDataJson);
+  $('ghSave').addEventListener('click', () => {
+    lsSet(LS_GH, JSON.stringify({ token: $('ghToken').value.trim(), repo: $('ghRepo').value.trim(), branch: $('ghBranch').value.trim() || 'main', path: $('ghPath').value.trim() || 'data.json' }));
+    showToast('บันทึกการตั้งค่า GitHub แล้ว'); render();
+  });
+  $('exportImgBtn').addEventListener('click', exportPng);
+  $('csvTeacherBtn').addEventListener('click', () => exportCSV(true));
+  $('csvStudentBtn').addEventListener('click', () => exportCSV(false));
+  $('backupBtn').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = `tutor_backup_${new Date().toISOString().slice(0, 10)}.json`; a.click(); showToast('สำรองข้อมูลเรียบร้อย');
+  });
+  $('restoreBtn').addEventListener('click', () => $('jsonFileInput').click());
+  $('jsonFileInput').addEventListener('change', (e) => {
+    const file = e.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      try {
+        const meta = S.meta;
+        S = C.normalizeState(JSON.parse(evt.target.result), { templateMonths: [view.ym] }); S.meta = meta;
+        saveState('นำเข้าข้อมูลสำเร็จ');
+      } catch (err) { alert('ไฟล์ JSON ไม่ถูกต้อง'); }
+    };
+    reader.readAsText(file);
+  });
+  $('printBtn').addEventListener('click', () => window.print());
+  $('resetLocalBtn').addEventListener('click', () => {
+    if (!confirm('ล้างข้อมูลในเครื่องนี้ (รวมการแก้ไขที่ยังไม่ได้ส่งขึ้น GitHub) แล้วโหลดใหม่จาก GitHub?')) return;
+    lsDel(LS_KEY); location.reload();
+  });
+}
+
+function exportPng() {
+  showToast('กำลังสร้างรูปภาพ…');
+  setTab('weekly');
+  setTimeout(() => {
+    if (!window.html2canvas) { alert('ไม่พบไลบรารีสร้างรูปภาพ กรุณาใช้ปุ่มพิมพ์/Save PDF'); return; }
+    html2canvas(document.querySelector('.container'), { scale: 2 }).then(canvas => {
+      const a = document.createElement('a');
+      a.download = `ตารางสอน_${ymLabel(view.ym).replace(' ', '_')}.png`;
+      a.href = canvas.toDataURL('image/png'); a.click(); showToast('ดาวน์โหลดรูปภาพแล้ว');
     });
-  }
-
-  const csvTeacherBtn = document.getElementById('exportCsvTeacherBtn');
-  if(csvTeacherBtn) csvTeacherBtn.addEventListener('click', () => exportCSV(true));
-
-  const csvStudentBtn = document.getElementById('exportCsvStudentBtn');
-  if(csvStudentBtn) csvStudentBtn.addEventListener('click', () => exportCSV(false));
-
-  const htmlBtn = document.getElementById('exportHtmlBtn');
-  if(htmlBtn) htmlBtn.addEventListener('click', downloadHtmlFile);
-
-  const backupBtn = document.getElementById('backupJsonBtn');
-  if(backupBtn) backupBtn.addEventListener('click', exportBackupJSON);
-
-  const restoreBtn = document.getElementById('restoreJsonBtn');
-  const fileInput = document.getElementById('jsonFileInput');
-  if(restoreBtn && fileInput) {
-    restoreBtn.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', importBackupJSON);
-  }
-
-  const printBtn = document.getElementById('printBtn');
-  if(printBtn) printBtn.addEventListener('click', () => window.print());
-
-  const resetBtn = document.getElementById('resetAllBtn');
-  if(resetBtn) resetBtn.addEventListener('click', resetAllData);
+  }, 400);
 }
 
 function exportCSV(isTeacher) {
-  const headers = isTeacher ? ['ช่วงวัน','วัน','เวลา','สถานะ','วิชา','รายชื่อนักเรียน','จำนวนคน','รายได้'] : ['ช่วงวัน','วัน','เวลา','สถานะ'];
-  const lines = [headers.join(',')];
-
-  const buildRows = (section, days, slots) => {
-    days.forEach(day => {
-      slots.forEach((slot, idx) => {
-        const b = getBooking(section, day.key, idx);
-        const isBooked = b && b.status === 'booked';
-        const hc = isBooked ? (b.headcount || (b.names||[]).length || 1) : 0;
-        const rate = (b && b.customPrice) ? Number(b.customPrice) : S.settings.defaultRate;
-        const rev = (isBooked && !slot.flex) ? hc * rate : 0;
-
-        const row = isTeacher
-          ? [section==='weekday'?'วันธรรมดา':'เสาร์-อาทิตย์', day.label, slot.t, isBooked?'จองแล้ว':'ว่าง', b?b.subject||'':'', (b&&b.names)?b.names.join('/'):'', hc, rev]
-          : [section==='weekday'?'วันธรรมดา':'เสาร์-อาทิตย์', day.label, slot.t, isBooked?'จองแล้ว':'ว่าง'];
-        lines.push(row.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(','));
-      });
-    });
-  };
-
-  buildRows('weekday', weekdayDays, S.weeklySlots.weekday);
-  buildRows('weekend', weekendDays, S.weeklySlots.weekend);
-
-  const blob = new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  const headers = isTeacher
+    ? ['วัน', 'เวลา', 'สถานะ', 'วิชา', 'กลุ่ม', 'รายชื่อนักเรียน', 'จำนวนคน', 'รายได้/ครั้ง', 'งดวันที่']
+    : ['วัน', 'เวลา', 'สถานะ'];
+  const rows = [headers];
+  for (const dow of WEEKDAY_DOWS.concat(WEEKEND_DOWS)) {
+    if (C.isDayClosed(S, view.ym, dow)) continue;
+    for (const slot of C.slotsByDay(S, view.ym, dow)) {
+      const people = C.participantsOf(S, slot);
+      const booked = C.isBooked(S, slot);
+      const g = slot.groupId ? C.groupById(S, slot.groupId) : null;
+      rows.push(isTeacher
+        ? [DOW_NAMES[dow], C.timeLabel(slot), booked ? 'จองแล้ว' : 'ว่าง', C.slotSubject(S, slot), g ? g.name : '', people.map(studentName).join('/'), people.length,
+           slot.flex ? 0 : people.reduce((t, id) => t + C.rateFor(S, slot, id), 0), slot.skip.map(x => Number(x.slice(8))).join(' ')]
+        : [DOW_NAMES[dow], C.timeLabel(slot), booked ? 'จองแล้ว' : 'ว่าง']);
+    }
+  }
+  const csv = rows.map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',')).join('\n');
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = isTeacher ? 'ตารางสอน_ฉบับครู.csv' : 'ตารางสอน_ฉบับนักเรียน.csv';
-  a.click(); showToast('ดาวน์โหลด CSV เรียบร้อย');
-}
-
-function downloadHtmlFile() {
-  const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-  const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'planner_manager_upgraded.html';
-  a.click(); showToast('ดาวน์โหลดไฟล์ HTML แล้ว');
-}
-
-function exportBackupJSON() {
-  const blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = `tutor_backup_${new Date().toISOString().slice(0,10)}.json`;
-  a.click(); showToast('สำรองข้อมูลเรียบร้อย');
-}
-
-function importBackupJSON(e) {
-  const file = e.target.files[0]; if(!file) return;
-  const reader = new FileReader();
-  reader.onload = (evt) => {
-    try {
-      S = JSON.parse(evt.target.result);
-      saveState(); render(); showToast('นำเข้าข้อมูลสำเร็จ');
-    } catch(err) { alert('ไฟล์ JSON ไม่ถูกต้อง'); }
-  };
-  reader.readAsText(file);
-}
-
-function resetAllData() {
-  if(!confirm('ล้างข้อมูลทั้งหมดในระบบ?')) return;
-  S = {
-    settings: { defaultRate: 300 },
-    students: [],
-    weeklySlots: {
-      weekday: [{ t: '16:30–18:00' }, { t: '18:15–19:45' }, { t: '20:00–21:30' }, { t: '21:30–22:30', flex: true, d: 'คาบสำรอง' }],
-      weekend: [{ t: '09:00–10:30' }, { t: '10:45–12:15' }, { t: '13:00–14:30', d: 'หลังพักเที่ยง' }, { t: '14:45–16:15' }, { t: '16:30–18:00' }, { t: '18:15–19:45' }, { t: '19:45–20:30', flex: true, d: 'คาบสำรอง' }]
-    },
-    bookings: {}, schedules: [], blocked: [], absences: []
-  };
-  saveState(); render(); showToast('ล้างข้อมูลเรียบร้อย');
+  a.download = `ตารางสอน_${view.ym}_${isTeacher ? 'ครู' : 'นักเรียน'}.csv`; a.click();
+  showToast('ดาวน์โหลด CSV เรียบร้อย');
 }
 </script>
 </body>

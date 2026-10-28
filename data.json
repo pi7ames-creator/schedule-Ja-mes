@@ -1,0 +1,1584 @@
+{
+  "version": 3,
+  "meta": {
+    "rev": 2,
+    "updatedAt": "2026-10-28T06:42:19.017Z"
+  },
+  "settings": {
+    "defaultRate": 300
+  },
+  "students": [
+    {
+      "id": "st_1785818776739e97q",
+      "name": "จ๋าจ้า",
+      "aliases": [
+        "Jar"
+      ],
+      "parentTitle": "คุณแม่",
+      "subject": "ฟิสิกส์ ม.5",
+      "rate": null
+    },
+    {
+      "id": "st_1785818776739apwk",
+      "name": "แซนดี้",
+      "aliases": [
+        "Sandy"
+      ],
+      "parentTitle": "คุณแม่",
+      "subject": "คณิต ม.3 สาธิต",
+      "rate": null
+    },
+    {
+      "id": "st_17858187767390f1k",
+      "name": "อุ๋งอิ๋ง",
+      "aliases": [
+        "Auning"
+      ],
+      "parentTitle": "คุณแม่",
+      "subject": "คณิต SMTE",
+      "rate": null
+    },
+    {
+      "id": "st_1785818776739qhpu",
+      "name": "กัส",
+      "aliases": [],
+      "parentTitle": "คุณแม่",
+      "subject": "",
+      "rate": null
+    },
+    {
+      "id": "st_17858187767393m8b",
+      "name": "อิงอิง",
+      "aliases": [],
+      "parentTitle": "คุณแม่",
+      "subject": "",
+      "rate": null
+    },
+    {
+      "id": "st_1785818776739ono2",
+      "name": "พาวเวอร์",
+      "aliases": [],
+      "parentTitle": "คุณแม่",
+      "subject": "",
+      "rate": null
+    },
+    {
+      "id": "st_1785818776739ckz3",
+      "name": "เนเน่",
+      "aliases": [
+        "Nene"
+      ],
+      "parentTitle": "คุณแม่",
+      "subject": "คณิต ม.6",
+      "rate": null
+    },
+    {
+      "id": "st_1785818776739j4e0",
+      "name": "ไจ๋ไจ๋",
+      "aliases": [
+        "Jai"
+      ],
+      "parentTitle": "คุณแม่",
+      "subject": "คณิต ม.3",
+      "rate": null
+    },
+    {
+      "id": "st_17858187767396cje",
+      "name": "ภู",
+      "aliases": [
+        "Phu"
+      ],
+      "parentTitle": "คุณแม่",
+      "subject": "คณิต ม.4",
+      "rate": null
+    },
+    {
+      "id": "st_1785818776739h7jd",
+      "name": "พีท",
+      "aliases": [
+        "Peet"
+      ],
+      "parentTitle": "คุณแม่",
+      "subject": "คณิต เข้า ม.1",
+      "rate": null
+    },
+    {
+      "id": "st_1785818776739nndw",
+      "name": "กัญตา",
+      "aliases": [],
+      "parentTitle": "คุณแม่",
+      "subject": "คณิต ม.1",
+      "rate": null
+    },
+    {
+      "id": "st_1785818776739t0uz",
+      "name": "โปรแกรม",
+      "aliases": [],
+      "parentTitle": "คุณแม่",
+      "subject": "",
+      "rate": null
+    },
+    {
+      "id": "st_1785818776739ml5l",
+      "name": "สไปทร์",
+      "aliases": [
+        "Sprite"
+      ],
+      "parentTitle": "คุณแม่",
+      "subject": "คณิตม.4",
+      "rate": null
+    },
+    {
+      "id": "st_1785818776739jjfz",
+      "name": "ปันปัน",
+      "aliases": [],
+      "parentTitle": "คุณแม่",
+      "subject": "",
+      "rate": null
+    },
+    {
+      "id": "st_1785818776739596z",
+      "name": "เจย์ด้า",
+      "aliases": [],
+      "parentTitle": "คุณแม่",
+      "subject": "",
+      "rate": null
+    }
+  ],
+  "groups": [
+    {
+      "id": "gr_mvrqypqs54wq8",
+      "name": "SMTE",
+      "aliases": [
+        "SMTE"
+      ],
+      "subject": "คณิต SMTE",
+      "rate": null,
+      "memberIds": [
+        "st_1785818776739qhpu",
+        "st_17858187767393m8b",
+        "st_1785818776739ono2"
+      ]
+    },
+    {
+      "id": "gr_mvrqypqsrkl88",
+      "name": "m.1 KKW",
+      "aliases": [
+        "m.1 KKW",
+        "KKW"
+      ],
+      "subject": "คณิต ม.1",
+      "rate": null,
+      "memberIds": [
+        "st_1785818776739nndw",
+        "st_1785818776739t0uz"
+      ]
+    },
+    {
+      "id": "gr_mvrqypqsuchvr",
+      "name": "Physic M.4",
+      "aliases": [
+        "Physic M.4",
+        "Physic"
+      ],
+      "subject": "ฟิสิกส์ ม.4",
+      "rate": null,
+      "memberIds": [
+        "st_1785818776739jjfz",
+        "st_1785818776739596z"
+      ]
+    },
+    {
+      "id": "gr_mvrqyps5hiq72",
+      "name": "Gang Diamond",
+      "aliases": [
+        "Gang Diamond"
+      ],
+      "subject": "",
+      "rate": null,
+      "memberIds": []
+    },
+    {
+      "id": "gr_mvrqyps6pehuv",
+      "name": "PAI",
+      "aliases": [
+        "PAI"
+      ],
+      "subject": "",
+      "rate": null,
+      "memberIds": []
+    }
+  ],
+  "months": {
+    "2026-10": {
+      "closedDays": [
+        "fri"
+      ],
+      "slots": [
+        {
+          "id": "sl_mvrqypqs8geo7",
+          "dow": 1,
+          "start": "16:30",
+          "end": "18:00",
+          "subject": "ฟิสิกส์ ม.5",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739e97q"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsa6oy4",
+          "dow": 1,
+          "start": "18:15",
+          "end": "19:45",
+          "subject": "คณิต ม.3 สาธิต",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739apwk"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqs4fh7z",
+          "dow": 1,
+          "start": "20:00",
+          "end": "21:30",
+          "subject": "คณิต SMTE",
+          "groupId": null,
+          "studentIds": [
+            "st_17858187767390f1k"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqs2tr0z",
+          "dow": 1,
+          "start": "21:30",
+          "end": "22:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [],
+          "price": null,
+          "note": "คาบสำรอง",
+          "flex": true,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsd746y",
+          "dow": 2,
+          "start": "16:30",
+          "end": "18:00",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqs1ggci",
+          "dow": 2,
+          "start": "18:15",
+          "end": "19:45",
+          "subject": "คณิต SMTE",
+          "groupId": "gr_mvrqypqs54wq8",
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsj4fz2",
+          "dow": 2,
+          "start": "20:00",
+          "end": "21:30",
+          "subject": "คณิต ม.6",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739ckz3"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsrjam9",
+          "dow": 2,
+          "start": "21:30",
+          "end": "22:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [],
+          "price": null,
+          "note": "คาบสำรอง",
+          "flex": true,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqspsmle",
+          "dow": 3,
+          "start": "16:30",
+          "end": "18:00",
+          "subject": "ฟิสิกส์ ม.5",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739e97q"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqs6x64h",
+          "dow": 3,
+          "start": "18:15",
+          "end": "19:45",
+          "subject": "คณิต ม.3",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739j4e0"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsdykt7",
+          "dow": 3,
+          "start": "20:00",
+          "end": "21:30",
+          "subject": "คณิต ม.6",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739ckz3"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsn2pp9",
+          "dow": 3,
+          "start": "21:30",
+          "end": "22:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [],
+          "price": null,
+          "note": "คาบสำรอง",
+          "flex": true,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsnb7er",
+          "dow": 4,
+          "start": "16:30",
+          "end": "18:00",
+          "subject": "คณิต ม.4",
+          "groupId": null,
+          "studentIds": [
+            "st_17858187767396cje"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsn93eb",
+          "dow": 4,
+          "start": "18:15",
+          "end": "19:45",
+          "subject": "คณิต SMTE",
+          "groupId": "gr_mvrqypqs54wq8",
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsvug9s",
+          "dow": 4,
+          "start": "20:00",
+          "end": "21:30",
+          "subject": "คณิต SMTE",
+          "groupId": null,
+          "studentIds": [
+            "st_17858187767390f1k"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsdeovz",
+          "dow": 4,
+          "start": "21:30",
+          "end": "22:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [],
+          "price": null,
+          "note": "คาบสำรอง",
+          "flex": true,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqs2sfsy",
+          "dow": 5,
+          "start": "16:30",
+          "end": "18:00",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsa6yjz",
+          "dow": 5,
+          "start": "18:15",
+          "end": "19:45",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsqvh3d",
+          "dow": 5,
+          "start": "20:00",
+          "end": "21:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsr1wl0",
+          "dow": 5,
+          "start": "21:30",
+          "end": "22:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [],
+          "price": null,
+          "note": "คาบสำรอง",
+          "flex": true,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsvsqe0",
+          "dow": 6,
+          "start": "09:00",
+          "end": "10:30",
+          "subject": "คณิต เข้า ม.1",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739h7jd"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqs23x50",
+          "dow": 6,
+          "start": "10:45",
+          "end": "12:15",
+          "subject": "คณิต ม.1",
+          "groupId": "gr_mvrqypqsrkl88",
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsqfr4g",
+          "dow": 6,
+          "start": "13:00",
+          "end": "14:30",
+          "subject": "คณิต ม.3 สาธิต",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739apwk"
+          ],
+          "price": null,
+          "note": "หลังพักเที่ยง",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqshi1ux",
+          "dow": 6,
+          "start": "14:45",
+          "end": "16:15",
+          "subject": "คณิต SMTE",
+          "groupId": "gr_mvrqypqs54wq8",
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsjsfu1",
+          "dow": 6,
+          "start": "16:30",
+          "end": "18:00",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqszz9hq",
+          "dow": 6,
+          "start": "18:15",
+          "end": "19:45",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsu981v",
+          "dow": 6,
+          "start": "19:45",
+          "end": "20:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [],
+          "price": null,
+          "note": "คาบสำรอง",
+          "flex": true,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsi6hwf",
+          "dow": 0,
+          "start": "09:00",
+          "end": "10:30",
+          "subject": "คณิตม.4",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739ml5l"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsieea7",
+          "dow": 0,
+          "start": "10:45",
+          "end": "12:15",
+          "subject": "คณิต ม.1",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739nndw"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqslsow4",
+          "dow": 0,
+          "start": "13:00",
+          "end": "14:30",
+          "subject": "คณิต SMTE",
+          "groupId": "gr_mvrqypqs54wq8",
+          "studentIds": [],
+          "price": null,
+          "note": "หลังพักเที่ยง",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqs2nuz4",
+          "dow": 0,
+          "start": "14:45",
+          "end": "16:15",
+          "subject": "ฟิสิกส์ ม.4",
+          "groupId": "gr_mvrqypqsuchvr",
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsqyoyj",
+          "dow": 0,
+          "start": "16:30",
+          "end": "18:00",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqse1run",
+          "dow": 0,
+          "start": "18:15",
+          "end": "19:45",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsajp8j",
+          "dow": 0,
+          "start": "19:45",
+          "end": "20:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [],
+          "price": null,
+          "note": "คาบสำรอง",
+          "flex": true,
+          "skip": []
+        }
+      ]
+    },
+    "2026-08": {
+      "closedDays": [],
+      "slots": [
+        {
+          "id": "sl_mvrqypqs4jfhh",
+          "dow": 1,
+          "start": "16:30",
+          "end": "18:00",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739e97q"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqse4who",
+          "dow": 1,
+          "start": "18:15",
+          "end": "19:45",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739apwk"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqse176h",
+          "dow": 1,
+          "start": "20:00",
+          "end": "21:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_17858187767390f1k"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsawp6o",
+          "dow": 2,
+          "start": "18:15",
+          "end": "19:45",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739qhpu",
+            "st_17858187767393m8b",
+            "st_1785818776739ono2"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqs8pc3t",
+          "dow": 2,
+          "start": "20:00",
+          "end": "21:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739ckz3"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsnwr5k",
+          "dow": 3,
+          "start": "16:30",
+          "end": "18:00",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739e97q"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsbqmib",
+          "dow": 3,
+          "start": "18:15",
+          "end": "19:45",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739j4e0"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqses6n7",
+          "dow": 3,
+          "start": "20:00",
+          "end": "21:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739ckz3"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsnjgn2",
+          "dow": 4,
+          "start": "16:30",
+          "end": "18:00",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_17858187767396cje"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqs164ix",
+          "dow": 4,
+          "start": "18:15",
+          "end": "19:45",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739qhpu",
+            "st_17858187767393m8b",
+            "st_1785818776739ono2"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqspcdya",
+          "dow": 4,
+          "start": "20:00",
+          "end": "21:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_17858187767390f1k"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqskz0uo",
+          "dow": 6,
+          "start": "09:00",
+          "end": "10:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739h7jd"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqss4k3g",
+          "dow": 6,
+          "start": "10:45",
+          "end": "12:15",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739nndw",
+            "st_1785818776739t0uz"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsvm1k2",
+          "dow": 6,
+          "start": "13:00",
+          "end": "14:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739apwk"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsgjua1",
+          "dow": 6,
+          "start": "14:45",
+          "end": "16:15",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739qhpu",
+            "st_17858187767393m8b",
+            "st_1785818776739ono2"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsnt2zv",
+          "dow": 0,
+          "start": "09:00",
+          "end": "10:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739ml5l"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqso9l1m",
+          "dow": 0,
+          "start": "10:45",
+          "end": "12:15",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739nndw"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsqc0no",
+          "dow": 0,
+          "start": "13:00",
+          "end": "14:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739qhpu",
+            "st_17858187767393m8b",
+            "st_1785818776739ono2"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqsi8sjk",
+          "dow": 0,
+          "start": "14:45",
+          "end": "16:15",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739jjfz",
+            "st_1785818776739596z"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        }
+      ]
+    },
+    "2026-09": {
+      "closedDays": [],
+      "slots": [
+        {
+          "id": "sl_mvrqypqtf1o61",
+          "dow": 1,
+          "start": "16:30",
+          "end": "18:00",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739e97q"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqtiq24d",
+          "dow": 1,
+          "start": "18:15",
+          "end": "19:45",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739apwk"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqtecq88",
+          "dow": 1,
+          "start": "20:00",
+          "end": "21:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_17858187767390f1k"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqtet8xz",
+          "dow": 2,
+          "start": "18:15",
+          "end": "19:45",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739qhpu",
+            "st_17858187767393m8b",
+            "st_1785818776739ono2"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqtu59c4",
+          "dow": 2,
+          "start": "20:00",
+          "end": "21:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739ckz3"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqtsrmqw",
+          "dow": 3,
+          "start": "16:30",
+          "end": "18:00",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739e97q"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqtdpadc",
+          "dow": 3,
+          "start": "18:15",
+          "end": "19:45",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739j4e0"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqtww3oh",
+          "dow": 3,
+          "start": "20:00",
+          "end": "21:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739ckz3"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqtx8ihb",
+          "dow": 4,
+          "start": "16:30",
+          "end": "18:00",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_17858187767396cje"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqtk7275",
+          "dow": 4,
+          "start": "18:15",
+          "end": "19:45",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739qhpu",
+            "st_17858187767393m8b",
+            "st_1785818776739ono2"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqtwb8w9",
+          "dow": 4,
+          "start": "20:00",
+          "end": "21:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_17858187767390f1k"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqtpwr4s",
+          "dow": 6,
+          "start": "09:00",
+          "end": "10:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739h7jd"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqtfsxln",
+          "dow": 6,
+          "start": "10:45",
+          "end": "12:15",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739nndw",
+            "st_1785818776739t0uz"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqtv2s9z",
+          "dow": 6,
+          "start": "13:00",
+          "end": "14:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739apwk"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqt7aq45",
+          "dow": 6,
+          "start": "14:45",
+          "end": "16:15",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739qhpu",
+            "st_17858187767393m8b",
+            "st_1785818776739ono2"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqtjpec8",
+          "dow": 0,
+          "start": "09:00",
+          "end": "10:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739ml5l"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqtp5cq6",
+          "dow": 0,
+          "start": "10:45",
+          "end": "12:15",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739nndw"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqtt8zu6",
+          "dow": 0,
+          "start": "13:00",
+          "end": "14:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739qhpu",
+            "st_17858187767393m8b",
+            "st_1785818776739ono2"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqypqtg2h2s",
+          "dow": 0,
+          "start": "14:45",
+          "end": "16:15",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739jjfz",
+            "st_1785818776739596z"
+          ],
+          "price": 300,
+          "note": "",
+          "flex": false,
+          "skip": []
+        }
+      ]
+    },
+    "2026-11": {
+      "closedDays": [
+        "fri"
+      ],
+      "slots": [
+        {
+          "id": "sl_mvrqyps8k0c4e",
+          "dow": 1,
+          "start": "20:00",
+          "end": "21:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_17858187767390f1k"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": [
+            "2026-11-30"
+          ]
+        },
+        {
+          "id": "sl_mvrqyps8a7w2n",
+          "dow": 2,
+          "start": "18:15",
+          "end": "19:45",
+          "subject": "",
+          "groupId": "gr_mvrqypqs54wq8",
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqyps8skrl6",
+          "dow": 2,
+          "start": "20:00",
+          "end": "21:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739ckz3"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqyps820r3g",
+          "dow": 3,
+          "start": "18:00",
+          "end": "19:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739j4e0"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqyps9d6zj0",
+          "dow": 3,
+          "start": "20:00",
+          "end": "21:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739ckz3"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqyps9zr8vq",
+          "dow": 4,
+          "start": "18:15",
+          "end": "19:45",
+          "subject": "",
+          "groupId": "gr_mvrqypqs54wq8",
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqyps9e9szs",
+          "dow": 4,
+          "start": "20:00",
+          "end": "21:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_17858187767390f1k"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqyps9r5tvl",
+          "dow": 6,
+          "start": "09:30",
+          "end": "11:00",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739h7jd"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqyps9lo5qm",
+          "dow": 6,
+          "start": "11:00",
+          "end": "12:30",
+          "subject": "",
+          "groupId": "gr_mvrqypqsrkl88",
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqyps9rca02",
+          "dow": 6,
+          "start": "12:45",
+          "end": "14:15",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739ml5l"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqyps91snts",
+          "dow": 6,
+          "start": "14:30",
+          "end": "16:00",
+          "subject": "",
+          "groupId": "gr_mvrqypqs54wq8",
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqyps9znb4a",
+          "dow": 6,
+          "start": "16:00",
+          "end": "17:30",
+          "subject": "",
+          "groupId": "gr_mvrqypqsuchvr",
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": []
+        },
+        {
+          "id": "sl_mvrqyps91e4th",
+          "dow": 0,
+          "start": "09:30",
+          "end": "11:00",
+          "subject": "",
+          "groupId": "gr_mvrqyps5hiq72",
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": [
+            "2026-11-01",
+            "2026-11-29"
+          ]
+        },
+        {
+          "id": "sl_mvrqyps913c8p",
+          "dow": 0,
+          "start": "11:00",
+          "end": "12:30",
+          "subject": "",
+          "groupId": "gr_mvrqypqsrkl88",
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": [
+            "2026-11-01",
+            "2026-11-29"
+          ]
+        },
+        {
+          "id": "sl_mvrqyps9uv22f",
+          "dow": 0,
+          "start": "13:30",
+          "end": "15:00",
+          "subject": "",
+          "groupId": "gr_mvrqypqs54wq8",
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": [
+            "2026-11-01",
+            "2026-11-29"
+          ]
+        },
+        {
+          "id": "sl_mvrqyps9jc2c4",
+          "dow": 0,
+          "start": "15:00",
+          "end": "16:30",
+          "subject": "",
+          "groupId": "gr_mvrqypqsuchvr",
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": [
+            "2026-11-01",
+            "2026-11-29"
+          ]
+        },
+        {
+          "id": "sl_mvrqyps90iwp3",
+          "dow": 0,
+          "start": "16:30",
+          "end": "18:30",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739apwk"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": [
+            "2026-11-01",
+            "2026-11-29"
+          ]
+        },
+        {
+          "id": "sl_mvrqyps9hvyya",
+          "dow": 3,
+          "start": "16:30",
+          "end": "18:00",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739e97q"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": [
+            "2026-11-04"
+          ]
+        },
+        {
+          "id": "sl_mvrqyps9ilwxm",
+          "dow": 4,
+          "start": "16:30",
+          "end": "18:00",
+          "subject": "",
+          "groupId": "gr_mvrqyps6pehuv",
+          "studentIds": [],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": [
+            "2026-11-05"
+          ]
+        }
+      ]
+    }
+  },
+  "blocked": [],
+  "absences": []
+}
