@@ -13,7 +13,9 @@
  *   blocked[]   {date}            teacher on leave the whole day (all classes off, shown to students)
  *   absences[]  {studentId, date} one person absent from that day's classes
  *
- * Rate per person per session: slot.price > group.rate > student.rate > settings.defaultRate
+ * Rate per person per session:
+ *   group class (groupId, or 2+ students): slot.price > group.rate > settings.groupRate (300)
+ *   private class (1 student):            slot.price > student.rate > settings.privateRate (350)
  */
 (function (root, factory) {
   const api = factory();
@@ -72,7 +74,7 @@
     return {
       version: 3,
       meta: { rev: 0, updatedAt: null },
-      settings: { defaultRate: 300 },
+      settings: { groupRate: 300, privateRate: 350 },
       students: [],
       groups: [],
       months: {},
@@ -107,7 +109,13 @@
     const S = Object.assign(emptyState(), clone(raw));
     S.version = 3;
     S.meta = Object.assign({ rev: 0, updatedAt: null }, S.meta || {});
-    S.settings = Object.assign({ defaultRate: 300 }, S.settings || {});
+    const legacy = S.settings || {};
+    S.settings = Object.assign({}, legacy, {
+      groupRate: isNum(legacy.groupRate) ? Number(legacy.groupRate) : 300,
+      // older files had one defaultRate for everything: keep it for private classes
+      privateRate: isNum(legacy.privateRate) ? Number(legacy.privateRate) : isNum(legacy.defaultRate) ? Number(legacy.defaultRate) : 350,
+    });
+    delete S.settings.defaultRate;
     S.students = (S.students || []).map((s) => ({
       id: s.id || uid('st'), name: s.name || '', aliases: s.aliases || [],
       parentTitle: s.parentTitle || 'คุณแม่', subject: s.subject || '',
@@ -192,13 +200,20 @@
     return '';
   }
 
+  /** Group class = has a group, or more than one student booked together. */
+  function isGroupClass(S, slot) {
+    return !!slot.groupId || (slot.studentIds || []).length > 1;
+  }
   function rateFor(S, slot, studentId) {
     if (isNum(slot.price)) return Number(slot.price);
-    const g = slot.groupId ? groupById(S, slot.groupId) : null;
-    if (g && isNum(g.rate)) return Number(g.rate);
+    if (isGroupClass(S, slot)) {
+      const g = slot.groupId ? groupById(S, slot.groupId) : null;
+      if (g && isNum(g.rate)) return Number(g.rate);
+      return Number(S.settings.groupRate) || 0;
+    }
     const st = studentById(S, studentId);
     if (st && isNum(st.rate)) return Number(st.rate);
-    return Number(S.settings.defaultRate) || 0;
+    return Number(S.settings.privateRate) || 0;
   }
 
   const isBlocked = (S, ds) => S.blocked.some((b) => b.date === ds);
@@ -373,7 +388,8 @@
   function migrateV2(old, opts) {
     opts = Object.assign({ templateMonths: [] }, opts || {});
     const S = emptyState();
-    S.settings.defaultRate = Number((old.settings || {}).defaultRate) || 300;
+    const oldRate = Number((old.settings || {}).defaultRate) || 300; // v2 had one price for everything
+    S.settings = { groupRate: oldRate, privateRate: oldRate };
     S.students = (old.students || []).map((s) => ({
       id: s.id, name: s.name, aliases: [], parentTitle: s.parentTitle || 'คุณแม่', subject: '', rate: null,
     }));
@@ -448,7 +464,7 @@
     DOW_KEYS, parseTimeRange, timeLabel, shiftYM, daysInMonth, dowOf, datesInMonth, uid,
     emptyState, normalizeState, migrateV2, getMonth, hasMonth, addSlot, findSlot, removeSlot, slotsByDay,
     isDayClosed, copyMonth, studentById, groupById, participantsOf, isBooked, slotTitle, slotSubject,
-    rateFor, isBlocked, isAbsent, sessionsOfSlot, billMonth, studentMonthSchedule, weekStats, cleanTitle, matchTitle,
+    isGroupClass, rateFor, isBlocked, isAbsent, sessionsOfSlot, billMonth, studentMonthSchedule, weekStats, cleanTitle, matchTitle,
     importCalendarMonth,
   };
 });

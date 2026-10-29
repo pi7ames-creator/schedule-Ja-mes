@@ -16,7 +16,7 @@ A tutor's teaching schedule and billing web app served by GitHub Pages
 {
   "version": 3,
   "meta": { "rev": 3, "updatedAt": "ISO" },   // bump rev by 1 on every edit; the app uses it to detect newer data
-  "settings": { "defaultRate": 300 },           // baht per person per session
+  "settings": { "groupRate": 300, "privateRate": 350 }, // default baht per person per session
   "students": [{ "id": "st_…", "name": "เนเน่", "aliases": ["Nene"], "parentTitle": "คุณแม่", "subject": "คณิต ม.6", "rate": null }],
   "groups":   [{ "id": "gr_…", "name": "SMTE", "aliases": ["SMTE"], "subject": "คณิต SMTE", "rate": null, "memberIds": ["st_…"] }],
   "months": {
@@ -40,7 +40,7 @@ A tutor's teaching schedule and billing web app served by GitHub Pages
 ```
 
 Each month has its own weekly plan. A slot repeats every matching weekday in that month except `skip` dates.
-Price per person per session is resolved in this order: `slot.price` → `group.rate` → `student.rate` → `settings.defaultRate`.
+Price per person per session: **group class** (has `groupId`, or 2+ students) → `slot.price` → `group.rate` → `settings.groupRate` (300). **Private class** (1 student) → `slot.price` → `student.rate` → `settings.privateRate` (350). Months before Nov 2026 have `price` pinned on each slot so past bills never change.
 A group slot bills **each member separately** at that member's resolved rate. Groups with no members are not billed. They show up as warnings.
 
 ## Common tasks

@@ -941,7 +941,7 @@ function renderWeeklyTab(panel) {
     </div>
 
     <div class="toolbar teacher-only">
-      <div>⚙️ ราคาตั้งต้น: <input type="number" id="defaultRateInput" value="${S.settings.defaultRate}"> บาท/คน/คาบ</div>
+      <div>⚙️ ราคาตั้งต้นต่อคน/คาบ · 👥 กลุ่ม <input type="number" id="groupRateInput" value="${S.settings.groupRate}"> · 👤 เดี่ยว <input type="number" id="privateRateInput" value="${S.settings.privateRate}"> บาท</div>
       <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
         ${hasPrev ? `<button class="btn small" id="copyPrevBtn" type="button">📋 คัดลอกจาก ${ymLabel(prev)}</button>` : ''}
         <span style="color:var(--text-muted); font-size:12px;">💡 ลากการ์ดไปวางวันอื่นเพื่อย้ายวัน</span>
@@ -959,8 +959,11 @@ function renderWeeklyTab(panel) {
     <div class="grid-columns">${WEEKEND_DOWS.map(renderDayCol).join('')}</div>
   `;
 
-  $('defaultRateInput')?.addEventListener('change', (e) => {
-    S.settings.defaultRate = Number(e.target.value) || 300; saveState('อัปเดตราคาตั้งต้นแล้ว');
+  $('groupRateInput')?.addEventListener('change', (e) => {
+    S.settings.groupRate = Number(e.target.value) || 0; saveState('อัปเดตราคาคลาสกลุ่มแล้ว');
+  });
+  $('privateRateInput')?.addEventListener('change', (e) => {
+    S.settings.privateRate = Number(e.target.value) || 0; saveState('อัปเดตราคาเรียนเดี่ยวแล้ว');
   });
   $('copyPrevBtn')?.addEventListener('click', () => {
     if (!confirm(`แทนตารางของ ${ymLabel(ym)} ด้วยตารางจาก ${ymLabel(prev)}?`)) return;
@@ -1028,7 +1031,7 @@ function renderSlotCard(slot) {
         ${runs < sessions.length ? `<span class="skipinfo teacher-only">เรียน ${runs}/${sessions.length} ครั้งในเดือนนี้</span>` : ''}
       ` : `
         <span class="status">ว่าง</span>
-        <span class="price">${slot.flex ? 'สำรอง' : money(S.settings.defaultRate) + ' บาท/คน'}</span>
+        <span class="price">${slot.flex ? 'สำรอง' : 'เดี่ยว ' + money(S.settings.privateRate) + ' · กลุ่ม ' + money(S.settings.groupRate)}</span>
       `}
     </div>`;
 }
@@ -1124,7 +1127,7 @@ function renderSlotModal() {
         <input type="number" id="slPrice" value="${d.price ?? ''}" placeholder="อัตโนมัติ"></div>
       <div class="modal-field"><label>หมายเหตุ</label><input type="text" id="slNote" value="${escapeHtml(d.note)}" placeholder="เช่น หลังพักเที่ยง"></div>
     </div>
-    <div class="field-hint">ราคาว่างไว้ = ใช้ราคาของกลุ่ม → ราคาของนักเรียนแต่ละคน → ราคาตั้งต้น ${money(S.settings.defaultRate)} บาท</div>
+    <div class="field-hint">ราคาว่างไว้ = อัตโนมัติ · คลาสกลุ่ม: ราคาของกลุ่ม หรือ ${money(S.settings.groupRate)} บาท · เรียนเดี่ยว: ราคาของนักเรียนคนนั้น หรือ ${money(S.settings.privateRate)} บาท</div>
     ${d.skip.length ? `<div class="field-hint" style="margin-top:8px;">🚫 งดเรียนวันที่: ${d.skip.map(x => Number(x.slice(8))).join(', ')} (แก้ได้ที่แท็บปฏิทิน)</div>` : ''}
 
     <div class="modal-btns">
@@ -1321,7 +1324,7 @@ function renderStudentsTab(panel) {
       <div><label>ชื่อใน Google Calendar / ชื่อเล่นอื่น</label><input type="text" id="stAliases" value="${escapeHtml((es?.aliases || []).join(', '))}" placeholder="เช่น Nene, Nene M.6"></div>
       <div><label>คำเรียกผู้ปกครอง</label><input type="text" id="stParent" value="${escapeHtml(es?.parentTitle || 'คุณแม่')}"></div>
       <div><label>วิชาหลัก</label><input type="text" id="stSubject" value="${escapeHtml(es?.subject || '')}" placeholder="เช่น คณิต ม.3"></div>
-      <div><label>ราคาต่อคาบ (บาท)</label><input type="number" id="stRate" value="${es?.rate ?? ''}" placeholder="ว่าง = ราคาตั้งต้น ${S.settings.defaultRate}"></div>
+      <div><label>ราคาเรียนเดี่ยวต่อคาบ (บาท)</label><input type="number" id="stRate" value="${es?.rate ?? ''}" placeholder="ว่าง = ${S.settings.privateRate} (เรียนเดี่ยว)"></div>
       <div class="full-width"><label>อยู่กลุ่ม</label>
         <div class="check-list">${S.groups.length ? S.groups.map(g => `<label><input type="checkbox" class="stGroup" value="${g.id}" ${es && g.memberIds.includes(es.id) ? 'checked' : ''}> ${escapeHtml(g.name)}</label>`).join('') : '<div class="none">ยังไม่มีกลุ่ม</div>'}</div>
       </div>
@@ -1336,7 +1339,7 @@ function renderStudentsTab(panel) {
       <div><label>ชื่อกลุ่ม</label><input type="text" id="grName" value="${escapeHtml(eg?.name || '')}" placeholder="เช่น SMTE"></div>
       <div><label>ชื่อใน Google Calendar</label><input type="text" id="grAliases" value="${escapeHtml((eg?.aliases || []).join(', '))}" placeholder="เช่น SMTE"></div>
       <div><label>วิชา</label><input type="text" id="grSubject" value="${escapeHtml(eg?.subject || '')}" placeholder="เช่น คณิต SMTE"></div>
-      <div><label>ราคาต่อคนต่อคาบ (บาท)</label><input type="number" id="grRate" value="${eg?.rate ?? ''}" placeholder="ว่าง = ใช้ราคาของแต่ละคน"></div>
+      <div><label>ราคาต่อคนต่อคาบ (บาท)</label><input type="number" id="grRate" value="${eg?.rate ?? ''}" placeholder="ว่าง = ${S.settings.groupRate}"></div>
       <div class="full-width"><label>สมาชิก (คิดเงินแยกรายคน)</label>
         <div class="check-list">${S.students.length ? S.students.map(s => `<label><input type="checkbox" class="grMember" value="${s.id}" ${eg && eg.memberIds.includes(s.id) ? 'checked' : ''}> ${escapeHtml(s.name)}</label>`).join('') : '<div class="none">ยังไม่มีนักเรียน</div>'}</div>
       </div>
@@ -1353,7 +1356,7 @@ function renderStudentsTab(panel) {
         <div class="head">
           <div>
             <div class="title">👥 ${escapeHtml(g.name)}</div>
-            <div class="sub">${escapeHtml(g.subject || '-')} · ${g.rate != null ? money(g.rate) + ' บาท/คน/คาบ' : 'ราคาตามแต่ละคน'} · ${used} คาบ/สัปดาห์ในเดือนนี้${g.aliases.length ? ' · ปฏิทิน: ' + escapeHtml(g.aliases.join(', ')) : ''}</div>
+            <div class="sub">${escapeHtml(g.subject || '-')} · ${money(g.rate != null ? g.rate : S.settings.groupRate)} บาท/คน/คาบ${g.rate != null ? '' : '*'} · ${used} คาบ/สัปดาห์ในเดือนนี้${g.aliases.length ? ' · ปฏิทิน: ' + escapeHtml(g.aliases.join(', ')) : ''}</div>
           </div>
           <div style="display:flex; gap:6px;">
             <button class="btn small edit-gr-btn" data-id="${g.id}" type="button">แก้ไข / สมาชิก</button>
@@ -1370,7 +1373,7 @@ function renderStudentsTab(panel) {
       <div class="item-card">
         <div class="head">
           <div>
-            <div class="title">👤 ${escapeHtml(s.name)} <span style="font-weight:600; color:var(--text-muted); font-size:13px;">${s.rate != null ? money(s.rate) : money(S.settings.defaultRate) + '*'} บาท/คาบ</span></div>
+            <div class="title">👤 ${escapeHtml(s.name)} <span style="font-weight:600; color:var(--text-muted); font-size:13px;">เดี่ยว ${s.rate != null ? money(s.rate) : money(S.settings.privateRate) + '*'} บาท/คาบ</span></div>
             <div class="sub">${escapeHtml(s.parentTitle)}${s.subject ? ' · ' + escapeHtml(s.subject) : ''}${s.aliases.length ? ' · ปฏิทิน: ' + escapeHtml(s.aliases.join(', ')) : ''}</div>
           </div>
           <div style="display:flex; gap:6px;">
@@ -1388,12 +1391,12 @@ function renderStudentsTab(panel) {
 
   panel.innerHTML = `
     <h2>กลุ่ม / คลาสกลุ่ม (${S.groups.length})</h2>
-    <div class="hint-text">ลงตารางเป็นกลุ่มครั้งเดียว ระบบคิดเงินแยกให้สมาชิกแต่ละคนตามราคาของคนนั้น</div>
+    <div class="hint-text">ลงตารางเป็นกลุ่มครั้งเดียว ระบบคิดเงินแยกให้สมาชิกแต่ละคน (ราคากลุ่ม ว่างไว้ = ${money(S.settings.groupRate)} บาท/คน/ครั้ง)</div>
     ${groupForm}
     ${groupCards || '<div class="hint-text">ยังไม่มีกลุ่ม</div>'}
 
     <h2 style="margin-top:28px;">นักเรียน (${S.students.length} คน)</h2>
-    <div class="hint-text">ฐานข้อมูลราคา: ใส่ราคาต่อคาบของแต่ละคนได้ (* = ใช้ราคาตั้งต้น) · "ชื่อใน Google Calendar" ใช้จับคู่ตอนนำเข้าตารางจากปฏิทิน</div>
+    <div class="hint-text">ฐานข้อมูลราคา: คลาสกลุ่มคิด ${money(S.settings.groupRate)} บาท/คน/ครั้ง · เรียนเดี่ยวเริ่มที่ ${money(S.settings.privateRate)} บาท (ใส่ราคาเฉพาะคนได้, * = ราคาตั้งต้น) · "ชื่อใน Google Calendar" ใช้จับคู่ตอนนำเข้าตารางจากปฏิทิน</div>
     ${studentForm}
     ${studentCards || '<div class="hint-text">ยังไม่มีนักเรียน</div>'}
   `;
@@ -1457,7 +1460,7 @@ function renderStudentsTab(panel) {
 function buildMessage(student, b) {
   const lines = b.lines.map(l => `🗓️ วัน${DOW_NAMES[l.dow]}: วันที่ ${l.days.join(', ')} (${l.days.length} ครั้ง)
 ${l.subject || l.groupName ? `• วิชา: ${l.subject || '-'}${l.groupName ? ` (คลาสกลุ่ม ${l.groupName})` : ''}\n` : ''}• เวลาเรียน: ${l.time} น.
-• ยอดรวม: ${l.days.length} ครั้ง × ${money(l.rate)} บาท = ${money(l.subtotal)} บาท${l.offDays.length ? `\n• งดเรียน (ครูลา): วันที่ ${l.offDays.join(', ')} — ไม่คิดค่าเรียน` : ''}`);
+• ยอดรวม: ${l.days.length} ครั้ง × ${money(l.rate)} บาท = ${money(l.subtotal)} บาท${l.offDays.length ? `\n• ${cardPrefs().teacherName || 'ครู'}ลา: วันที่ ${l.offDays.join(', ')} (ไม่คิดค่าเรียน)` : ''}`);
   return `สวัสดีครับ${student.parentTitle}
 ขออนุญาตแจ้งสรุปค่าเรียนพิเศษของน้อง (${student.name}) นะครับ
 

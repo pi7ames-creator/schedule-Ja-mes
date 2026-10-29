@@ -1,11 +1,12 @@
 {
   "version": 3,
   "meta": {
-    "rev": 3,
-    "updatedAt": "2026-10-29T03:44:02.607Z"
+    "rev": 4,
+    "updatedAt": "2026-10-29T04:24:46.952Z"
   },
   "settings": {
-    "defaultRate": 300
+    "groupRate": 300,
+    "privateRate": 350
   },
   "students": [
     {
@@ -225,10 +226,11 @@
           "studentIds": [
             "st_1785818776739e97q"
           ],
-          "price": null,
+          "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsa6oy4",
@@ -240,10 +242,11 @@
           "studentIds": [
             "st_1785818776739apwk"
           ],
-          "price": null,
+          "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqs4fh7z",
@@ -255,10 +258,11 @@
           "studentIds": [
             "st_17858187767390f1k"
           ],
-          "price": null,
+          "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqs2tr0z",
@@ -271,7 +275,8 @@
           "price": null,
           "note": "คาบสำรอง",
           "flex": true,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsd746y",
@@ -284,7 +289,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqs1ggci",
@@ -294,10 +300,11 @@
           "subject": "คณิต SMTE",
           "groupId": "gr_mvrqypqs54wq8",
           "studentIds": [],
-          "price": null,
+          "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsj4fz2",
@@ -309,10 +316,11 @@
           "studentIds": [
             "st_1785818776739ckz3"
           ],
-          "price": null,
+          "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsrjam9",
@@ -325,7 +333,8 @@
           "price": null,
           "note": "คาบสำรอง",
           "flex": true,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqspsmle",
@@ -337,10 +346,11 @@
           "studentIds": [
             "st_1785818776739e97q"
           ],
-          "price": null,
+          "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqs6x64h",
@@ -352,10 +362,11 @@
           "studentIds": [
             "st_1785818776739j4e0"
           ],
-          "price": null,
+          "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsdykt7",
@@ -367,10 +378,11 @@
           "studentIds": [
             "st_1785818776739ckz3"
           ],
-          "price": null,
+          "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsn2pp9",
@@ -383,7 +395,8 @@
           "price": null,
           "note": "คาบสำรอง",
           "flex": true,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsnb7er",
@@ -395,10 +408,11 @@
           "studentIds": [
             "st_17858187767396cje"
           ],
-          "price": null,
+          "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsn93eb",
@@ -408,10 +422,11 @@
           "subject": "คณิต SMTE",
           "groupId": "gr_mvrqypqs54wq8",
           "studentIds": [],
-          "price": null,
+          "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsvug9s",
@@ -423,10 +438,11 @@
           "studentIds": [
             "st_17858187767390f1k"
           ],
-          "price": null,
+          "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsdeovz",
@@ -439,7 +455,8 @@
           "price": null,
           "note": "คาบสำรอง",
           "flex": true,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqs2sfsy",
@@ -452,7 +469,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsa6yjz",
@@ -465,7 +483,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsqvh3d",
@@ -478,7 +497,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsr1wl0",
@@ -491,7 +511,8 @@
           "price": null,
           "note": "คาบสำรอง",
           "flex": true,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsvsqe0",
@@ -503,10 +524,11 @@
           "studentIds": [
             "st_1785818776739h7jd"
           ],
-          "price": null,
+          "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqs23x50",
@@ -516,10 +538,11 @@
           "subject": "คณิต ม.1",
           "groupId": "gr_mvrqypqsrkl88",
           "studentIds": [],
-          "price": null,
+          "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsqfr4g",
@@ -531,10 +554,11 @@
           "studentIds": [
             "st_1785818776739apwk"
           ],
-          "price": null,
+          "price": 300,
           "note": "หลังพักเที่ยง",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqshi1ux",
@@ -544,10 +568,11 @@
           "subject": "คณิต SMTE",
           "groupId": "gr_mvrqypqs54wq8",
           "studentIds": [],
-          "price": null,
+          "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsjsfu1",
@@ -560,7 +585,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqszz9hq",
@@ -573,7 +599,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsu981v",
@@ -586,7 +613,8 @@
           "price": null,
           "note": "คาบสำรอง",
           "flex": true,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsi6hwf",
@@ -598,10 +626,11 @@
           "studentIds": [
             "st_1785818776739ml5l"
           ],
-          "price": null,
+          "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsieea7",
@@ -613,10 +642,11 @@
           "studentIds": [
             "st_1785818776739nndw"
           ],
-          "price": null,
+          "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqslsow4",
@@ -626,10 +656,11 @@
           "subject": "SMTE ฟิสิกส์",
           "groupId": "gr_mvrqypqs54wq8",
           "studentIds": [],
-          "price": null,
+          "price": 300,
           "note": "หลังพักเที่ยง",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqs2nuz4",
@@ -639,10 +670,11 @@
           "subject": "ฟิสิกส์ ม.4",
           "groupId": "gr_mvrqypqsuchvr",
           "studentIds": [],
-          "price": null,
+          "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsqyoyj",
@@ -655,7 +687,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqse1run",
@@ -668,7 +701,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsajp8j",
@@ -681,7 +715,8 @@
           "price": null,
           "note": "คาบสำรอง",
           "flex": true,
-          "skip": []
+          "skip": [],
+          "off": []
         }
       ]
     },
@@ -701,7 +736,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqse4who",
@@ -716,7 +752,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqse176h",
@@ -731,7 +768,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsawp6o",
@@ -748,7 +786,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqs8pc3t",
@@ -763,7 +802,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsnwr5k",
@@ -778,7 +818,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsbqmib",
@@ -793,7 +834,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqses6n7",
@@ -808,7 +850,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsnjgn2",
@@ -823,7 +866,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqs164ix",
@@ -840,7 +884,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqspcdya",
@@ -855,7 +900,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqskz0uo",
@@ -870,7 +916,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqss4k3g",
@@ -886,7 +933,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsvm1k2",
@@ -901,7 +949,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsgjua1",
@@ -918,7 +967,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsnt2zv",
@@ -933,7 +983,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqso9l1m",
@@ -948,7 +999,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsqc0no",
@@ -965,7 +1017,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqsi8sjk",
@@ -981,7 +1034,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         }
       ]
     },
@@ -1001,7 +1055,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqtiq24d",
@@ -1016,7 +1071,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqtecq88",
@@ -1031,7 +1087,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqtet8xz",
@@ -1048,7 +1105,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqtu59c4",
@@ -1063,7 +1121,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqtsrmqw",
@@ -1078,7 +1137,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqtdpadc",
@@ -1093,7 +1153,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqtww3oh",
@@ -1108,7 +1169,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqtx8ihb",
@@ -1123,7 +1185,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqtk7275",
@@ -1140,7 +1203,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqtwb8w9",
@@ -1155,7 +1219,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqtpwr4s",
@@ -1170,7 +1235,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqtfsxln",
@@ -1186,7 +1252,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqtv2s9z",
@@ -1201,7 +1268,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqt7aq45",
@@ -1218,7 +1286,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqtjpec8",
@@ -1233,7 +1302,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqtp5cq6",
@@ -1248,7 +1318,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqtt8zu6",
@@ -1265,7 +1336,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqypqtg2h2s",
@@ -1281,7 +1353,8 @@
           "price": 300,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         }
       ]
     },
@@ -1305,7 +1378,8 @@
           "flex": false,
           "skip": [
             "2026-11-30"
-          ]
+          ],
+          "off": []
         },
         {
           "id": "sl_mvrqyps8a7w2n",
@@ -1318,7 +1392,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqyps8skrl6",
@@ -1333,7 +1408,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqyps820r3g",
@@ -1348,7 +1424,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqyps9d6zj0",
@@ -1363,7 +1440,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqyps9zr8vq",
@@ -1376,7 +1454,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqyps9e9szs",
@@ -1391,7 +1470,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqyps9r5tvl",
@@ -1406,7 +1486,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqyps9lo5qm",
@@ -1419,7 +1500,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqyps9rca02",
@@ -1434,7 +1516,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqyps91snts",
@@ -1447,7 +1530,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqyps9znb4a",
@@ -1460,7 +1544,8 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": []
+          "skip": [],
+          "off": []
         },
         {
           "id": "sl_mvrqyps91e4th",
@@ -1476,7 +1561,8 @@
           "skip": [
             "2026-11-01",
             "2026-11-29"
-          ]
+          ],
+          "off": []
         },
         {
           "id": "sl_mvrqyps913c8p",
@@ -1492,7 +1578,8 @@
           "skip": [
             "2026-11-01",
             "2026-11-29"
-          ]
+          ],
+          "off": []
         },
         {
           "id": "sl_mvrqyps9uv22f",
@@ -1508,7 +1595,8 @@
           "skip": [
             "2026-11-01",
             "2026-11-29"
-          ]
+          ],
+          "off": []
         },
         {
           "id": "sl_mvrqyps9jc2c4",
@@ -1524,7 +1612,8 @@
           "skip": [
             "2026-11-01",
             "2026-11-29"
-          ]
+          ],
+          "off": []
         },
         {
           "id": "sl_mvrqyps90iwp3",
@@ -1542,7 +1631,8 @@
           "skip": [
             "2026-11-01",
             "2026-11-29"
-          ]
+          ],
+          "off": []
         },
         {
           "id": "sl_mvrqyps9hvyya",
@@ -1559,7 +1649,8 @@
           "flex": false,
           "skip": [
             "2026-11-04"
-          ]
+          ],
+          "off": []
         },
         {
           "id": "sl_mvrqyps9ilwxm",
@@ -1574,7 +1665,8 @@
           "flex": false,
           "skip": [
             "2026-11-05"
-          ]
+          ],
+          "off": []
         }
       ]
     }

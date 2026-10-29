@@ -8,7 +8,7 @@ const C = require('../js/core.js');
 function baseState() {
   return C.normalizeState({
     version: 3,
-    settings: { defaultRate: 300 },
+    settings: { groupRate: 300, privateRate: 350 },
     students: [
       { id: 'a', name: 'อุ๋งอิ๋ง', aliases: ['Auning'], rate: null },
       { id: 'g1', name: 'กัส', aliases: [] },
@@ -51,15 +51,32 @@ test('participants of a group slot are the live group members', () => {
   assert.deepEqual(C.participantsOf(S, slot), ['g1', 'g2', 'g3', 'a']);
 });
 
-test('rate priority: slot.price > group.rate > student.rate > default', () => {
+test('group class: slot.price > group.rate > settings.groupRate (300); student rate not used', () => {
   const S = baseState();
   const smte = C.addSlot(S, '2026-11', { dow: 2, start: '18:15', end: '19:45', groupId: 'smte' });
-  assert.equal(C.rateFor(S, smte, 'g1'), 300); // default
-  assert.equal(C.rateFor(S, smte, 'g3'), 250); // student rate
+  assert.equal(C.rateFor(S, smte, 'g1'), 300);
+  assert.equal(C.rateFor(S, smte, 'g3'), 300); // g3 has a private rate of 250 — not applied to group classes
   const pai = C.addSlot(S, '2026-11', { dow: 4, start: '16:30', end: '18:00', groupId: 'pai' });
-  assert.equal(C.rateFor(S, pai, 'g3'), 500); // group rate beats student rate
-  smte.price = 350;
-  assert.equal(C.rateFor(S, smte, 'g3'), 350); // slot override beats all
+  assert.equal(C.rateFor(S, pai, 'g3'), 500);
+  smte.price = 280;
+  assert.equal(C.rateFor(S, smte, 'g3'), 280);
+});
+
+test('private class: slot.price > student.rate > settings.privateRate (350)', () => {
+  const S = baseState();
+  const solo = C.addSlot(S, '2026-11', { dow: 1, start: '20:00', end: '21:30', studentIds: ['a'] });
+  assert.equal(C.rateFor(S, solo, 'a'), 350);
+  const nene = C.addSlot(S, '2026-11', { dow: 3, start: '20:00', end: '21:30', studentIds: ['n'] });
+  assert.equal(C.rateFor(S, nene, 'n'), 400); // student's own price
+  nene.price = 450;
+  assert.equal(C.rateFor(S, nene, 'n'), 450);
+});
+
+test('a non-group slot with 2+ students is priced as a group class', () => {
+  const S = baseState();
+  const pair = C.addSlot(S, '2026-11', { dow: 6, start: '10:00', end: '11:30', studentIds: ['a', 'n'] });
+  assert.equal(C.rateFor(S, pair, 'a'), 300);
+  assert.equal(C.rateFor(S, pair, 'n'), 300);
 });
 
 // ---------- months are independent ----------
@@ -111,7 +128,7 @@ test('sessions respect skip dates, blocked days, closed days and absences', () =
   assert.ok(C.sessionsOfSlot(S, '2026-11', slot).every(x => !x.held));
 });
 
-test('group class is billed per individual at each person\'s rate', () => {
+test('group class is billed per individual; private class at private rate', () => {
   const S = baseState();
   C.addSlot(S, '2026-11', { dow: 2, start: '18:15', end: '19:45', groupId: 'smte' }); // 4 Tuesdays
   C.addSlot(S, '2026-11', { dow: 1, start: '20:00', end: '21:30', studentIds: ['a'], skip: ['2026-11-30'] }); // 4 Mondays
@@ -120,11 +137,11 @@ test('group class is billed per individual at each person\'s rate', () => {
   const by = Object.fromEntries(bill.students.map(b => [b.studentId, b]));
   assert.equal(by.g1.total, 3 * 300);
   assert.equal(by.g2.total, 4 * 300);
-  assert.equal(by.g3.total, 4 * 250);
-  assert.equal(by.a.total, 4 * 300);
+  assert.equal(by.g3.total, 4 * 300);
+  assert.equal(by.a.total, 4 * 350);
   assert.equal(by.g1.lines[0].groupName, 'SMTE');
   assert.deepEqual(by.g1.lines[0].days, [10, 24, 3].sort((x, y) => x - y));
-  assert.equal(bill.grandTotal, 900 + 1200 + 1000 + 1200);
+  assert.equal(bill.grandTotal, 900 + 1200 + 1200 + 1400);
   assert.equal(by.n, undefined); // no classes -> not billed
 });
 
@@ -145,7 +162,7 @@ test('weekStats counts booked slots, weekday target and weekly revenue (flex exc
   const w = C.weekStats(S, '2026-11');
   assert.equal(w.booked, 5);
   assert.equal(w.weekdayTargetMet, 1);
-  assert.equal(w.revenue, 3 * 300 + (300 + 300 + 250));
+  assert.equal(w.revenue, 3 * 350 + 3 * 300);
 });
 
 // ---------- per-student monthly card ----------
@@ -350,5 +367,16 @@ test('normalizeState accepts v2 data and fills defaults for v3', () => {
   assert.ok(S.meta && typeof S.meta.rev === 'number');
   const empty = C.normalizeState({});
   assert.deepEqual(empty.students, []);
-  assert.equal(empty.settings.defaultRate, 300);
+  assert.equal(empty.settings.groupRate, 300);
+  assert.equal(empty.settings.privateRate, 350);
+});
+
+test('old data with a single defaultRate keeps that price for private classes', () => {
+  const S = C.normalizeState({ version: 3, settings: { defaultRate: 320 } });
+  assert.equal(S.settings.groupRate, 300);
+  assert.equal(S.settings.privateRate, 320);
+  assert.equal(S.settings.defaultRate, undefined);
+  const M = C.migrateV2(v2Fixture(), { templateMonths: [] }); // v2 had one price for everything
+  assert.equal(M.settings.groupRate, 300);
+  assert.equal(M.settings.privateRate, 300);
 });

@@ -55,12 +55,13 @@
   }
   /** Text with a horizontal strike line (teacher-leave dates). */
   function strikeText(ctx, text, x, y, color, align) {
+    const prevAlign = ctx.textAlign;
     ctx.fillStyle = color; ctx.textAlign = align || 'left'; ctx.fillText(text, x, y);
     const w = ctx.measureText(text).width;
     const x0 = align === 'center' ? x - w / 2 : x;
     const fs = parseFloat(ctx.font.match(/(\d+(?:\.\d+)?)px/)[1]);
     ctx.fillRect(x0 - 3, y - fs * 0.32, w + 6, Math.max(2, fs / 14));
-    ctx.textAlign = 'left';
+    ctx.textAlign = prevAlign;
     return w;
   }
   /** "วันที่ 3 · 10 · 17 (ลา)" with leave dates in red + struck through; stops with … when out of room. */
@@ -160,24 +161,23 @@
       const marks = sch.byDate[ds] || [];
       const isClass = marks.some((m) => m.status === 'class');
       const allOff = marks.length > 0 && marks.every((m) => m.status === 'teacher-off');
-      if (isClass || allOff) { // soft pill: green = class day, red = teacher on leave
-        ctx.fillStyle = allOff ? T.redSoft : T.accentSoft;
+      if (isClass) { // soft pill behind class days
+        ctx.fillStyle = T.accentSoft;
         roundRect(ctx, cx - cw / 2 + 8, top + 6, cw - 16, CELL_H - 12, 22); ctx.fill();
       }
       ctx.font = font(36, marks.length ? 700 : 400);
       if (allOff) {
+        // normally a class day, but the teacher is on leave: just a red line through the date
         strikeText(ctx, String(d), cx, top + 52, T.red, 'center');
-        ctx.font = font(20, 700); ctx.fillStyle = T.red; ctx.textAlign = 'center';
-        ctx.fillText('ครูลา', cx, top + 88);
       } else {
         ctx.fillStyle = marks.length ? T.text : T.faint;
         ctx.fillText(String(d), cx, top + 52);
-        const shown = marks.slice(0, 4);
+        const shown = marks.filter((m) => m.status !== 'teacher-off').slice(0, 4);
         const gap = 22;
         shown.forEach((m, i) => {
           const dx = cx + (i - (shown.length - 1) / 2) * gap;
-          const off = m.status === 'teacher-off';
-          dot(ctx, dx, top + 80, 7.5, off ? T.red : T.palette[m.item % T.palette.length], m.status !== 'class');
+          if (m.status === 'teacher-off') return; // only real classes get a dot
+          dot(ctx, dx, top + 80, 7.5, T.palette[m.item % T.palette.length], m.status !== 'class');
         });
       }
     }
@@ -192,16 +192,15 @@
       ctx.fillStyle = T.redSoft;
       roundRect(ctx, P, y, W - 2 * P, 76, 20); ctx.fill();
       dot(ctx, P + 30, y + 38, 8, T.red, false);
-      const when = teacherOff.map((ds) => {
-        const [yy, mm, dd] = ds.split('-').map(Number);
-        return `${DOW_SHORT[new Date(yy, mm - 1, dd).getDay()]}. ${dd} ${TH_MONTHS_SHORT[mm - 1]}`;
-      }).join(', ');
+      // "พี่เจมส์ลา  วันที่ 10, 17 และ 19 พ.ย."
+      const days = teacherOff.map((ds) => String(Number(ds.slice(8))));
+      const dayList = days.length > 1 ? `${days.slice(0, -1).join(', ')} และ ${days[days.length - 1]}` : days[0];
       ctx.fillStyle = T.red; ctx.font = font(30, 700);
-      const head = `${teacherName}ลา `;
+      const head = `${teacherName}ลา  `;
       ctx.fillText(head, P + 52, y + 49);
       const hw = ctx.measureText(head).width;
-      ctx.font = font(28, 400);
-      fitText(ctx, `${when} · งดเรียน ไม่นับครั้ง`, P + 52 + hw, y + 49, W - 2 * P - 80 - hw);
+      ctx.font = font(30, 400);
+      fitText(ctx, `วันที่ ${dayList} ${TH_MONTHS_SHORT[m0 - 1]}`, P + 52 + hw, y + 49, W - 2 * P - 80 - hw);
       y += noticeH - 14;
     }
 
@@ -239,7 +238,7 @@
         ctx.fillStyle = T.muted; ctx.font = font(28, 400);
         fitText(ctx, subj, P + 40, y + 84, W - 2 * P - 40 - (o.showPrice ? 220 : 0));
         // line 3: dates
-        drawDateList(ctx, T, it.dates, P + 40, y + 124, W - 2 * P - 40);
+        drawDateList(ctx, T, it.dates.filter((d) => d.status !== 'teacher-off'), P + 40, y + 124, W - 2 * P - 40);
         y += ROW_H;
         if (idx < sch.items.length - 1) { ctx.fillStyle = T.line; ctx.fillRect(P + 40, y - 12, W - 2 * P - 40, 1.5); }
       });
