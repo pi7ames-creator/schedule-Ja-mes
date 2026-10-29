@@ -1,8 +1,8 @@
 {
   "version": 3,
   "meta": {
-    "rev": 10,
-    "updatedAt": "2026-10-29T07:02:12.044Z"
+    "rev": 11,
+    "updatedAt": "2026-10-29T07:04:59.154Z"
   },
   "settings": {
     "groupRate": 300,
@@ -20,7 +20,7 @@
       "parentTitle": "คุณแม่",
       "subject": "ฟิสิกส์ ม.5",
       "rate": null,
-      "family": ""
+      "family": "บ้านจ๋าจ้า"
     },
     {
       "id": "st_1785818776739apwk",
@@ -51,7 +51,7 @@
       "parentTitle": "คุณแม่",
       "subject": "",
       "rate": null,
-      "family": ""
+      "family": "บ้านเนเน่"
     },
     {
       "id": "st_17858187767393m8b",
@@ -80,7 +80,7 @@
       "parentTitle": "คุณแม่",
       "subject": "คณิต ม.6",
       "rate": null,
-      "family": ""
+      "family": "บ้านเนเน่"
     },
     {
       "id": "st_1785818776739j4e0",
@@ -91,7 +91,7 @@
       "parentTitle": "คุณแม่",
       "subject": "คณิต ม.3",
       "rate": null,
-      "family": ""
+      "family": "บ้านจ๋าจ้า"
     },
     {
       "id": "st_17858187767396cje",
