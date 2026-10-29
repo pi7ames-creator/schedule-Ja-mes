@@ -7,8 +7,10 @@
  *   students[]  {id, name, aliases[], parentTitle, subject, rate|null}
  *   groups[]    {id, name, aliases[], subject, rate|null, memberIds[]}
  *   months{YYYY-MM: {closedDays[], slots[]}}
- *     slot      {id, dow(0=Sun), start, end, subject, groupId|null, studentIds[], price|null, note, flex, skip[YYYY-MM-DD]}
- *   blocked[]   {date}            whole day off (no class at all)
+ *     slot      {id, dow(0=Sun), start, end, subject, groupId|null, studentIds[], price|null, note, flex,
+ *                skip[YYYY-MM-DD]  not scheduled that date (silent),
+ *                off[YYYY-MM-DD]}  teacher on leave for this class that date (shown to its students)
+ *   blocked[]   {date}            teacher on leave the whole day (all classes off, shown to students)
  *   absences[]  {studentId, date} one person absent from that day's classes
  *
  * Rate per person per session: slot.price > group.rate > student.rate > settings.defaultRate
@@ -92,6 +94,7 @@
       note: s.note || '',
       flex: !!s.flex,
       skip: Array.isArray(s.skip) ? [...s.skip].sort() : [],
+      off: Array.isArray(s.off) ? [...s.off].sort() : [],
     };
   }
 
@@ -154,7 +157,7 @@
     const src = getMonth(S, fromYm);
     S.months[toYm] = {
       closedDays: [...src.closedDays],
-      slots: src.slots.map((s) => normSlot(Object.assign(clone(s), { id: undefined, skip: [] }))),
+      slots: src.slots.map((s) => normSlot(Object.assign(clone(s), { id: undefined, skip: [], off: [] }))),
     };
     return S.months[toYm];
   }
@@ -206,10 +209,12 @@
     const closed = isDayClosed(S, ym, slot.dow);
     const people = participantsOf(S, slot);
     return datesInMonth(ym, slot.dow).map((date) => {
-      const cancelled = closed || isBlocked(S, date) || slot.skip.includes(date);
+      // teacherOff: the class was planned but the teacher is on leave -> students should be told
+      const teacherOff = !closed && !slot.skip.includes(date) && (isBlocked(S, date) || slot.off.includes(date));
+      const cancelled = closed || teacherOff || slot.skip.includes(date);
       const present = cancelled ? [] : people.filter((id) => !isAbsent(S, id, date));
       const absent = cancelled ? [] : people.filter((id) => isAbsent(S, id, date));
-      return { date, cancelled, held: !cancelled && (present.length > 0 || people.length === 0), present, absent };
+      return { date, cancelled, teacherOff, held: !cancelled && (present.length > 0 || people.length === 0), present, absent };
     });
   }
 
@@ -226,13 +231,14 @@
       const sessions = sessionsOfSlot(S, ym, slot);
       for (const sid of participantsOf(S, slot)) {
         const dates = sessions.filter((x) => x.present.includes(sid)).map((x) => x.date);
+        const offDays = sessions.filter((x) => x.teacherOff).map((x) => Number(x.date.slice(8)));
         if (!dates.length) continue;
         const rate = rateFor(S, slot, sid);
         if (!per.has(sid)) per.set(sid, { studentId: sid, lines: [], total: 0, count: 0 });
         const b = per.get(sid);
         b.lines.push({
           slotId: slot.id, dow: slot.dow, time: timeLabel(slot), subject: slotSubject(S, slot),
-          groupName: g ? g.name : '', days: dates.map((d) => Number(d.slice(8))), rate,
+          groupName: g ? g.name : '', days: dates.map((d) => Number(d.slice(8))), offDays, rate,
           subtotal: rate * dates.length,
         });
         b.total += rate * dates.length;
@@ -257,8 +263,8 @@
       if (!participantsOf(S, slot).includes(studentId)) continue;
       const g = slot.groupId ? groupById(S, slot.groupId) : null;
       const dates = sessionsOfSlot(S, ym, slot)
-        .filter((x) => !x.cancelled)
-        .map((x) => ({ date: x.date, status: x.present.includes(studentId) ? 'class' : 'absent' }));
+        .filter((x) => !x.cancelled || x.teacherOff)
+        .map((x) => ({ date: x.date, status: x.teacherOff ? 'teacher-off' : x.present.includes(studentId) ? 'class' : 'absent' }));
       if (!dates.length) continue;
       items.push({
         slotId: slot.id, dow: slot.dow, start: slot.start, end: slot.end, time: timeLabel(slot),
@@ -272,7 +278,8 @@
       (byDate[d.date] = byDate[d.date] || []).push({ item: idx, status: d.status });
       if (d.status === 'class') { classCount++; total += it.rate; }
     }));
-    return { studentId, ym, items, byDate, classCount, total };
+    const teacherOff = Object.keys(byDate).filter((d) => byDate[d].some((m) => m.status === 'teacher-off')).sort();
+    return { studentId, ym, items, byDate, classCount, total, teacherOff };
   }
 
   /** Stats for a "typical week" of the month's plan. */

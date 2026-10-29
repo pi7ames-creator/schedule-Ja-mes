@@ -149,7 +149,7 @@ test('weekStats counts booked slots, weekday target and weekly revenue (flex exc
 });
 
 // ---------- per-student monthly card ----------
-test('studentMonthSchedule lists a student\'s slots with class/absent dates, skipping cancelled ones', () => {
+test('studentMonthSchedule lists class/absent dates, marks teacher leave (blocked day), hides skipped dates', () => {
   const S = baseState();
   C.addSlot(S, '2026-11', { dow: 4, start: '18:15', end: '19:45', groupId: 'smte', skip: ['2026-11-05'] });
   C.addSlot(S, '2026-11', { dow: 2, start: '18:15', end: '19:45', groupId: 'smte' });
@@ -163,6 +163,7 @@ test('studentMonthSchedule lists a student\'s slots with class/absent dates, ski
   assert.equal(card.items[0].subject, 'คณิต SMTE');
   assert.deepEqual(card.items[0].dates, [
     { date: '2026-11-03', status: 'class' },
+    { date: '2026-11-10', status: 'teacher-off' },
     { date: '2026-11-17', status: 'absent' },
     { date: '2026-11-24', status: 'class' },
   ]);
@@ -171,6 +172,45 @@ test('studentMonthSchedule lists a student\'s slots with class/absent dates, ski
   assert.equal(card.classCount, 5); // held sessions only: 3,24 + 12,19,26
   assert.equal(card.total, C.billMonth(S, '2026-11').students.find(b => b.studentId === 'g1').total);
   assert.equal(card.items[0].rate, 300);
+  assert.deepEqual(card.teacherOff, ['2026-11-10']);
+  assert.deepEqual(card.byDate['2026-11-10'], [{ item: 0, status: 'teacher-off' }]);
+});
+
+test('teacher leave for one class only (slot.off) is not billed and is shown only to that class', () => {
+  const S = baseState();
+  const tue = C.addSlot(S, '2026-11', { dow: 2, start: '18:15', end: '19:45', groupId: 'smte', off: ['2026-11-17'] });
+  C.addSlot(S, '2026-11', { dow: 2, start: '20:00', end: '21:30', studentIds: ['a'] });
+  const ses = C.sessionsOfSlot(S, '2026-11', tue).find(x => x.date === '2026-11-17');
+  assert.equal(ses.cancelled, true);
+  assert.equal(ses.teacherOff, true);
+  // group member sees the leave, the other student (same day, other class) does not
+  const g1 = C.studentMonthSchedule(S, '2026-11', 'g1');
+  assert.deepEqual(g1.teacherOff, ['2026-11-17']);
+  assert.equal(g1.classCount, 3);
+  const a = C.studentMonthSchedule(S, '2026-11', 'a');
+  assert.deepEqual(a.teacherOff, []);
+  assert.equal(a.classCount, 4);
+  // billing lines expose the leave days for the parent message
+  const line = C.billMonth(S, '2026-11').students.find(b => b.studentId === 'g1').lines[0];
+  assert.deepEqual(line.days, [3, 10, 24]);
+  assert.deepEqual(line.offDays, [17]);
+});
+
+test('skip (not scheduled) is never shown as teacher leave; closed weekday neither', () => {
+  const S = baseState();
+  C.addSlot(S, '2026-11', { dow: 1, start: '20:00', end: '21:30', studentIds: ['a'], skip: ['2026-11-30'] });
+  const card = C.studentMonthSchedule(S, '2026-11', 'a');
+  assert.deepEqual(card.teacherOff, []);
+  assert.equal(card.items[0].dates.length, 4);
+  C.getMonth(S, '2026-11').closedDays = ['mon'];
+  assert.deepEqual(C.studentMonthSchedule(S, '2026-11', 'a').items, []);
+});
+
+test('copyMonth clears per-slot teacher leave dates', () => {
+  const S = baseState();
+  C.addSlot(S, '2026-10', { dow: 1, start: '20:00', end: '21:30', studentIds: ['a'], off: ['2026-10-05'] });
+  C.copyMonth(S, '2026-10', '2026-11');
+  assert.deepEqual(C.getMonth(S, '2026-11').slots[0].off, []);
 });
 
 test('studentMonthSchedule returns empty items for a student with no classes', () => {

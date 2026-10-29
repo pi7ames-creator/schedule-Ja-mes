@@ -13,15 +13,16 @@
   const THEMES = {
     light: {
       bg: '#FAFAF8', text: '#1F2328', muted: '#8A9099', faint: '#C9CED4', line: '#ECEEF0',
-      accent: '#52796F', accentSoft: '#E8F0EC',
+      accent: '#52796F', accentSoft: '#E8F0EC', red: '#E11D48', redSoft: '#FFE4E6',
       palette: ['#52796F', '#D97706', '#4F6D9A', '#B5547A', '#7C6BB0', '#3F8F8B', '#9A7B4F'],
     },
     dark: {
       bg: '#15181C', text: '#ECEFF1', muted: '#8B949E', faint: '#4A525C', line: '#262B31',
-      accent: '#84A98C', accentSoft: '#1E2925',
+      accent: '#84A98C', accentSoft: '#1E2925', red: '#F87171', redSoft: '#3A1E22',
       palette: ['#84A98C', '#F0A44B', '#7FA3D6', '#E08AAE', '#A99BE0', '#6CC4BE', '#C9A574'],
     },
   };
+  const TH_MONTHS_SHORT = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
   const TH_MONTHS = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
   const DOW_NAMES = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
   const DOW_SHORT = ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'];
@@ -52,6 +53,33 @@
     }
     ctx.fillText(t, x, y);
   }
+  /** Text with a horizontal strike line (teacher-leave dates). */
+  function strikeText(ctx, text, x, y, color, align) {
+    ctx.fillStyle = color; ctx.textAlign = align || 'left'; ctx.fillText(text, x, y);
+    const w = ctx.measureText(text).width;
+    const x0 = align === 'center' ? x - w / 2 : x;
+    const fs = parseFloat(ctx.font.match(/(\d+(?:\.\d+)?)px/)[1]);
+    ctx.fillRect(x0 - 3, y - fs * 0.32, w + 6, Math.max(2, fs / 14));
+    ctx.textAlign = 'left';
+    return w;
+  }
+  /** "วันที่ 3 · 10 · 17 (ลา)" with leave dates in red + struck through; stops with … when out of room. */
+  function drawDateList(ctx, T, dates, x, y, maxW) {
+    ctx.font = font(28, 400);
+    ctx.fillStyle = T.text; ctx.fillText('วันที่ ', x, y);
+    let cx = x + ctx.measureText('วันที่ ').width;
+    const sep = '  ·  ', sepW = ctx.measureText(sep).width, ell = ctx.measureText('…').width;
+    for (let i = 0; i < dates.length; i++) {
+      const d = dates[i], day = String(Number(d.date.slice(8)));
+      const label = d.status === 'absent' ? `${day} (ลา)` : day;
+      const w = ctx.measureText(label).width + (i ? sepW : 0);
+      if (cx + w > x + maxW - ell) { ctx.fillStyle = T.muted; ctx.fillText('…', cx, y); return; }
+      if (i) { ctx.fillStyle = T.faint; ctx.fillText(sep, cx, y); cx += sepW; }
+      if (d.status === 'teacher-off') cx += strikeText(ctx, label, cx, y, T.red);
+      else { ctx.fillStyle = d.status === 'absent' ? T.muted : T.text; ctx.fillText(label, cx, y); cx += ctx.measureText(label).width; }
+    }
+  }
+
   function dot(ctx, x, y, r, color, hollow) {
     ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
     if (hollow) { ctx.lineWidth = 3; ctx.strokeStyle = color; ctx.stroke(); }
@@ -67,7 +95,7 @@
 
   /**
    * @param {{studentName:string, ym:string, schedule:any, showPrice?:boolean, theme?:'light'|'dark',
-   *          footer?:string, scale?:number}} o
+   *          footer?:string, teacherName?:string, scale?:number}} o
    */
   async function render(o) {
     await ensureFonts();
@@ -79,6 +107,8 @@
     const rows = Math.ceil((firstDow + nDays) / 7);
     const hasAbsent = sch.items.some((it) => it.dates.some((d) => d.status === 'absent'));
     const footer = (o.footer || '').trim();
+    const teacherOff = sch.teacherOff || [];
+    const teacherName = (o.teacherName || 'ครู').trim();
 
     // ---- measure ----
     const headerH = 200;
@@ -87,7 +117,8 @@
     const summaryH = 130;
     const legendH = hasAbsent ? 50 : 0;
     const footerH = footer ? 70 : 0;
-    const H = P + headerH + calH + 40 + listH + summaryH + legendH + footerH + P - 20;
+    const noticeH = teacherOff.length ? 104 : 0;
+    const H = P + headerH + calH + 40 + noticeH + listH + summaryH + legendH + footerH + P - 20;
 
     const scale = o.scale || 2;
     const canvas = document.createElement('canvas');
@@ -128,24 +159,51 @@
       const ds = `${o.ym}-${String(d).padStart(2, '0')}`;
       const marks = sch.byDate[ds] || [];
       const isClass = marks.some((m) => m.status === 'class');
-      if (isClass) { // soft pill behind class days
-        ctx.fillStyle = T.accentSoft;
+      const allOff = marks.length > 0 && marks.every((m) => m.status === 'teacher-off');
+      if (isClass || allOff) { // soft pill: green = class day, red = teacher on leave
+        ctx.fillStyle = allOff ? T.redSoft : T.accentSoft;
         roundRect(ctx, cx - cw / 2 + 8, top + 6, cw - 16, CELL_H - 12, 22); ctx.fill();
       }
-      ctx.fillStyle = marks.length ? T.text : T.faint;
       ctx.font = font(36, marks.length ? 700 : 400);
-      ctx.fillText(String(d), cx, top + 52);
-      const shown = marks.slice(0, 4);
-      const gap = 22;
-      shown.forEach((m, i) => {
-        const dx = cx + (i - (shown.length - 1) / 2) * gap;
-        dot(ctx, dx, top + 80, 7.5, T.palette[m.item % T.palette.length], m.status === 'absent');
-      });
+      if (allOff) {
+        strikeText(ctx, String(d), cx, top + 52, T.red, 'center');
+        ctx.font = font(20, 700); ctx.fillStyle = T.red; ctx.textAlign = 'center';
+        ctx.fillText('ครูลา', cx, top + 88);
+      } else {
+        ctx.fillStyle = marks.length ? T.text : T.faint;
+        ctx.fillText(String(d), cx, top + 52);
+        const shown = marks.slice(0, 4);
+        const gap = 22;
+        shown.forEach((m, i) => {
+          const dx = cx + (i - (shown.length - 1) / 2) * gap;
+          const off = m.status === 'teacher-off';
+          dot(ctx, dx, top + 80, 7.5, off ? T.red : T.palette[m.item % T.palette.length], m.status !== 'class');
+        });
+      }
     }
     ctx.textAlign = 'left';
     y += rows * CELL_H + 24;
     ctx.fillStyle = T.line; ctx.fillRect(P, y, W - 2 * P, 2);
     y += 16;
+
+    // ---- teacher leave notice (only dates this student had class) ----
+    if (teacherOff.length) {
+      y += 14;
+      ctx.fillStyle = T.redSoft;
+      roundRect(ctx, P, y, W - 2 * P, 76, 20); ctx.fill();
+      dot(ctx, P + 30, y + 38, 8, T.red, false);
+      const when = teacherOff.map((ds) => {
+        const [yy, mm, dd] = ds.split('-').map(Number);
+        return `${DOW_SHORT[new Date(yy, mm - 1, dd).getDay()]}. ${dd} ${TH_MONTHS_SHORT[mm - 1]}`;
+      }).join(', ');
+      ctx.fillStyle = T.red; ctx.font = font(30, 700);
+      const head = `${teacherName}ลา `;
+      ctx.fillText(head, P + 52, y + 49);
+      const hw = ctx.measureText(head).width;
+      ctx.font = font(28, 400);
+      fitText(ctx, `${when} · งดเรียน ไม่นับครั้ง`, P + 52 + hw, y + 49, W - 2 * P - 80 - hw);
+      y += noticeH - 14;
+    }
 
     // ---- details ----
     if (!sch.items.length) {
@@ -181,9 +239,7 @@
         ctx.fillStyle = T.muted; ctx.font = font(28, 400);
         fitText(ctx, subj, P + 40, y + 84, W - 2 * P - 40 - (o.showPrice ? 220 : 0));
         // line 3: dates
-        const dates = it.dates.map((d) => (d.status === 'absent' ? `${Number(d.date.slice(8))} (ลา)` : String(Number(d.date.slice(8))))).join('  ·  ');
-        ctx.fillStyle = T.text; ctx.font = font(28, 400);
-        fitText(ctx, `วันที่ ${dates}`, P + 40, y + 124, W - 2 * P - 40);
+        drawDateList(ctx, T, it.dates, P + 40, y + 124, W - 2 * P - 40);
         y += ROW_H;
         if (idx < sch.items.length - 1) { ctx.fillStyle = T.line; ctx.fillRect(P + 40, y - 12, W - 2 * P - 40, 1.5); }
       });

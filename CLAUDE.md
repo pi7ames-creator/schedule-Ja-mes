@@ -29,11 +29,12 @@ A tutor's teaching schedule and billing web app served by GitHub Pages
         "studentIds": [],                        // individual slot: these students
         "price": null,                           // per-person override for this slot only
         "note": "", "flex": false,               // flex = backup slot, excluded from weekly revenue
-        "skip": ["2026-11-03"]                   // dates this weekly slot does NOT run in this month
+        "skip": ["2026-11-03"],                  // dates this weekly slot is not scheduled (silent, not shown)
+        "off": ["2026-11-19"]                    // teacher on leave for this class only (red + struck through on students' cards)
       }]
     }
   },
-  "blocked":  [{ "date": "2026-11-12" }],          // whole day off
+  "blocked":  [{ "date": "2026-11-12" }],          // teacher on leave all day (shown as ครูลา to every student with class that day)
   "absences": [{ "studentId": "st_…", "date": "2026-11-17" }]
 }
 ```

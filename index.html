@@ -316,6 +316,8 @@
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer;
   }
   .chip-item.absent { background: transparent; color: var(--accent-rose); text-decoration: line-through; border: 1px solid var(--accent-rose); }
+  .chip-item.teacher-off { background: var(--accent-rose-light); color: var(--accent-rose); text-decoration: line-through; }
+  .month-cell.blocked .chip-item.teacher-off { background: #fff; }
   .chip-item.cancelled { background: transparent; color: var(--text-muted); text-decoration: line-through; border: 1px dashed var(--border-dark); }
   .chip-item.chip-more { background: var(--bg-sub); color: var(--text-secondary); font-weight: 700; border: 1px dashed var(--border-dark); }
 
@@ -1046,7 +1048,7 @@ function attachDragAndDrop(panel) {
       const dow = Number(body.dataset.dow);
       if (slot && slot.dow !== dow) {
         slot.dow = dow;
-        slot.skip = []; // dates belonged to the old weekday
+        slot.skip = []; slot.off = []; // dates belonged to the old weekday
         saveState(`ย้ายไปวัน${DOW_NAMES[dow]}แล้ว`);
       }
       draggedId = null;
@@ -1183,7 +1185,7 @@ function saveSlotModal() {
   }
   if (v.id) {
     const s = C.findSlot(S, view.ym, v.id);
-    if (s.dow !== d.dow) d.skip = [];
+    if (s.dow !== d.dow) { d.skip = []; d.off = []; }
     Object.assign(s, d, { id: s.id });
   } else {
     C.addSlot(S, view.ym, d);
@@ -1218,20 +1220,21 @@ function renderMonthlyTab(panel) {
     let chips = visible.map(slot => {
       const ses = sessIndex[slot.id][ds];
       let cls = 'chip-item';
-      if (ses.cancelled) cls += ' cancelled';
+      if (ses.teacherOff) cls += ' teacher-off';
+      else if (ses.cancelled) cls += ' cancelled';
       else if (ses.absent.length && !ses.present.length) cls += ' absent';
       else if (ses.absent.length) cls += ' partial';
       return `<span class="${cls}" data-slot="${slot.id}" data-ds="${ds}"><span class="chip-time">${slot.start}</span>${escapeHtml(C.slotTitle(S, slot) || 'ว่าง')}</span>`;
     }).join('');
     if (daySlots.length > CHIP_LIMIT) chips += `<span class="chip-item chip-more" data-ds="${ds}">${expanded ? 'ย่อ' : `+${daySlots.length - CHIP_LIMIT} เพิ่มเติม`}</span>`;
-    cells += `<div class="month-cell ${blocked ? 'blocked' : ''}" data-ds="${ds}"><div class="num">${d}</div>${blocked ? '<div class="blocked-label">ติดธุระ</div>' : ''}${chips}</div>`;
+    cells += `<div class="month-cell ${blocked ? 'blocked' : ''}" data-ds="${ds}"><div class="num">${d}</div>${blocked ? '<div class="blocked-label">ครูลา</div>' : ''}${chips}</div>`;
   }
 
   panel.innerHTML = `
     <h2>ปฏิทินเดือน ${TH_MONTHS[m - 1]} ${y + 543}</h2>
     <div class="hint-text teacher-only">
       👉 คลิก <b>ชิปคาบเรียน</b> เพื่องดคาบเฉพาะวันนั้น หรือติ๊กว่าใครลา (คิดเงินตามจริงอัตโนมัติ)<br>
-      👉 คลิกที่ <b>ว่างในกล่องวันที่</b> เพื่อบล็อก/ยกเลิกทั้งวัน (ติดธุระ)
+      👉 คลิกที่ <b>ว่างในกล่องวันที่</b> = ครูลาทั้งวัน (ตัวแดงขีดฆ่าในการ์ดของนักเรียนที่มีเรียนวันนั้น)
     </div>
     <div class="month-grid">
       ${DOW_SHORT.map(x => `<div class="month-dow">${x}</div>`).join('')}
@@ -1250,7 +1253,7 @@ function renderMonthlyTab(panel) {
     } else {
       const ds = cell.dataset.ds, i = S.blocked.findIndex(b => b.date === ds);
       if (i >= 0) S.blocked.splice(i, 1); else S.blocked.push({ date: ds });
-      saveState(i >= 0 ? 'ยกเลิกวันติดธุระแล้ว' : 'บล็อกวันนี้แล้ว (ติดธุระ)');
+      saveState(i >= 0 ? 'ยกเลิกครูลาแล้ว' : 'ครูลาทั้งวันแล้ว — แจ้งในการ์ดของนักเรียนที่เรียนวันนี้');
     }
   }));
 }
@@ -1260,12 +1263,19 @@ function openSessionModal(slotId, ds) {
   view.session = { slotId, ds };
   const people = C.participantsOf(S, slot);
   const dayOff = C.isBlocked(S, ds) || C.isDayClosed(S, view.ym, slot.dow);
+  const state = slot.off.includes(ds) ? 'off' : slot.skip.includes(ds) ? 'skip' : 'normal';
+  const opt = (v, label, hint) => `<label class="session-person" style="justify-content:flex-start; gap:10px;">
+      <input type="radio" name="sesState" value="${v}" ${state === v ? 'checked' : ''} ${dayOff ? 'disabled' : ''} style="width:auto; -webkit-appearance:auto; appearance:auto;">
+      <span>${label}<span class="field-hint" style="display:block; margin:0;">${hint}</span></span></label>`;
   $('sessionModalBox').innerHTML = `
     <h3>${escapeHtml(C.slotTitle(S, slot) || 'คาบว่าง')}</h3>
     <div class="time-info">${dateLabel(ds)} · ${C.timeLabel(slot)}${C.slotSubject(S, slot) ? ' · ' + escapeHtml(C.slotSubject(S, slot)) : ''}</div>
-    ${dayOff ? '<div class="banner warn" style="margin-bottom:12px;">วันนี้ถูกบล็อกทั้งวัน (ติดธุระ/วันหยุด)</div>' : ''}
+    ${dayOff ? `<div class="banner err" style="margin-bottom:12px;">${C.isBlocked(S, ds) ? 'ครูลาทั้งวัน (กดที่ว่างในช่องวันที่ในปฏิทินเพื่อยกเลิก)' : 'วันหยุดประจำสัปดาห์ของเดือนนี้'}</div>` : ''}
     <div class="modal-field">
-      <label style="display:flex; gap:8px; align-items:center; font-size:14px;"><input type="checkbox" id="sesSkip" ${slot.skip.includes(ds) ? 'checked' : ''} ${dayOff ? 'disabled' : ''}> 🚫 งดคาบนี้เฉพาะวันนี้</label>
+      <label>คาบนี้วันนี้</label>
+      ${opt('normal', '✅ เรียนตามปกติ', '')}
+      ${opt('off', '🔴 ครูลา', 'ขึ้นตัวแดงขีดฆ่าในการ์ดของนักเรียนคาบนี้ · ไม่คิดเงิน')}
+      ${opt('skip', '⚪️ ไม่มีคาบ (ไม่แสดง)', 'เช่น สัปดาห์นี้ไม่ได้นัด · ไม่คิดเงิน')}
     </div>
     <div class="modal-field">
       <label>ใครมาเรียน (เอาติ๊กออก = ลา ไม่คิดเงินวันนั้น)</label>
@@ -1278,8 +1288,13 @@ function openSessionModal(slotId, ds) {
     </div>`;
   $('sesCancel').addEventListener('click', () => closeModal('sessionModal'));
   $('sesSave').addEventListener('click', () => {
-    const skip = $('sesSkip').checked;
-    slot.skip = slot.skip.filter(x => x !== ds); if (skip) slot.skip.push(ds); slot.skip.sort();
+    const st = (document.querySelector('input[name=sesState]:checked') || {}).value || state;
+    if (!dayOff) {
+      slot.skip = slot.skip.filter(x => x !== ds); slot.off = slot.off.filter(x => x !== ds);
+      if (st === 'skip') slot.skip.push(ds);
+      if (st === 'off') slot.off.push(ds);
+      slot.skip.sort(); slot.off.sort();
+    }
     document.querySelectorAll('.sesPresent').forEach(cb => {
       S.absences = S.absences.filter(a => !(a.studentId === cb.value && a.date === ds));
       if (!cb.checked) S.absences.push({ studentId: cb.value, date: ds });
@@ -1442,7 +1457,7 @@ function renderStudentsTab(panel) {
 function buildMessage(student, b) {
   const lines = b.lines.map(l => `🗓️ วัน${DOW_NAMES[l.dow]}: วันที่ ${l.days.join(', ')} (${l.days.length} ครั้ง)
 ${l.subject || l.groupName ? `• วิชา: ${l.subject || '-'}${l.groupName ? ` (คลาสกลุ่ม ${l.groupName})` : ''}\n` : ''}• เวลาเรียน: ${l.time} น.
-• ยอดรวม: ${l.days.length} ครั้ง × ${money(l.rate)} บาท = ${money(l.subtotal)} บาท`);
+• ยอดรวม: ${l.days.length} ครั้ง × ${money(l.rate)} บาท = ${money(l.subtotal)} บาท${l.offDays.length ? `\n• งดเรียน (ครูลา): วันที่ ${l.offDays.join(', ')} — ไม่คิดค่าเรียน` : ''}`);
   return `สวัสดีครับ${student.parentTitle}
 ขออนุญาตแจ้งสรุปค่าเรียนพิเศษของน้อง (${student.name}) นะครับ
 
@@ -1488,7 +1503,7 @@ function renderBillingTab(panel) {
 
   panel.innerHTML = `
     <h2>สรุปค่าเรียน & แจ้งผู้ปกครอง — ${ymLabel(view.ym)}</h2>
-    <div class="hint-text">คิดตามวันเรียนจริงของเดือนนี้ (หักวันงด วันติดธุระ และวันลาแล้ว) · คลาสกลุ่มคิดแยกรายคน</div>
+    <div class="hint-text">คิดตามวันเรียนจริงของเดือนนี้ (หักวันงด วันครูลา และวันนักเรียนลาแล้ว) · คลาสกลุ่มคิดแยกรายคน</div>
     ${warn}
     ${cards}
     <div class="grand-box"><div>💰 ยอดรวมรายได้สุทธิเดือนนี้</div><div class="num">${money(bill.grandTotal)} บาท</div></div>`;
@@ -1615,7 +1630,7 @@ const LS_CARD = 'tutor_card_prefs';
 function cardPrefs() {
   let p = {};
   try { p = JSON.parse(lsGet(LS_CARD) || '{}'); } catch (e) {}
-  return Object.assign({ showPrice: false, theme: 'light', footer: '' }, p);
+  return Object.assign({ showPrice: false, theme: 'light', footer: '', teacherName: 'พี่เจมส์' }, p);
 }
 /** ASCII file name (some browsers drop Thai characters in downloads): schedule-2026-11-Nene.png */
 function cardFileName(sid) {
@@ -1653,8 +1668,9 @@ function renderCardModal() {
       </div>
     </div>
     <div class="card-preview" id="cardPreview"><span style="color:var(--text-muted); font-size:13px;">กำลังสร้างรูป…</span></div>
-    <div class="modal-field">
-      <input type="text" id="cardFooter" value="${escapeHtml(pr.footer)}" placeholder="ข้อความท้ายการ์ด (ไม่บังคับ) เช่น ติดต่อครูเจมส์ 08x-xxx-xxxx">
+    <div class="row2">
+      <div class="modal-field"><label>ชื่อครู (ใช้ตอนแจ้งลา)</label><input type="text" id="cardTeacher" value="${escapeHtml(pr.teacherName)}" placeholder="พี่เจมส์"></div>
+      <div class="modal-field"><label>ข้อความท้ายการ์ด</label><input type="text" id="cardFooter" value="${escapeHtml(pr.footer)}" placeholder="ไม่บังคับ"></div>
     </div>
     <div class="modal-btns">
       <button class="btn" id="cardClose" type="button">ปิด</button>
@@ -1674,6 +1690,7 @@ function renderCardModal() {
   }));
   let footerTimer;
   $('cardFooter').addEventListener('input', (e) => { clearTimeout(footerTimer); footerTimer = setTimeout(() => savePref({ footer: e.target.value }), 400); });
+  $('cardTeacher').addEventListener('input', (e) => { clearTimeout(footerTimer); footerTimer = setTimeout(() => savePref({ teacherName: e.target.value }), 400); });
   $('cardClose').addEventListener('click', () => closeModal('cardModal'));
   $('cardDownload').addEventListener('click', downloadCard);
   $('cardShare').addEventListener('click', shareCard);
@@ -1686,7 +1703,7 @@ async function drawCardPreview() {
   const st = C.studentById(S, c.studentId);
   const canvas = await TutorCard.render({
     studentName: st ? st.name : '?', ym: view.ym, schedule: C.studentMonthSchedule(S, view.ym, c.studentId),
-    showPrice: pr.showPrice, theme: pr.theme, footer: pr.footer,
+    showPrice: pr.showPrice, theme: pr.theme, footer: pr.footer, teacherName: pr.teacherName,
   });
   const blob = await TutorCard.toBlob(canvas);
   if (view.card !== c) return; // modal closed / reopened meanwhile
