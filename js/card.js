@@ -96,7 +96,8 @@
 
   /**
    * @param {{studentName:string, ym:string, schedule:any, showPrice?:boolean, theme?:'light'|'dark',
-   *          footer?:string, teacherName?:string, scale?:number}} o
+   *          footer?:string, teacherName?:string, scale?:number,
+   *          adjust?:{credit:number, extra:number, adjRate:number, adjust:number, net:number}|null}} o
    */
   async function render(o) {
     await ensureFonts();
@@ -115,7 +116,8 @@
     const headerH = 200;
     const calH = DOW_H + rows * CELL_H;
     const listH = sch.items.length ? 70 + sch.items.length * ROW_H : 120;
-    const summaryH = 130;
+    const adj = o.showPrice && o.adjust && (o.adjust.credit || o.adjust.extra) ? o.adjust : null;
+    const summaryH = adj ? 220 : 130;
     const legendH = hasAbsent ? 50 : 0;
     const footerH = footer ? 70 : 0;
     const noticeH = teacherOff.length ? 104 : 0;
@@ -247,13 +249,26 @@
     // ---- summary ----
     y += 10;
     ctx.fillStyle = T.accentSoft;
-    roundRect(ctx, P, y, W - 2 * P, 96, 24); ctx.fill();
+    roundRect(ctx, P, y, W - 2 * P, adj ? 186 : 96, 24); ctx.fill();
     ctx.fillStyle = T.accent; ctx.font = font(32, 700);
     ctx.fillText(`รวม ${sch.classCount} ครั้ง`, P + 32, y + 60);
     if (o.showPrice) {
-      ctx.textAlign = 'right'; ctx.font = font(36, 700);
+      ctx.textAlign = 'right'; ctx.font = font(adj ? 30 : 36, adj ? 400 : 700);
       ctx.fillText(`${money(sch.total)} บาท`, W - P - 32, y + 61);
       ctx.textAlign = 'left';
+    }
+    if (adj) {
+      // e.g. "หักชดเชย 2 ครั้ง · เรียนเพิ่ม 1 ครั้ง        −300"  then  "สุทธิ        3,900 บาท"
+      const parts = [adj.credit ? `หักชดเชย ${adj.credit} ครั้ง` : '', adj.extra ? `เรียนเพิ่ม ${adj.extra} ครั้ง` : ''].filter(Boolean).join(' · ');
+      ctx.font = font(28, 400); ctx.fillStyle = T.muted;
+      ctx.fillText(parts, P + 32, y + 108);
+      ctx.textAlign = 'right';
+      ctx.fillText(`${adj.adjust < 0 ? '−' : '+'}${money(Math.abs(adj.adjust))} บาท`, W - P - 32, y + 108);
+      ctx.fillStyle = T.line; ctx.fillRect(P + 32, y + 126, W - 2 * P - 64, 2);
+      ctx.fillStyle = T.accent; ctx.font = font(36, 700);
+      ctx.fillText(`${money(adj.net)} บาท`, W - P - 32, y + 166);
+      ctx.textAlign = 'left'; ctx.font = font(30, 700);
+      ctx.fillText('ยอดสุทธิ', P + 32, y + 164);
     }
     y += summaryH;
 

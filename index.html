@@ -571,6 +571,42 @@
   }
   .gh-form label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
 
+  /* Billing checklist */
+  .bill-progress { background: var(--bg-sub); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 12px; }
+  .bp-top { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 14px; }
+  .bp-top span { color: var(--text-muted); font-family: var(--font-mono); font-size: 13px; }
+  .bp-bar { height: 8px; background: var(--border-color); border-radius: 8px; margin-top: 8px; overflow: hidden; }
+  .bp-bar div { height: 100%; background: var(--accent-sage); border-radius: 8px; transition: width .3s; }
+  .msg-settings { margin-bottom: 14px; font-size: 13px; }
+  .msg-settings summary { cursor: pointer; color: var(--text-secondary); font-weight: 600; }
+  .msg-settings input { width: 100%; padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-dark); font-family: inherit; font-size: 15px; }
+  .bill-row { border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 10px; background: var(--bg-card); box-shadow: var(--shadow-sm); }
+  .bill-row.is-sent { background: var(--bg-sub); }
+  .bill-row.is-sent .bill-name, .bill-row.is-sent .bill-amt { color: var(--text-muted); }
+  .bill-main { display: flex; gap: 12px; align-items: flex-start; }
+  .bill-check input { width: 26px; height: 26px; margin: 2px 0 0; accent-color: var(--accent-sage); cursor: pointer; }
+  .bill-who { flex: 1; min-width: 0; }
+  .bill-name { font-weight: 700; font-size: 15px; }
+  .bill-who .sub { font-size: 12.5px; color: var(--text-muted); }
+  .bill-who .sent-at { color: var(--accent-sage); font-weight: 700; }
+  .bill-who .changed { color: var(--accent-amber); font-weight: 700; }
+  .bill-amt { font-family: var(--font-mono); font-weight: 700; font-size: 18px; color: var(--accent-sage); white-space: nowrap; text-align: right; }
+  .bill-amt span { font-family: var(--font-body); font-size: 12px; margin-left: 4px; color: var(--text-muted); }
+  .bill-actions { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 0 38px; }
+  .bill-detail { margin: 12px 0 0 38px; border-top: 1px dashed var(--border-dark); padding-top: 10px; }
+  .adj-row { margin-bottom: 12px; }
+  .adj-name { font-weight: 700; font-size: 14px; }
+  .adj-name .sub { font-weight: 400; color: var(--text-muted); font-size: 12.5px; margin-left: 6px; }
+  .adj-fields { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; font-size: 13px; margin: 6px 0; }
+  .adj-fields input { width: 64px; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border-dark); font-family: var(--font-mono); font-size: 15px; }
+  .adj-net { font-family: var(--font-mono); margin-left: auto; }
+  .bill-detail details summary { cursor: pointer; font-size: 12.5px; color: var(--text-secondary); }
+  .short-preview { min-height: 200px; }
+  @media (max-width: 720px) {
+    .bill-actions, .bill-detail { margin-left: 0; }
+    .adj-net { margin-left: 0; width: 100%; }
+  }
+
   /* Mini schedule card (PNG for LINE) */
   .card-modal-box { max-width: 520px; }
   .card-preview {
@@ -881,7 +917,7 @@ function render() {
   else if (view.tab === 'students') renderStudentsTab(panel);
   else if (view.tab === 'billing') renderBillingTab(panel);
   else if (view.tab === 'export') renderExportTab(panel);
-  panel.querySelectorAll('.card-btn').forEach(b => b.addEventListener('click', () => openCardModal(b.dataset.id)));
+  panel.querySelectorAll('.card-btn').forEach(b => b.addEventListener('click', () => openCardModal(b.dataset.id, !!b.dataset.parent)));
 }
 
 function initApp() {
@@ -1323,6 +1359,8 @@ function renderStudentsTab(panel) {
       <div><label>ชื่อนักเรียน</label><input type="text" id="stName" value="${escapeHtml(es?.name || '')}" placeholder="เช่น น้องพันพัน"></div>
       <div><label>ชื่อใน Google Calendar / ชื่อเล่นอื่น</label><input type="text" id="stAliases" value="${escapeHtml((es?.aliases || []).join(', '))}" placeholder="เช่น Nene, Nene M.6"></div>
       <div><label>คำเรียกผู้ปกครอง</label><input type="text" id="stParent" value="${escapeHtml(es?.parentTitle || 'คุณแม่')}"></div>
+      <div><label>บ้าน (พี่น้องใส่ชื่อเดียวกัน → รวมบิล)</label><input type="text" id="stFamily" list="familyList" value="${escapeHtml(es?.family || '')}" placeholder="เช่น บ้านอิงอิง (ว่าง = แยกบิล)">
+        <datalist id="familyList">${[...new Set(S.students.map(x => x.family).filter(Boolean))].map(f => `<option value="${escapeHtml(f)}">`).join('')}</datalist></div>
       <div><label>วิชาหลัก</label><input type="text" id="stSubject" value="${escapeHtml(es?.subject || '')}" placeholder="เช่น คณิต ม.3"></div>
       <div><label>ราคาเรียนเดี่ยวต่อคาบ (บาท)</label><input type="number" id="stRate" value="${es?.rate ?? ''}" placeholder="ว่าง = ${S.settings.privateRate} (เรียนเดี่ยว)"></div>
       <div class="full-width"><label>อยู่กลุ่ม</label>
@@ -1383,6 +1421,7 @@ function renderStudentsTab(panel) {
           </div>
         </div>
         <div>
+          ${s.family ? `<span class="tag muted">🏠 ${escapeHtml(s.family)}</span>` : ''}
           ${groupsOf(s.id).map(g => `<span class="tag">👥 ${escapeHtml(g.name)}</span>`).join('')}
           <span class="tag ${b ? '' : 'muted'}">${ymLabel(view.ym)}: ${b ? `${b.count} ครั้ง · ${money(b.total)} บาท` : 'ไม่มีคาบ'}</span>
         </div>
@@ -1405,7 +1444,7 @@ function renderStudentsTab(panel) {
   $('saveStudentBtn').addEventListener('click', () => {
     const name = $('stName').value.trim();
     if (!name) { alert('กรุณากรอกชื่อนักเรียน'); return; }
-    const data = { name, aliases: splitList($('stAliases').value), parentTitle: $('stParent').value.trim() || 'คุณแม่', subject: $('stSubject').value.trim(), rate: numOrNull($('stRate').value) };
+    const data = { name, aliases: splitList($('stAliases').value), parentTitle: $('stParent').value.trim() || 'คุณแม่', family: $('stFamily').value.trim(), subject: $('stSubject').value.trim(), rate: numOrNull($('stRate').value) };
     let st = es;
     if (st) Object.assign(st, data); else { st = Object.assign({ id: C.uid('st') }, data); S.students.push(st); }
     const chosen = [...document.querySelectorAll('.stGroup:checked')].map(x => x.value);
@@ -1457,68 +1496,152 @@ function renderStudentsTab(panel) {
 /* =========================================
    TAB 4: BILLING (per person, groups split)
    ========================================= */
-function buildMessage(student, b) {
-  const lines = b.lines.map(l => `🗓️ วัน${DOW_NAMES[l.dow]}: วันที่ ${l.days.join(', ')} (${l.days.length} ครั้ง)
+/** Full per-student message (dates per weekday), including make-up / extra sessions. */
+function buildMessage(student, m) {
+  const lines = m.lines.map(l => `🗓️ วัน${DOW_NAMES[l.dow]}: วันที่ ${l.days.join(', ')} (${l.days.length} ครั้ง)
 ${l.subject || l.groupName ? `• วิชา: ${l.subject || '-'}${l.groupName ? ` (คลาสกลุ่ม ${l.groupName})` : ''}\n` : ''}• เวลาเรียน: ${l.time} น.
 • ยอดรวม: ${l.days.length} ครั้ง × ${money(l.rate)} บาท = ${money(l.subtotal)} บาท${l.offDays.length ? `\n• ${cardPrefs().teacherName || 'ครู'}ลา: วันที่ ${l.offDays.join(', ')} (ไม่คิดค่าเรียน)` : ''}`);
+  const adj = [];
+  if (m.credit) adj.push(`➖ หักชดเชย ${m.credit} ครั้ง × ${money(m.adjRate)} = -${money(m.credit * m.adjRate)} บาท`);
+  if (m.extra) adj.push(`➕ เรียนเพิ่ม ${m.extra} ครั้ง × ${money(m.adjRate)} = +${money(m.extra * m.adjRate)} บาท`);
   return `สวัสดีครับ${student.parentTitle}
 ขออนุญาตแจ้งสรุปค่าเรียนพิเศษของน้อง (${student.name}) นะครับ
 
 📌 ตารางเรียน (${student.name}) – (${ymLabel(view.ym)})
 
-${lines.join('\n\n')}
+${lines.join('\n\n')}${adj.length ? `\n\n${adj.join('\n')}` : ''}
 
-✅ ยอดรวมสุทธิ: ${money(b.total)} บาท
+✅ ยอดรวมสุทธิ: ${money(m.net)} บาท
 
 ขอบคุณครับ 🙏`;
 }
 
+function msgSettings() {
+  return { sender: S.settings.senderName || 'เจมส์', closing: S.settings.msgClosing != null ? S.settings.msgClosing : '(Brown bow) ขอบคุณครับ (Brown bow)' };
+}
+function copyText(text) {
+  const done = () => showToast('คัดลอกข้อความแล้ว');
+  const fallback = () => {
+    const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy'); ta.remove(); done();
+  };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(done).catch(fallback); else fallback();
+}
+function shortDate(iso) { const d = new Date(iso); return `${d.getDate()} ${['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'][d.getMonth()]}`; }
+
 function renderBillingTab(panel) {
-  const bill = C.billMonth(S, view.ym);
-  const warn = bill.emptyGroups.length ? `
-    <div class="banner warn"><div>⚠️ กลุ่มที่ยังไม่มีสมาชิก จึงยังไม่ถูกคิดเงิน: <b>${bill.emptyGroups.map(g => escapeHtml(g.name)).join(', ')}</b></div>
+  const st = C.monthStatement(S, view.ym);
+  const ms = msgSettings();
+  if (!view.billOpen) view.billOpen = [];
+  const filter = view.billFilter || 'all';
+  const warn = st.emptyGroups.length ? `
+    <div class="banner warn"><div>⚠️ กลุ่มที่ยังไม่มีสมาชิก จึงยังไม่ถูกคิดเงิน: <b>${st.emptyGroups.map(g => escapeHtml(g.name)).join(', ')}</b></div>
       <div class="actions"><button class="btn small" id="goGroupsBtn" type="button">ไปใส่สมาชิก</button></div></div>` : '';
 
-  if (!bill.students.length) {
+  if (!st.families.length) {
     panel.innerHTML = `<h2>สรุปค่าเรียน & แจ้งผู้ปกครอง — ${ymLabel(view.ym)}</h2>${warn}
       <div style="padding:20px; text-align:center; color:var(--text-muted);">ยังไม่มีคาบเรียนที่คิดเงินได้ในเดือนนี้ (ไปที่แท็บ "ตารางรายสัปดาห์" เพื่อลงตาราง)</div>`;
     $('goGroupsBtn')?.addEventListener('click', () => setTab('students'));
     return;
   }
 
-  const cards = bill.students.map(b => {
-    const s = C.studentById(S, b.studentId);
-    const msgId = 'msg_' + s.id;
+  const n = st.families.length, sent = st.sentCount;
+  const sentMoney = st.families.filter(f => f.sent).reduce((t, f) => t + f.total, 0);
+  const shown = st.families.filter(f => filter === 'all' || !f.sent);
+
+  const rows = shown.map(f => {
+    const open = view.billOpen.includes(f.key);
+    const concise = C.conciseMessage(f, { monthLabel: ymLabel(view.ym), sender: ms.sender, closing: ms.closing });
+    const names = f.members.map(m => m.name).join(' · ');
+    const adjTags = f.members.filter(m => m.credit || m.extra).map(m => `<span class="tag warn">${escapeHtml(m.name)} ${m.credit ? '−' + m.credit : ''}${m.credit && m.extra ? ' ' : ''}${m.extra ? '+' + m.extra : ''} ครั้ง</span>`).join('');
     return `
-      <div class="item-card">
-        <div class="head">
-          <div class="title">👤 ${escapeHtml(s.name)} (${b.count} ครั้งรวม)</div>
-          <div style="font-size:16px; font-weight:700; color:var(--accent-sage);">${money(b.total)} บาท</div>
+      <div class="bill-row ${f.sent ? 'is-sent' : ''}" data-key="${escapeHtml(f.key)}">
+        <div class="bill-main">
+          <label class="bill-check" title="ส่งยอดแล้ว">
+            <input type="checkbox" class="sent-cb" data-key="${escapeHtml(f.key)}" data-total="${f.total}" ${f.sent ? 'checked' : ''}>
+          </label>
+          <div class="bill-who">
+            <div class="bill-name">${escapeHtml(names)} ${f.members.length > 1 ? '<span class="tag muted">พี่น้อง</span>' : ''}</div>
+            <div class="sub">${escapeHtml(f.parentTitle)} · ${f.members.reduce((t, m) => t + m.count, 0)} ครั้ง
+              ${f.sent ? ` · <span class="sent-at">✓ ส่งแล้ว ${shortDate(f.sent.at)}</span>` : ''}
+              ${f.changedSinceSent ? ` · <span class="changed">⚠️ ยอดเปลี่ยนหลังส่ง (เดิม ${money(f.sent.total)})</span>` : ''}</div>
+            <div>${adjTags}</div>
+          </div>
+          <div class="bill-amt">${money(f.total)}<span>บาท</span></div>
         </div>
-        <div>${[...new Set(b.lines.filter(l => l.groupName).map(l => l.groupName))].map(n => `<span class="tag">👥 ${escapeHtml(n)}</span>`).join('')}</div>
-        <textarea id="${msgId}" class="msg-textarea">${escapeHtml(buildMessage(s, b))}</textarea>
-        <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
-          <button class="btn primary small copy-msg-btn" data-target="${msgId}" type="button">📋 คัดลอกข้อความแจ้งผู้ปกครอง</button>
-          <button class="btn small card-btn" data-id="${s.id}" type="button">🖼️ การ์ดตารางเรียน (PNG)</button>
+        <div class="bill-actions">
+          <button class="btn small primary copy-short-btn" data-key="${escapeHtml(f.key)}" type="button">📋 ข้อความสั้น</button>
+          ${f.members.map(m => `<button class="btn small card-btn" data-id="${m.studentId}" data-parent="1" type="button">🖼️ การ์ด${f.members.length > 1 ? ' ' + escapeHtml(m.name) : ''}</button>`).join('')}
+          <button class="btn small toggle-bill-btn" data-key="${escapeHtml(f.key)}" type="button">${open ? '▴ ย่อ' : '▾ ปรับยอด / รายละเอียด'}</button>
         </div>
+        ${open ? `
+          <div class="bill-detail">
+            ${f.members.map(m => `
+              <div class="adj-row">
+                <div class="adj-name">${escapeHtml(m.name)} <span class="sub">ค่าเรียน ${m.count} ครั้ง = ${money(m.base)} บาท</span></div>
+                <div class="adj-fields">
+                  <label>หักชดเชย <input type="number" min="0" class="adj-in" data-sid="${m.studentId}" data-f="credit" value="${m.credit || ''}" placeholder="0"> ครั้ง</label>
+                  <label>เรียนเพิ่ม <input type="number" min="0" class="adj-in" data-sid="${m.studentId}" data-f="extra" value="${m.extra || ''}" placeholder="0"> ครั้ง</label>
+                  <label>ครั้งละ <input type="number" min="0" class="adj-in" data-sid="${m.studentId}" data-f="rate" value="${(C.billingOf(S, view.ym).adjust[m.studentId] || {}).rate ?? ''}" placeholder="${m.adjRate}"> บาท</label>
+                  <span class="adj-net">${m.adjust ? `${money(m.base)} ${m.adjust < 0 ? '−' : '+'} ${money(Math.abs(m.adjust))} = <b>${money(m.net)}</b>` : `<b>${money(m.net)}</b>`} บาท</span>
+                </div>
+                <details><summary>ข้อความแบบละเอียดของ ${escapeHtml(m.name)}</summary>
+                  <textarea class="msg-textarea" id="full_${m.studentId}">${escapeHtml(buildMessage(C.studentById(S, m.studentId), m))}</textarea>
+                  <button class="btn small copy-full-btn" data-target="full_${m.studentId}" type="button">📋 คัดลอกข้อความละเอียด</button>
+                </details>
+              </div>`).join('')}
+            <label class="field-hint" style="display:block; margin-top:8px;">ข้อความสั้น (ตัวอย่าง)</label>
+            <textarea class="msg-textarea short-preview" readonly>${escapeHtml(concise)}</textarea>
+          </div>` : ''}
       </div>`;
   }).join('');
 
   panel.innerHTML = `
     <h2>สรุปค่าเรียน & แจ้งผู้ปกครอง — ${ymLabel(view.ym)}</h2>
-    <div class="hint-text">คิดตามวันเรียนจริงของเดือนนี้ (หักวันงด วันครูลา และวันนักเรียนลาแล้ว) · คลาสกลุ่มคิดแยกรายคน</div>
+    <div class="hint-text">คิดตามวันเรียนจริง (หักวันครูลา/ลา) · พี่น้องที่ตั้ง "บ้าน" เดียวกันในแท็บนักเรียนจะรวมเป็นข้อความเดียว · ติ๊ก ☑ เมื่อส่งยอดแล้ว</div>
     ${warn}
-    ${cards}
-    <div class="grand-box"><div>💰 ยอดรวมรายได้สุทธิเดือนนี้</div><div class="num">${money(bill.grandTotal)} บาท</div></div>`;
+    <div class="bill-progress">
+      <div class="bp-top"><b>📮 ส่งยอดแล้ว ${sent}/${n} บ้าน</b><span>${money(sentMoney)} / ${money(st.grandTotal)} บาท</span></div>
+      <div class="bp-bar"><div style="width:${n ? Math.round(sent / n * 100) : 0}%"></div></div>
+      <div class="seg" style="margin:10px 0 0;">
+        <button type="button" data-filter="all" class="${filter === 'all' ? 'active' : ''}">ทั้งหมด (${n})</button>
+        <button type="button" data-filter="todo" class="${filter === 'todo' ? 'active' : ''}">ยังไม่ส่ง (${n - sent})</button>
+      </div>
+    </div>
+    <details class="msg-settings">
+      <summary>⚙️ ตั้งค่าข้อความ (ชื่อผู้ส่ง · คำปิดท้าย)</summary>
+      <div class="row2" style="margin-top:8px;">
+        <div><label class="field-hint">ชื่อผู้ส่ง</label><input type="text" id="msgSender" value="${escapeHtml(ms.sender)}"></div>
+        <div><label class="field-hint">บรรทัดปิดท้าย</label><input type="text" id="msgClosing" value="${escapeHtml(ms.closing)}"></div>
+      </div>
+    </details>
+    ${rows || '<div class="hint-text" style="text-align:center; padding:20px;">🎉 ส่งครบทุกบ้านแล้ว</div>'}
+    <div class="grand-box"><div>💰 ยอดรวมรายได้สุทธิเดือนนี้</div><div class="num">${money(st.grandTotal)} บาท</div></div>`;
 
   $('goGroupsBtn')?.addEventListener('click', () => setTab('students'));
-  panel.querySelectorAll('.copy-msg-btn').forEach(b => b.addEventListener('click', () => {
-    const el = $(b.dataset.target); if (!el) return;
-    el.select();
-    const done = () => showToast('คัดลอกข้อความแล้ว');
-    if (navigator.clipboard) navigator.clipboard.writeText(el.value).then(done).catch(() => { document.execCommand('copy'); done(); });
-    else { document.execCommand('copy'); done(); }
+  panel.querySelectorAll('.bill-progress [data-filter]').forEach(b => b.addEventListener('click', () => { view.billFilter = b.dataset.filter; render(); }));
+  panel.querySelectorAll('.sent-cb').forEach(cb => cb.addEventListener('change', () => {
+    if (cb.checked) C.markSent(S, view.ym, cb.dataset.key, Number(cb.dataset.total));
+    else C.unmarkSent(S, view.ym, cb.dataset.key);
+    saveState(cb.checked ? 'ติ๊กส่งยอดแล้ว ✓' : 'เอาติ๊กออกแล้ว');
   }));
+  panel.querySelectorAll('.copy-short-btn').forEach(b => b.addEventListener('click', () => {
+    const f = st.families.find(x => x.key === b.dataset.key);
+    copyText(C.conciseMessage(f, { monthLabel: ymLabel(view.ym), sender: ms.sender, closing: ms.closing }));
+  }));
+  panel.querySelectorAll('.copy-full-btn').forEach(b => b.addEventListener('click', () => copyText($(b.dataset.target).value)));
+  panel.querySelectorAll('.toggle-bill-btn').forEach(b => b.addEventListener('click', () => {
+    const i = view.billOpen.indexOf(b.dataset.key);
+    if (i >= 0) view.billOpen.splice(i, 1); else view.billOpen.push(b.dataset.key);
+    render();
+  }));
+  panel.querySelectorAll('.adj-in').forEach(inp => inp.addEventListener('change', () => {
+    C.setAdjust(S, view.ym, inp.dataset.sid, { [inp.dataset.f]: inp.dataset.f === 'rate' ? numOrNull(inp.value) : (Number(inp.value) || 0) });
+    saveState('ปรับยอดแล้ว');
+  }));
+  const saveMsg = () => { S.settings.senderName = $('msgSender').value.trim() || 'เจมส์'; S.settings.msgClosing = $('msgClosing').value; saveState('บันทึกการตั้งค่าข้อความแล้ว'); };
+  $('msgSender').addEventListener('change', saveMsg);
+  $('msgClosing').addEventListener('change', saveMsg);
 }
 
 /* =========================================
@@ -1643,7 +1766,8 @@ function cardFileName(sid) {
   return `schedule-${view.ym}-${tag}.png`;
 }
 
-function openCardModal(studentId) {
+function openCardModal(studentId, forParent) {
+  if (forParent) lsSet(LS_CARD, JSON.stringify(Object.assign(cardPrefs(), { showPrice: true }))); // from billing → parent version
   view.card = { studentId, blob: null, url: null };
   renderCardModal();
   $('cardModal').classList.add('active');
@@ -1704,9 +1828,12 @@ async function drawCardPreview() {
   const c = view.card; if (!c) return;
   const pr = cardPrefs();
   const st = C.studentById(S, c.studentId);
+  let member = null;
+  for (const f of C.monthStatement(S, view.ym).families) member = member || f.members.find(m => m.studentId === c.studentId);
   const canvas = await TutorCard.render({
     studentName: st ? st.name : '?', ym: view.ym, schedule: C.studentMonthSchedule(S, view.ym, c.studentId),
     showPrice: pr.showPrice, theme: pr.theme, footer: pr.footer, teacherName: pr.teacherName,
+    adjust: member && (member.credit || member.extra) ? member : null,
   });
   const blob = await TutorCard.toBlob(canvas);
   if (view.card !== c) return; // modal closed / reopened meanwhile

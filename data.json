@@ -1,12 +1,14 @@
 {
   "version": 3,
   "meta": {
-    "rev": 8,
-    "updatedAt": "2026-10-29T06:22:10.589Z"
+    "rev": 9,
+    "updatedAt": "2026-10-29T06:57:10.380Z"
   },
   "settings": {
     "groupRate": 300,
-    "privateRate": 350
+    "privateRate": 350,
+    "senderName": "เจมส์",
+    "msgClosing": "(Brown bow) ขอบคุณครับ (Brown bow)"
   },
   "students": [
     {
@@ -17,7 +19,8 @@
       ],
       "parentTitle": "คุณแม่",
       "subject": "ฟิสิกส์ ม.5",
-      "rate": null
+      "rate": null,
+      "family": ""
     },
     {
       "id": "st_1785818776739apwk",
@@ -27,7 +30,8 @@
       ],
       "parentTitle": "คุณแม่",
       "subject": "คณิต ม.3 สาธิต",
-      "rate": 460
+      "rate": 460,
+      "family": ""
     },
     {
       "id": "st_17858187767390f1k",
@@ -37,7 +41,8 @@
       ],
       "parentTitle": "คุณแม่",
       "subject": "คณิต SMTE",
-      "rate": null
+      "rate": null,
+      "family": ""
     },
     {
       "id": "st_1785818776739qhpu",
@@ -45,15 +50,17 @@
       "aliases": [],
       "parentTitle": "คุณแม่",
       "subject": "",
-      "rate": null
+      "rate": null,
+      "family": ""
     },
     {
       "id": "st_17858187767393m8b",
       "name": "อิงอิง",
       "aliases": [],
-      "parentTitle": "คุณแม่",
+      "parentTitle": "คุณพ่อ",
       "subject": "",
-      "rate": null
+      "rate": null,
+      "family": "บ้านอิงอิง"
     },
     {
       "id": "st_1785818776739ono2",
@@ -61,7 +68,8 @@
       "aliases": [],
       "parentTitle": "คุณแม่",
       "subject": "",
-      "rate": null
+      "rate": null,
+      "family": ""
     },
     {
       "id": "st_1785818776739ckz3",
@@ -71,7 +79,8 @@
       ],
       "parentTitle": "คุณแม่",
       "subject": "คณิต ม.6",
-      "rate": null
+      "rate": null,
+      "family": ""
     },
     {
       "id": "st_1785818776739j4e0",
@@ -81,7 +90,8 @@
       ],
       "parentTitle": "คุณแม่",
       "subject": "คณิต ม.3",
-      "rate": null
+      "rate": null,
+      "family": ""
     },
     {
       "id": "st_17858187767396cje",
@@ -91,7 +101,8 @@
       ],
       "parentTitle": "คุณแม่",
       "subject": "คณิต ม.4",
-      "rate": null
+      "rate": null,
+      "family": ""
     },
     {
       "id": "st_1785818776739h7jd",
@@ -101,15 +112,17 @@
       ],
       "parentTitle": "คุณแม่",
       "subject": "คณิต เข้า ม.1",
-      "rate": null
+      "rate": null,
+      "family": ""
     },
     {
       "id": "st_1785818776739nndw",
       "name": "กัญตา",
       "aliases": [],
-      "parentTitle": "คุณแม่",
+      "parentTitle": "คุณพ่อ",
       "subject": "คณิต ม.1",
-      "rate": null
+      "rate": null,
+      "family": "บ้านอิงอิง"
     },
     {
       "id": "st_1785818776739t0uz",
@@ -117,7 +130,8 @@
       "aliases": [],
       "parentTitle": "คุณแม่",
       "subject": "",
-      "rate": null
+      "rate": null,
+      "family": ""
     },
     {
       "id": "st_1785818776739ml5l",
@@ -127,7 +141,8 @@
       ],
       "parentTitle": "คุณแม่",
       "subject": "คณิตม.4",
-      "rate": 400
+      "rate": 400,
+      "family": ""
     },
     {
       "id": "st_1785818776739jjfz",
@@ -135,7 +150,8 @@
       "aliases": [],
       "parentTitle": "คุณแม่",
       "subject": "",
-      "rate": null
+      "rate": null,
+      "family": ""
     },
     {
       "id": "st_1785818776739596z",
@@ -143,7 +159,8 @@
       "aliases": [],
       "parentTitle": "คุณแม่",
       "subject": "",
-      "rate": null
+      "rate": null,
+      "family": ""
     },
     {
       "id": "st_mvt1pnb0efikg",
@@ -151,7 +168,8 @@
       "aliases": [],
       "parentTitle": "คุณแม่",
       "subject": "คณิต Gifted m.2",
-      "rate": 400
+      "rate": 400,
+      "family": ""
     },
     {
       "id": "st_mvt1q3k675wvd",
@@ -159,7 +177,8 @@
       "aliases": [],
       "parentTitle": "คุณแม่",
       "subject": "คณิต Gifted m.2",
-      "rate": 400
+      "rate": 400,
+      "family": ""
     },
     {
       "id": "st_mvt1qcj5f56r7",
@@ -167,7 +186,8 @@
       "aliases": [],
       "parentTitle": "คุณแม่",
       "subject": "คณิต Gifted m.2",
-      "rate": 400
+      "rate": 400,
+      "family": ""
     },
     {
       "id": "st_mvt1sfpc125wt",
@@ -175,7 +195,8 @@
       "aliases": [],
       "parentTitle": "คุณแม่",
       "subject": "คณิต Gifted m.2",
-      "rate": 400
+      "rate": 400,
+      "family": ""
     },
     {
       "id": "st_mvt1v3li5lajp",
@@ -185,7 +206,8 @@
       ],
       "parentTitle": "คุณแม่",
       "subject": "Math EP M.3",
-      "rate": 400
+      "rate": 400,
+      "family": ""
     },
     {
       "id": "st_mvt1w9y282fa8",
@@ -193,7 +215,8 @@
       "aliases": [],
       "parentTitle": "คุณแม่",
       "subject": "Math EP M.3",
-      "rate": 400
+      "rate": 400,
+      "family": ""
     }
   ],
   "groups": [
@@ -763,7 +786,11 @@
           "skip": [],
           "off": []
         }
-      ]
+      ],
+      "billing": {
+        "sent": {},
+        "adjust": {}
+      }
     },
     "2026-08": {
       "closedDays": [],
@@ -1082,7 +1109,11 @@
           "skip": [],
           "off": []
         }
-      ]
+      ],
+      "billing": {
+        "sent": {},
+        "adjust": {}
+      }
     },
     "2026-09": {
       "closedDays": [],
@@ -1401,7 +1432,11 @@
           "skip": [],
           "off": []
         }
-      ]
+      ],
+      "billing": {
+        "sent": {},
+        "adjust": {}
+      }
     },
     "2026-11": {
       "closedDays": [
@@ -1728,7 +1763,18 @@
           "skip": [],
           "off": []
         }
-      ]
+      ],
+      "billing": {
+        "sent": {},
+        "adjust": {
+          "st_17858187767393m8b": {
+            "credit": 2,
+            "extra": 1,
+            "rate": null,
+            "note": ""
+          }
+        }
+      }
     }
   },
   "blocked": [

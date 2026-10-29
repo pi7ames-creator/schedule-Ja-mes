@@ -16,12 +16,18 @@ A tutor's teaching schedule and billing web app served by GitHub Pages
 {
   "version": 3,
   "meta": { "rev": 3, "updatedAt": "ISO" },   // bump rev by 1 on every edit; the app uses it to detect newer data
-  "settings": { "groupRate": 300, "privateRate": 350 }, // default baht per person per session
-  "students": [{ "id": "st_…", "name": "เนเน่", "aliases": ["Nene"], "parentTitle": "คุณแม่", "subject": "คณิต ม.6", "rate": null }],
+  "settings": { "groupRate": 300, "privateRate": 350,   // default baht per person per session
+                "senderName": "เจมส์", "msgClosing": "(Brown bow) ขอบคุณครับ (Brown bow)" }, // short parent message
+  "students": [{ "id": "st_…", "name": "เนเน่", "aliases": ["Nene"], "parentTitle": "คุณแม่", "subject": "คณิต ม.6", "rate": null,
+                 "family": "" }],                 // same family text = siblings billed together in one message
   "groups":   [{ "id": "gr_…", "name": "SMTE", "aliases": ["SMTE"], "subject": "คณิต SMTE", "rate": null, "memberIds": ["st_…"] }],
   "months": {
     "2026-11": {
       "closedDays": ["fri"],                     // sun…sat keys; no classes that weekday this month
+      "billing": {
+        "sent":   { "<familyKey>": { "at": "ISO", "total": 5850 } },   // checklist: bill sent (familyKey = family text or student id)
+        "adjust": { "st_…": { "credit": 2, "extra": 1, "rate": null, "note": "" } } // หักชดเชย / เรียนเพิ่ม sessions × rate (default: student's usual rate)
+      },
       "slots": [{
         "id": "sl_…", "dow": 2,                  // 0 = Sunday … 6 = Saturday
         "start": "18:15", "end": "19:45",

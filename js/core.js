@@ -12,6 +12,9 @@
  *                off[YYYY-MM-DD]}  teacher on leave for this class that date (shown to its students)
  *   blocked[]   {date}            teacher on leave the whole day (all classes off, shown to students)
  *   absences[]  {studentId, date} one person absent from that day's classes
+ *   students[].family  same text = siblings billed together in one message ('' = alone)
+ *   months[ym].billing {sent: {familyKey: {at, total}}, adjust: {studentId: {credit, extra, rate|null, note}}}
+ *                      credit = make-up sessions deducted, extra = extra sessions added (× rate)
  *
  * Rate per person per session:
  *   group class (groupId, or 2+ students): slot.price > group.rate > settings.groupRate (300)
@@ -119,7 +122,7 @@
     S.students = (S.students || []).map((s) => ({
       id: s.id || uid('st'), name: s.name || '', aliases: s.aliases || [],
       parentTitle: s.parentTitle || 'คุณแม่', subject: s.subject || '',
-      rate: isNum(s.rate) ? Number(s.rate) : null,
+      rate: isNum(s.rate) ? Number(s.rate) : null, family: (s.family || '').trim(),
     }));
     S.groups = (S.groups || []).map((g) => ({
       id: g.id || uid('gr'), name: g.name || '', aliases: g.aliases || [], subject: g.subject || '',
@@ -127,7 +130,7 @@
     }));
     const months = {};
     for (const [ym, m] of Object.entries(S.months || {})) {
-      months[ym] = { closedDays: (m && m.closedDays) || [], slots: ((m && m.slots) || []).map(normSlot) };
+      months[ym] = { closedDays: (m && m.closedDays) || [], slots: ((m && m.slots) || []).map(normSlot), billing: normBilling(m && m.billing) };
     }
     S.months = months;
     S.blocked = (S.blocked || []).map((b) => ({ date: b.date }));
@@ -135,8 +138,19 @@
     return S;
   }
 
+  function normAdjust(a) {
+    a = a || {};
+    return { credit: Math.max(0, Number(a.credit) || 0), extra: Math.max(0, Number(a.extra) || 0), rate: isNum(a.rate) ? Number(a.rate) : null, note: a.note || '' };
+  }
+  function normBilling(b) {
+    b = b || {};
+    const adjust = {};
+    for (const [sid, a] of Object.entries(b.adjust || {})) adjust[sid] = normAdjust(a);
+    return { sent: Object.assign({}, b.sent || {}), adjust };
+  }
   function getMonth(S, ym) {
-    if (!S.months[ym]) S.months[ym] = { closedDays: [], slots: [] };
+    if (!S.months[ym]) S.months[ym] = { closedDays: [], slots: [], billing: normBilling() };
+    if (!S.months[ym].billing) S.months[ym].billing = normBilling();
     return S.months[ym];
   }
   function hasMonth(S, ym) {
@@ -164,6 +178,7 @@
   function copyMonth(S, fromYm, toYm) {
     const src = getMonth(S, fromYm);
     S.months[toYm] = {
+      billing: (S.months[toYm] && S.months[toYm].billing) || normBilling(),
       closedDays: [...src.closedDays],
       slots: src.slots.map((s) => normSlot(Object.assign(clone(s), { id: undefined, skip: [], off: [] }))),
     };
@@ -295,6 +310,97 @@
     }));
     const teacherOff = Object.keys(byDate).filter((d) => byDate[d].some((m) => m.status === 'teacher-off')).sort();
     return { studentId, ym, items, byDate, classCount, total, teacherOff };
+  }
+
+  // ---------- monthly statement (families, adjustments, sent checklist) ----------
+  const familyKeyOf = (st) => (st.family ? st.family : st.id);
+  const billingOf = (S, ym) => getMonth(S, ym).billing;
+
+  function setAdjust(S, ym, studentId, patch) {
+    const b = billingOf(S, ym);
+    const a = normAdjust(Object.assign({}, b.adjust[studentId] || {}, patch || {}));
+    if (!a.credit && !a.extra && a.rate == null && !a.note) delete b.adjust[studentId];
+    else b.adjust[studentId] = a;
+    return a;
+  }
+  function markSent(S, ym, familyKey, total, at) {
+    billingOf(S, ym).sent[familyKey] = { at: at || new Date().toISOString(), total: Number(total) || 0 };
+  }
+  function unmarkSent(S, ym, familyKey) { delete billingOf(S, ym).sent[familyKey]; }
+
+  /** Rate used for make-up / extra sessions: the student's most common rate this month. */
+  function adjustRateOf(S, lines) {
+    const w = new Map();
+    for (const l of lines) w.set(l.rate, (w.get(l.rate) || 0) + l.days.length);
+    let best = null, n = -1;
+    for (const [r, c] of w) if (c > n) { best = r; n = c; }
+    return best != null ? best : Number(S.settings.privateRate) || 0;
+  }
+
+  /**
+   * Everything needed for the billing checklist and parent messages of month ym.
+   * families[]: {key, label, parentTitle, members[{studentId,name,count,base,credit,extra,adjRate,adjust,net,lines}],
+   *              total, sent:{at,total}|null, changedSinceSent}
+   */
+  function monthStatement(S, ym) {
+    const bill = billMonth(S, ym);
+    const billOf = new Map(bill.students.map((b) => [b.studentId, b]));
+    const b = billingOf(S, ym);
+    const famMap = new Map();
+    for (const st of S.students) {
+      const sb = billOf.get(st.id);
+      const a = b.adjust[st.id] || normAdjust();
+      if (!sb && !a.credit && !a.extra) continue;
+      const lines = sb ? sb.lines : [];
+      const base = sb ? sb.total : 0;
+      const adjRate = a.rate != null ? a.rate : adjustRateOf(S, lines);
+      const adjust = (a.extra - a.credit) * adjRate;
+      const key = familyKeyOf(st);
+      if (!famMap.has(key)) famMap.set(key, { key, label: st.family || st.name, parentTitle: st.parentTitle || 'คุณแม่', members: [], total: 0 });
+      const fam = famMap.get(key);
+      fam.members.push({ studentId: st.id, name: st.name, count: sb ? sb.count : 0, base, credit: a.credit, extra: a.extra, note: a.note, adjRate, adjust, net: base + adjust, lines });
+      fam.total += base + adjust;
+    }
+    const families = [...famMap.values()].map((f) => {
+      const sent = b.sent[f.key] || null;
+      return Object.assign(f, { sent, changedSinceSent: !!sent && sent.total !== f.total });
+    });
+    return {
+      families,
+      grandTotal: families.reduce((t, f) => t + f.total, 0),
+      sentCount: families.filter((f) => f.sent).length,
+      emptyGroups: bill.emptyGroups,
+    };
+  }
+
+  const fmt = (n) => String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const thaiList = (names) => names.length <= 1 ? (names[0] || '')
+    : names.length === 2 ? `${names[0]}กับ${names[1]}`
+      : `${names.slice(0, -1).join(', ')} และ ${names[names.length - 1]}`;
+
+  /** Short LINE message for one family (see tests for the exact format). */
+  function conciseMessage(fam, o) {
+    o = o || {};
+    const lines = [
+      `สวัสดีครับ${fam.parentTitle || ''}`,
+      `${o.sender || 'ครู'}ขออนุญาตแจ้งสรุปค่าเรียนพิเศษของน้อง${thaiList(fam.members.map((m) => m.name))} นะครับ`,
+      '',
+      `(${o.monthLabel || ''})`,
+    ];
+    for (const m of fam.members) {
+      const parts = [];
+      if (m.credit) parts.push(`หักชดเชย ${m.credit} ครั้ง`);
+      if (m.extra) parts.push(`เรียนเพิ่ม ${m.extra} ครั้ง`);
+      if (m.adjust) {
+        lines.push(`•  ${m.name} (${parts.join(' ')})`);
+        lines.push(`   ยอดรวม: ${fmt(m.base)} ${m.adjust < 0 ? '-' : '+'} ${fmt(Math.abs(m.adjust))} = ${fmt(m.net)} บาท`);
+      } else {
+        lines.push(`•  ${m.name}${parts.length ? ` (${parts.join(' ')})` : ''} ยอดรวม: ${fmt(m.net)} บาท`);
+      }
+    }
+    lines.push('', '', `✅ ยอดรวมสุทธิ: ${fmt(fam.total)} บาท`);
+    if (o.closing) lines.push('', o.closing);
+    return lines.join('\n');
   }
 
   /** Stats for a "typical week" of the month's plan. */
@@ -465,6 +571,6 @@
     emptyState, normalizeState, migrateV2, getMonth, hasMonth, addSlot, findSlot, removeSlot, slotsByDay,
     isDayClosed, copyMonth, studentById, groupById, participantsOf, isBooked, slotTitle, slotSubject,
     isGroupClass, rateFor, isBlocked, isAbsent, sessionsOfSlot, billMonth, studentMonthSchedule, weekStats, cleanTitle, matchTitle,
-    importCalendarMonth,
+    importCalendarMonth, familyKeyOf, billingOf, setAdjust, markSent, unmarkSent, monthStatement, conciseMessage,
   };
 });

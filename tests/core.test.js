@@ -380,3 +380,101 @@ test('old data with a single defaultRate keeps that price for private classes', 
   assert.equal(M.settings.groupRate, 300);
   assert.equal(M.settings.privateRate, 300);
 });
+
+// ---------- billing statement: families, adjustments, sent checklist ----------
+function familyState() {
+  let S = baseState();
+  S.students.push(
+    { id: 'k', name: 'กัญตา', aliases: [], parentTitle: 'คุณพ่อ', subject: '', rate: null, family: 'บ้านอิงอิง' },
+  );
+  S.students.find(s => s.id === 'g2').family = 'บ้านอิงอิง';
+  S.students.find(s => s.id === 'g2').parentTitle = 'คุณพ่อ';
+  S = C.normalizeState(S);
+  return S;
+}
+
+test('normalizeState keeps student.family and month billing data', () => {
+  const S = C.normalizeState({
+    version: 3, students: [{ id: 'x', name: 'X', family: 'บ้าน X' }],
+    months: { '2026-11': { slots: [], billing: { sent: { x: { at: '2026-11-30', total: 100 } }, adjust: { x: { credit: 1, extra: 0 } } } } },
+  });
+  assert.equal(S.students[0].family, 'บ้าน X');
+  assert.deepEqual(C.billingOf(S, '2026-11').sent.x, { at: '2026-11-30', total: 100 });
+  assert.deepEqual(C.billingOf(S, '2026-11').adjust.x, { credit: 1, extra: 0, rate: null, note: '' });
+});
+
+test('monthStatement groups siblings by family and applies compensation/extra sessions', () => {
+  let S = C.normalizeState(familyState());
+  // อิงอิง (g2): SMTE Tue+Thu = 8 sessions × 300 = 2,400 ; กัญตา: private Sat ×4 at 350... use price to match
+  C.addSlot(S, '2026-11', { dow: 2, start: '18:15', end: '19:45', groupId: 'smte' });
+  C.addSlot(S, '2026-11', { dow: 4, start: '18:15', end: '19:45', groupId: 'smte' });
+  C.addSlot(S, '2026-11', { dow: 6, start: '11:00', end: '12:30', studentIds: ['k'] });
+  C.setAdjust(S, '2026-11', 'g2', { credit: 2, extra: 1 });
+  const st = C.monthStatement(S, '2026-11');
+  const fam = st.families.find(f => f.key === 'บ้านอิงอิง');
+  assert.deepEqual(fam.members.map(m => m.name), ['อิงอิง', 'กัญตา']); // student order
+  const ing = fam.members[0];
+  assert.equal(ing.base, 8 * 300);
+  assert.equal(ing.adjRate, 300);            // most common rate of her classes
+  assert.equal(ing.adjust, -300);            // (1 extra - 2 credit) × 300
+  assert.equal(ing.net, 2400 - 300);
+  assert.equal(fam.members[1].net, 4 * 350);
+  assert.equal(fam.total, 2100 + 1400);
+  assert.equal(fam.parentTitle, 'คุณพ่อ');
+  // other students are their own "family"
+  assert.ok(st.families.find(f => f.key === 'g1' && f.members.length === 1));
+  assert.equal(st.grandTotal, st.families.reduce((t, f) => t + f.total, 0));
+});
+
+test('sent checklist: mark/unmark per family and flag totals that changed after sending', () => {
+  const S = C.normalizeState(familyState());
+  C.addSlot(S, '2026-11', { dow: 6, start: '11:00', end: '12:30', studentIds: ['k'] });
+  let fam = C.monthStatement(S, '2026-11').families.find(f => f.key === 'บ้านอิงอิง');
+  assert.equal(fam.sent, null);
+  C.markSent(S, '2026-11', fam.key, fam.total, '2026-11-30T10:00:00.000Z');
+  fam = C.monthStatement(S, '2026-11').families.find(f => f.key === 'บ้านอิงอิง');
+  assert.deepEqual(fam.sent, { at: '2026-11-30T10:00:00.000Z', total: 1400 });
+  assert.equal(fam.changedSinceSent, false);
+  assert.equal(C.monthStatement(S, '2026-11').sentCount, 1);
+  C.setAdjust(S, '2026-11', 'k', { extra: 1 });
+  fam = C.monthStatement(S, '2026-11').families.find(f => f.key === 'บ้านอิงอิง');
+  assert.equal(fam.changedSinceSent, true);
+  C.unmarkSent(S, '2026-11', fam.key);
+  assert.equal(C.monthStatement(S, '2026-11').sentCount, 0);
+});
+
+test('conciseMessage reproduces the parent message format', () => {
+  const fam = {
+    parentTitle: 'คุณพ่อ',
+    members: [
+      { name: 'อิงอิง', base: 4200, credit: 2, extra: 1, adjust: -300, net: 3900 },
+      { name: 'กัณตา', base: 1950, credit: 0, extra: 0, adjust: 0, net: 1950 },
+    ],
+    total: 5850,
+  };
+  const msg = C.conciseMessage(fam, { monthLabel: 'พฤศจิกายน 2569', sender: 'เจมส์', closing: '(Brown bow) ขอบคุณครับ (Brown bow)' });
+  assert.equal(msg, [
+    'สวัสดีครับคุณพ่อ',
+    'เจมส์ขออนุญาตแจ้งสรุปค่าเรียนพิเศษของน้องอิงอิงกับกัณตา นะครับ',
+    '',
+    '(พฤศจิกายน 2569)',
+    '•  อิงอิง (หักชดเชย 2 ครั้ง เรียนเพิ่ม 1 ครั้ง)',
+    '   ยอดรวม: 4,200 - 300 = 3,900 บาท',
+    '•  กัณตา ยอดรวม: 1,950 บาท',
+    '',
+    '',
+    '✅ ยอดรวมสุทธิ: 5,850 บาท',
+    '',
+    '(Brown bow) ขอบคุณครับ (Brown bow)',
+  ].join('\n'));
+});
+
+test('conciseMessage: one child, extra-only adjustment, three children name list', () => {
+  const one = C.conciseMessage({ parentTitle: 'คุณแม่', members: [{ name: 'กัส', base: 4200, credit: 0, extra: 1, adjust: 300, net: 4500 }], total: 4500 },
+    { monthLabel: 'พฤศจิกายน 2569', sender: 'เจมส์', closing: 'ขอบคุณครับ' });
+  assert.match(one, /ของน้องกัส นะครับ/);
+  assert.match(one, /•  กัส \(เรียนเพิ่ม 1 ครั้ง\)\n   ยอดรวม: 4,200 \+ 300 = 4,500 บาท/);
+  const three = C.conciseMessage({ parentTitle: 'คุณแม่', members: ['A', 'B', 'C'].map(n => ({ name: n, base: 1, credit: 0, extra: 0, adjust: 0, net: 1 })), total: 3 },
+    { monthLabel: 'x', sender: 'เจมส์', closing: '' });
+  assert.match(three, /ของน้องA, B และ C นะครับ/);
+});
