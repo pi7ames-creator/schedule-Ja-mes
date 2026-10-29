@@ -245,6 +245,36 @@
     return { students, emptyGroups, grandTotal: students.reduce((t, b) => t + b.total, 0) };
   }
 
+  /**
+   * One student's month for the shareable schedule card.
+   * items: their weekly slots (Mon→Sun, then time) with each non-cancelled date marked 'class' or 'absent'.
+   * byDate: date -> [{item index, status}] for drawing calendar dots.
+   * classCount / total: held sessions and money (same numbers as billMonth).
+   */
+  function studentMonthSchedule(S, ym, studentId) {
+    const items = [];
+    for (const slot of getMonth(S, ym).slots) {
+      if (!participantsOf(S, slot).includes(studentId)) continue;
+      const g = slot.groupId ? groupById(S, slot.groupId) : null;
+      const dates = sessionsOfSlot(S, ym, slot)
+        .filter((x) => !x.cancelled)
+        .map((x) => ({ date: x.date, status: x.present.includes(studentId) ? 'class' : 'absent' }));
+      if (!dates.length) continue;
+      items.push({
+        slotId: slot.id, dow: slot.dow, start: slot.start, end: slot.end, time: timeLabel(slot),
+        subject: slotSubject(S, slot), groupName: g ? g.name : '', rate: rateFor(S, slot, studentId), dates,
+      });
+    }
+    items.sort((a, b) => ((a.dow + 6) % 7) - ((b.dow + 6) % 7) || a.start.localeCompare(b.start));
+    const byDate = {};
+    let classCount = 0, total = 0;
+    items.forEach((it, idx) => it.dates.forEach((d) => {
+      (byDate[d.date] = byDate[d.date] || []).push({ item: idx, status: d.status });
+      if (d.status === 'class') { classCount++; total += it.rate; }
+    }));
+    return { studentId, ym, items, byDate, classCount, total };
+  }
+
   /** Stats for a "typical week" of the month's plan. */
   function weekStats(S, ym) {
     let booked = 0, revenue = 0, weekdayTargetMet = 0;
@@ -411,7 +441,7 @@
     DOW_KEYS, parseTimeRange, timeLabel, shiftYM, daysInMonth, dowOf, datesInMonth, uid,
     emptyState, normalizeState, migrateV2, getMonth, hasMonth, addSlot, findSlot, removeSlot, slotsByDay,
     isDayClosed, copyMonth, studentById, groupById, participantsOf, isBooked, slotTitle, slotSubject,
-    rateFor, isBlocked, isAbsent, sessionsOfSlot, billMonth, weekStats, cleanTitle, matchTitle,
+    rateFor, isBlocked, isAbsent, sessionsOfSlot, billMonth, studentMonthSchedule, weekStats, cleanTitle, matchTitle,
     importCalendarMonth,
   };
 });

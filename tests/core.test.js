@@ -148,6 +148,39 @@ test('weekStats counts booked slots, weekday target and weekly revenue (flex exc
   assert.equal(w.revenue, 3 * 300 + (300 + 300 + 250));
 });
 
+// ---------- per-student monthly card ----------
+test('studentMonthSchedule lists a student\'s slots with class/absent dates, skipping cancelled ones', () => {
+  const S = baseState();
+  C.addSlot(S, '2026-11', { dow: 4, start: '18:15', end: '19:45', groupId: 'smte', skip: ['2026-11-05'] });
+  C.addSlot(S, '2026-11', { dow: 2, start: '18:15', end: '19:45', groupId: 'smte' });
+  C.addSlot(S, '2026-11', { dow: 1, start: '20:00', end: '21:30', studentIds: ['a'] }); // not g1's
+  S.blocked.push({ date: '2026-11-10' });
+  S.absences.push({ studentId: 'g1', date: '2026-11-17' });
+  const card = C.studentMonthSchedule(S, '2026-11', 'g1');
+  // ordered Mon..Sun, so Tue before Thu
+  assert.deepEqual(card.items.map(i => i.dow), [2, 4]);
+  assert.equal(card.items[0].groupName, 'SMTE');
+  assert.equal(card.items[0].subject, 'คณิต SMTE');
+  assert.deepEqual(card.items[0].dates, [
+    { date: '2026-11-03', status: 'class' },
+    { date: '2026-11-17', status: 'absent' },
+    { date: '2026-11-24', status: 'class' },
+  ]);
+  assert.deepEqual(card.items[1].dates.map(d => d.date), ['2026-11-12', '2026-11-19', '2026-11-26']);
+  assert.deepEqual(card.byDate['2026-11-17'], [{ item: 0, status: 'absent' }]);
+  assert.equal(card.classCount, 5); // held sessions only: 3,24 + 12,19,26
+  assert.equal(card.total, C.billMonth(S, '2026-11').students.find(b => b.studentId === 'g1').total);
+  assert.equal(card.items[0].rate, 300);
+});
+
+test('studentMonthSchedule returns empty items for a student with no classes', () => {
+  const S = baseState();
+  const card = C.studentMonthSchedule(S, '2026-11', 'n');
+  assert.deepEqual(card.items, []);
+  assert.equal(card.classCount, 0);
+  assert.equal(card.total, 0);
+});
+
 // ---------- calendar import ----------
 test('cleanTitle strips emoji and extra whitespace', () => {
   assert.equal(C.cleanTitle('🧬🧑‍🔬 SMTE'), 'SMTE');

@@ -1,8 +1,8 @@
 // Network-first service worker: always try to get the latest page and data.json,
 // fall back to the cached copy only when offline. (v1 was cache-first, which kept
 // showing an old version of the page/data after updates.)
-const CACHE_NAME = 'tutor-schedule-v3';
-const ASSETS = ['./', './index.html', './js/core.js', './data.json', './manifest.json', './icon-192.png', './icon-512.png'];
+const CACHE_NAME = 'tutor-schedule-v4';
+const ASSETS = ['./', './index.html', './js/core.js', './js/card.js', './data.json', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)).catch(() => {}));

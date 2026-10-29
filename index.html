@@ -569,6 +569,16 @@
   }
   .gh-form label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
 
+  /* Mini schedule card (PNG for LINE) */
+  .card-modal-box { max-width: 520px; }
+  .card-preview {
+    width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border-color);
+    background: var(--bg-sub); min-height: 240px; display: grid; place-items: center; overflow: hidden; margin: 10px 0 4px;
+  }
+  .card-preview img { width: 100%; display: block; }
+  .card-opts { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .card-opts .seg { margin: 0; flex: 1 1 200px; }
+
   @media (max-width: 720px) {
     .row2 { grid-template-columns: 1fr 1fr; }
     .sync-pill { flex: 1 1 100%; text-align: center; }
@@ -629,11 +639,14 @@
 <div class="modal-backdrop" id="slotModal"><div class="modal-box" id="slotModalBox"></div></div>
 <!-- Modal: one session on one date (content rendered by JS) -->
 <div class="modal-backdrop" id="sessionModal"><div class="modal-box" id="sessionModalBox"></div></div>
+<!-- Modal: mini schedule card (PNG) for one student -->
+<div class="modal-backdrop" id="cardModal"><div class="modal-box card-modal-box" id="cardModalBox"></div></div>
 
 <!-- Toast -->
 <div class="toast" id="toast">บันทึกข้อมูลเรียบร้อย</div>
 
 <script src="./js/core.js"></script>
+<script src="./js/card.js"></script>
 <script>
 'use strict';
 /* =========================================
@@ -866,6 +879,7 @@ function render() {
   else if (view.tab === 'students') renderStudentsTab(panel);
   else if (view.tab === 'billing') renderBillingTab(panel);
   else if (view.tab === 'export') renderExportTab(panel);
+  panel.querySelectorAll('.card-btn').forEach(b => b.addEventListener('click', () => openCardModal(b.dataset.id)));
 }
 
 function initApp() {
@@ -875,11 +889,14 @@ function initApp() {
   $('modeStudentBtn').addEventListener('click', () => setMode('student'));
   $('syncPill').addEventListener('click', () => setTab('export'));
   document.querySelectorAll('[data-tab]').forEach(btn => btn.addEventListener('click', () => setTab(btn.dataset.tab)));
-  ['slotModal', 'sessionModal'].forEach(id => $(id).addEventListener('click', (e) => { if (e.target.id === id) closeModal(id); }));
+  ['slotModal', 'sessionModal', 'cardModal'].forEach(id => $(id).addEventListener('click', (e) => { if (e.target.id === id) closeModal(id); }));
   setMode(view.mode || 'teacher');
   boot();
 }
-function closeModal(id) { $(id).classList.remove('active'); if (id === 'slotModal') view.slot = null; else view.session = null; }
+function closeModal(id) {
+  $(id).classList.remove('active');
+  if (id === 'slotModal') view.slot = null; else if (id === 'sessionModal') view.session = null; else view.card = null;
+}
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initApp); else initApp();
 
@@ -1342,6 +1359,7 @@ function renderStudentsTab(panel) {
             <div class="sub">${escapeHtml(s.parentTitle)}${s.subject ? ' · ' + escapeHtml(s.subject) : ''}${s.aliases.length ? ' · ปฏิทิน: ' + escapeHtml(s.aliases.join(', ')) : ''}</div>
           </div>
           <div style="display:flex; gap:6px;">
+            <button class="btn small card-btn" data-id="${s.id}" type="button">🖼️ การ์ด</button>
             <button class="btn small edit-st-btn" data-id="${s.id}" type="button">แก้ไข</button>
             <button class="btn small danger del-st-btn" data-id="${s.id}" type="button">ลบ</button>
           </div>
@@ -1461,7 +1479,10 @@ function renderBillingTab(panel) {
         </div>
         <div>${[...new Set(b.lines.filter(l => l.groupName).map(l => l.groupName))].map(n => `<span class="tag">👥 ${escapeHtml(n)}</span>`).join('')}</div>
         <textarea id="${msgId}" class="msg-textarea">${escapeHtml(buildMessage(s, b))}</textarea>
-        <div style="margin-top:10px;"><button class="btn primary small copy-msg-btn" data-target="${msgId}" type="button">📋 คัดลอกข้อความแจ้งผู้ปกครอง</button></div>
+        <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
+          <button class="btn primary small copy-msg-btn" data-target="${msgId}" type="button">📋 คัดลอกข้อความแจ้งผู้ปกครอง</button>
+          <button class="btn small card-btn" data-id="${s.id}" type="button">🖼️ การ์ดตารางเรียน (PNG)</button>
+        </div>
       </div>`;
   }).join('');
 
@@ -1585,6 +1606,112 @@ function renderExportTab(panel) {
     if (!confirm('ล้างข้อมูลในเครื่องนี้ (รวมการแก้ไขที่ยังไม่ได้ส่งขึ้น GitHub) แล้วโหลดใหม่จาก GitHub?')) return;
     lsDel(LS_KEY); location.reload();
   });
+}
+
+/* =========================================
+   MINI SCHEDULE CARD (PNG for LINE)
+   ========================================= */
+const LS_CARD = 'tutor_card_prefs';
+function cardPrefs() {
+  let p = {};
+  try { p = JSON.parse(lsGet(LS_CARD) || '{}'); } catch (e) {}
+  return Object.assign({ showPrice: false, theme: 'light', footer: '' }, p);
+}
+/** ASCII file name (some browsers drop Thai characters in downloads): schedule-2026-11-Nene.png */
+function cardFileName(sid) {
+  const st = C.studentById(S, sid) || { id: sid, aliases: [] };
+  const ascii = [...(st.aliases || []), st.name].find(n => /^[\x20-\x7E]+$/.test(n || ''));
+  const tag = (ascii || st.id.slice(-6)).replace(/[^A-Za-z0-9.-]+/g, '-');
+  return `schedule-${view.ym}-${tag}.png`;
+}
+
+function openCardModal(studentId) {
+  view.card = { studentId, blob: null, url: null };
+  renderCardModal();
+  $('cardModal').classList.add('active');
+}
+
+function renderCardModal() {
+  const c = view.card, pr = cardPrefs();
+  const box = $('cardModalBox');
+  const studentsWithClass = S.students.filter(s => C.studentMonthSchedule(S, view.ym, s.id).items.length);
+  box.innerHTML = `
+    <h3>การ์ดตารางเรียน</h3>
+    <div class="time-info">${ymLabel(view.ym)} · ส่งต่อใน LINE ได้ทันที</div>
+    <div class="modal-field">
+      <select id="cardStudent">${(studentsWithClass.some(s => s.id === c.studentId) ? studentsWithClass : [C.studentById(S, c.studentId), ...studentsWithClass])
+        .map(s => `<option value="${s.id}" ${s.id === c.studentId ? 'selected' : ''}>${escapeHtml(s.name)}</option>`).join('')}</select>
+    </div>
+    <div class="card-opts">
+      <div class="seg" id="cardAudience">
+        <button type="button" data-v="student" class="${pr.showPrice ? '' : 'active'}">🎒 นักเรียน</button>
+        <button type="button" data-v="parent" class="${pr.showPrice ? 'active' : ''}">👪 ผู้ปกครอง (+ค่าเรียน)</button>
+      </div>
+      <div class="seg" id="cardTheme" style="flex:0 1 160px;">
+        <button type="button" data-v="light" class="${pr.theme === 'light' ? 'active' : ''}">☀️</button>
+        <button type="button" data-v="dark" class="${pr.theme === 'dark' ? 'active' : ''}">🌙</button>
+      </div>
+    </div>
+    <div class="card-preview" id="cardPreview"><span style="color:var(--text-muted); font-size:13px;">กำลังสร้างรูป…</span></div>
+    <div class="modal-field">
+      <input type="text" id="cardFooter" value="${escapeHtml(pr.footer)}" placeholder="ข้อความท้ายการ์ด (ไม่บังคับ) เช่น ติดต่อครูเจมส์ 08x-xxx-xxxx">
+    </div>
+    <div class="modal-btns">
+      <button class="btn" id="cardClose" type="button">ปิด</button>
+      <button class="btn" id="cardDownload" type="button">📥 ดาวน์โหลด PNG</button>
+      <button class="btn primary" id="cardShare" type="button">📤 แชร์ (LINE)</button>
+    </div>`;
+
+  const savePref = (patch) => { lsSet(LS_CARD, JSON.stringify(Object.assign(cardPrefs(), patch))); drawCardPreview(); };
+  $('cardStudent').addEventListener('change', (e) => { c.studentId = e.target.value; drawCardPreview(); });
+  box.querySelectorAll('#cardAudience button').forEach(b => b.addEventListener('click', () => {
+    box.querySelectorAll('#cardAudience button').forEach(x => x.classList.toggle('active', x === b));
+    savePref({ showPrice: b.dataset.v === 'parent' });
+  }));
+  box.querySelectorAll('#cardTheme button').forEach(b => b.addEventListener('click', () => {
+    box.querySelectorAll('#cardTheme button').forEach(x => x.classList.toggle('active', x === b));
+    savePref({ theme: b.dataset.v });
+  }));
+  let footerTimer;
+  $('cardFooter').addEventListener('input', (e) => { clearTimeout(footerTimer); footerTimer = setTimeout(() => savePref({ footer: e.target.value }), 400); });
+  $('cardClose').addEventListener('click', () => closeModal('cardModal'));
+  $('cardDownload').addEventListener('click', downloadCard);
+  $('cardShare').addEventListener('click', shareCard);
+  drawCardPreview();
+}
+
+async function drawCardPreview() {
+  const c = view.card; if (!c) return;
+  const pr = cardPrefs();
+  const st = C.studentById(S, c.studentId);
+  const canvas = await TutorCard.render({
+    studentName: st ? st.name : '?', ym: view.ym, schedule: C.studentMonthSchedule(S, view.ym, c.studentId),
+    showPrice: pr.showPrice, theme: pr.theme, footer: pr.footer,
+  });
+  const blob = await TutorCard.toBlob(canvas);
+  if (view.card !== c) return; // modal closed / reopened meanwhile
+  if (c.url) URL.revokeObjectURL(c.url);
+  c.blob = blob; c.url = URL.createObjectURL(blob);
+  const pv = $('cardPreview'); if (pv) pv.innerHTML = `<img src="${c.url}" alt="การ์ดตารางเรียน">`;
+}
+
+function downloadCard() {
+  const c = view.card; if (!c || !c.blob) return;
+  const a = document.createElement('a'); a.href = c.url; a.download = cardFileName(c.studentId);
+  document.body.appendChild(a); a.click(); a.remove(); // attached so Safari/Chrome keep the file name
+  showToast('ดาวน์โหลดรูปแล้ว');
+}
+
+async function shareCard() {
+  const c = view.card; if (!c || !c.blob) return;
+  const file = new File([c.blob], cardFileName(c.studentId), { type: 'image/png' });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try { await navigator.share({ files: [file], title: `ตารางเรียน ${studentName(c.studentId)}` }); }
+    catch (e) { if (e.name !== 'AbortError') downloadCard(); }
+  } else {
+    downloadCard(); // desktop: save, then drag into LINE
+    showToast('เครื่องนี้แชร์ตรงไม่ได้ — ดาวน์โหลดรูปแล้ว ลากไปส่งใน LINE ได้เลย');
+  }
 }
 
 function exportPng() {

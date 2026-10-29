@@ -4,6 +4,7 @@ A tutor's teaching schedule and billing web app served by GitHub Pages
 (https://pi7ames-creator.github.io/schedule-Ja-mes/). It's a static site with no build step.
 
 - `index.html`: the UI (5 tabs: weekly, monthly calendar, students & groups, billing, save/sync).
+- `js/card.js`: draws the per-student monthly "mini schedule" card (canvas → PNG for LINE); data comes from `core.studentMonthSchedule`.
 - `js/core.js`: all business logic (pure functions, no DOM). The browser uses it as `window.TutorCore`. Tests use it as a CommonJS module.
 - `data.json`: **the data**. When asked to change the schedule, students, prices or groups, edit this file and push. The page loads it on every open.
 - `scripts/import-calendar.js`: imports one month of Google Calendar events into `data.json`.
