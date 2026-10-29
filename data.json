@@ -1,8 +1,8 @@
 {
   "version": 3,
   "meta": {
-    "rev": 7,
-    "updatedAt": "2026-10-29T04:58:37.470Z"
+    "rev": 8,
+    "updatedAt": "2026-10-29T06:22:10.589Z"
   },
   "settings": {
     "groupRate": 300,
@@ -1614,9 +1614,11 @@
           "start": "11:00",
           "end": "12:30",
           "subject": "",
-          "groupId": "gr_mvrqypqsrkl88",
-          "studentIds": [],
-          "price": null,
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739nndw"
+          ],
+          "price": 350,
           "note": "",
           "flex": false,
           "skip": [
