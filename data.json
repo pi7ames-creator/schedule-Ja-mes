@@ -1,8 +1,8 @@
 {
   "version": 3,
   "meta": {
-    "rev": 4,
-    "updatedAt": "2026-10-29T04:24:46.952Z"
+    "rev": 5,
+    "updatedAt": "2026-10-29T04:44:58.447Z"
   },
   "settings": {
     "groupRate": 300,
@@ -127,7 +127,7 @@
       ],
       "parentTitle": "คุณแม่",
       "subject": "คณิตม.4",
-      "rate": null
+      "rate": 400
     },
     {
       "id": "st_1785818776739jjfz",
@@ -144,6 +144,56 @@
       "parentTitle": "คุณแม่",
       "subject": "",
       "rate": null
+    },
+    {
+      "id": "st_mvt1pnb0efikg",
+      "name": "ไดม่อน",
+      "aliases": [],
+      "parentTitle": "คุณแม่",
+      "subject": "คณิต Gifted m.2",
+      "rate": 400
+    },
+    {
+      "id": "st_mvt1q3k675wvd",
+      "name": "สกาย",
+      "aliases": [],
+      "parentTitle": "คุณแม่",
+      "subject": "คณิต Gifted m.2",
+      "rate": 400
+    },
+    {
+      "id": "st_mvt1qcj5f56r7",
+      "name": "วาฬ",
+      "aliases": [],
+      "parentTitle": "คุณแม่",
+      "subject": "คณิต Gifted m.2",
+      "rate": 400
+    },
+    {
+      "id": "st_mvt1sfpc125wt",
+      "name": "โอเชี่ยน",
+      "aliases": [],
+      "parentTitle": "คุณแม่",
+      "subject": "คณิต Gifted m.2",
+      "rate": 400
+    },
+    {
+      "id": "st_mvt1v3li5lajp",
+      "name": "ปาย",
+      "aliases": [
+        "PAI"
+      ],
+      "parentTitle": "คุณแม่",
+      "subject": "Math EP M.3",
+      "rate": 400
+    },
+    {
+      "id": "st_mvt1w9y282fa8",
+      "name": "องุ่น",
+      "aliases": [],
+      "parentTitle": "คุณแม่",
+      "subject": "Math EP M.3",
+      "rate": 400
     }
   ],
   "groups": [
@@ -163,9 +213,9 @@
     },
     {
       "id": "gr_mvrqypqsrkl88",
-      "name": "m.1 KKW",
+      "name": "KKW M.1",
       "aliases": [
-        "m.1 KKW",
+        "M.1 KKW",
         "KKW"
       ],
       "subject": "คณิต ม.1",
@@ -191,23 +241,18 @@
     },
     {
       "id": "gr_mvrqyps5hiq72",
-      "name": "Gang Diamond",
+      "name": "Gifted KKW 2",
       "aliases": [
         "Gang Diamond"
       ],
       "subject": "",
       "rate": null,
-      "memberIds": []
-    },
-    {
-      "id": "gr_mvrqyps6pehuv",
-      "name": "PAI",
-      "aliases": [
-        "PAI"
-      ],
-      "subject": "",
-      "rate": null,
-      "memberIds": []
+      "memberIds": [
+        "st_mvt1pnb0efikg",
+        "st_mvt1q3k675wvd",
+        "st_mvt1qcj5f56r7",
+        "st_mvt1sfpc125wt"
+      ]
     }
   ],
   "months": {
@@ -1658,8 +1703,10 @@
           "start": "16:30",
           "end": "18:00",
           "subject": "",
-          "groupId": "gr_mvrqyps6pehuv",
-          "studentIds": [],
+          "groupId": null,
+          "studentIds": [
+            "st_mvt1v3li5lajp"
+          ],
           "price": null,
           "note": "",
           "flex": false,
