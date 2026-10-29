@@ -1,8 +1,8 @@
 {
   "version": 3,
   "meta": {
-    "rev": 6,
-    "updatedAt": "2026-10-29T04:46:29.392Z"
+    "rev": 7,
+    "updatedAt": "2026-10-29T04:58:37.470Z"
   },
   "settings": {
     "groupRate": 300,
@@ -27,7 +27,7 @@
       ],
       "parentTitle": "คุณแม่",
       "subject": "คณิต ม.3 สาธิต",
-      "rate": null
+      "rate": 460
     },
     {
       "id": "st_17858187767390f1k",
@@ -1708,6 +1708,22 @@
           "skip": [
             "2026-11-05"
           ],
+          "off": []
+        },
+        {
+          "id": "sl_mvt2odme4pgmp",
+          "dow": 6,
+          "start": "17:45",
+          "end": "19:15",
+          "subject": "",
+          "groupId": null,
+          "studentIds": [
+            "st_mvt1w9y282fa8"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": [],
           "off": []
         }
       ]
