@@ -1,8 +1,8 @@
 {
   "version": 3,
   "meta": {
-    "rev": 2,
-    "updatedAt": "2026-10-28T06:42:19.017Z"
+    "rev": 3,
+    "updatedAt": "2026-10-29T03:44:02.607Z"
   },
   "settings": {
     "defaultRate": 300
@@ -623,7 +623,7 @@
           "dow": 0,
           "start": "13:00",
           "end": "14:30",
-          "subject": "คณิต SMTE",
+          "subject": "SMTE ฟิสิกส์",
           "groupId": "gr_mvrqypqs54wq8",
           "studentIds": [],
           "price": null,
@@ -1499,7 +1499,7 @@
           "dow": 0,
           "start": "13:30",
           "end": "15:00",
-          "subject": "",
+          "subject": "SMTE ฟิสิกส์",
           "groupId": "gr_mvrqypqs54wq8",
           "studentIds": [],
           "price": null,
