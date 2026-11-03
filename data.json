@@ -1,8 +1,8 @@
 {
   "version": 3,
   "meta": {
-    "rev": 11,
-    "updatedAt": "2026-10-29T07:04:59.154Z"
+    "rev": 12,
+    "updatedAt": "2026-11-03T15:52:41.652Z"
   },
   "settings": {
     "groupRate": 300,
@@ -1488,7 +1488,9 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": [],
+          "skip": [
+            "2026-11-03"
+          ],
           "off": []
         },
         {
@@ -1520,7 +1522,9 @@
           "price": null,
           "note": "",
           "flex": false,
-          "skip": [],
+          "skip": [
+            "2026-11-04"
+          ],
           "off": []
         },
         {
@@ -1761,6 +1765,58 @@
           "note": "",
           "flex": false,
           "skip": [],
+          "off": []
+        },
+        {
+          "id": "sl_mw0v5zx2oecba",
+          "dow": 6,
+          "start": "19:30",
+          "end": "21:00",
+          "subject": "ฟิาิสก์",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739e97q"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": [],
+          "off": []
+        },
+        {
+          "id": "sl_mw0v7oy3kqaew",
+          "dow": 1,
+          "start": "16:30",
+          "end": "18:00",
+          "subject": "วิทย์",
+          "groupId": null,
+          "studentIds": [
+            "st_1785818776739j4e0"
+          ],
+          "price": null,
+          "note": "",
+          "flex": false,
+          "skip": [
+            "2026-11-02"
+          ],
+          "off": []
+        },
+        {
+          "id": "sl_mw0v8hvmqvoqv",
+          "dow": 2,
+          "start": "16:30",
+          "end": "18:00",
+          "subject": "คณิต",
+          "groupId": null,
+          "studentIds": [
+            "st_mvt1v3li5lajp"
+          ],
+          "price": 400,
+          "note": "",
+          "flex": false,
+          "skip": [
+            "2026-11-03"
+          ],
           "off": []
         }
       ],
