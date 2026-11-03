@@ -1,8 +1,8 @@
 {
   "version": 3,
   "meta": {
-    "rev": 12,
-    "updatedAt": "2026-11-03T15:52:41.652Z"
+    "rev": 13,
+    "updatedAt": "2026-11-03T16:12:30.309Z"
   },
   "settings": {
     "groupRate": 300,
@@ -1861,10 +1861,24 @@
           "st_mvt1sfpc125wt": {
             "at": "2026-10-29T07:01:54.704Z",
             "total": 900
+          },
+          "st_1785818776739t0uz": {
+            "at": "2026-11-03T15:55:05.119Z",
+            "total": 900
+          },
+          "st_mvt1pnb0efikg": {
+            "at": "2026-11-03T15:55:10.382Z",
+            "total": 900
           }
         },
         "adjust": {
           "st_17858187767393m8b": {
+            "credit": 2,
+            "extra": 1,
+            "rate": null,
+            "note": ""
+          },
+          "st_1785818776739qhpu": {
             "credit": 2,
             "extra": 1,
             "rate": null,
